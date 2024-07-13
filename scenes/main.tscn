@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bxqqm0fji2wwm"]
+[gd_scene load_steps=5 format=3 uid="uid://bxqqm0fji2wwm"]
 
-[ext_resource type="PackedScene" uid="uid://c5dhqb4exnv2r" path="res://scenes/map/map.tscn" id="1_mpqdt"]
 [ext_resource type="PackedScene" uid="uid://cem6gwr7id7u8" path="res://scenes/player/player.tscn" id="2_1vtnu"]
+[ext_resource type="PackedScene" uid="uid://c5dhqb4exnv2r" path="res://scenes/map/map.tscn" id="2_nevbb"]
+[ext_resource type="PackedScene" uid="uid://cqu2nhyajf5dp" path="res://scenes/UI/player_ui.tscn" id="3_pq8xe"]
 
 [sub_resource type="GDScript" id="GDScript_8cn2p"]
 script/source = "extends Node2D
@@ -20,6 +21,11 @@ func _process(delta: float) -> void:
 [node name="Main" type="Node2D"]
 script = SubResource("GDScript_8cn2p")
 
-[node name="Map" parent="." instance=ExtResource("1_mpqdt")]
+[node name="Map" parent="." instance=ExtResource("2_nevbb")]
 
 [node name="Player" parent="." instance=ExtResource("2_1vtnu")]
+y_sort_enabled = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Player_UI" parent="CanvasLayer" instance=ExtResource("3_pq8xe")]
