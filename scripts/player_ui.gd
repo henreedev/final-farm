@@ -10,20 +10,21 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	$FoodProgressBar.value += 1
-	if $FoodProgressBar.value == 100:
+	if $FoodProgressBar.value >= 100:
 		$FoodProgressBar.value = 0
 	process_scroll()
 
 	
 
 func process_scroll():
-	var scroll_direction = Input.get_axis("ui_text_scroll_down","ui_text_scroll_up")
+	var scroll_direction = Input.get_axis("scroll_down","scroll_up")
 	if scroll_direction != 0:
 		print(scroll_direction)
 		currentSelectedItemIndex+= scroll_direction 
 		currentSelectedItemIndex = fmod(currentSelectedItemIndex,5)
 		if currentSelectedItemIndex <= -1:
 			currentSelectedItemIndex += 5
+			
 	
 	
 	$ItemList.select(currentSelectedItemIndex)

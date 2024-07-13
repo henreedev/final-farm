@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://cem6gwr7id7u8"]
+[gd_scene load_steps=42 format=3 uid="uid://bp5jromeq7qtt"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_4cvge"]
 [ext_resource type="Texture2D" uid="uid://dim6b6vi1leqo" path="res://assets/image/player/mc-legs-spritesheet.png" id="2_v527p"]
