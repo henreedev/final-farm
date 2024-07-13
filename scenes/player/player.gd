@@ -1,5 +1,9 @@
 extends CharacterBody2D
 
+const TOP_BASE_OFFSET = -16
+const TOP_HIGHER_OFFSET = -17
+
+
 
 const SPEED = 70.0
 
