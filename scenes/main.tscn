@@ -1,7 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://bxqqm0fji2wwm"]
 
-[ext_resource type="Texture2D" uid="uid://q40sab6e1csr" path="res://resources/placeholder_bg.png" id="1_m2syv"]
 [ext_resource type="PackedScene" uid="uid://bp5jromeq7qtt" path="res://scenes/player/player.tscn" id="2_1vtnu"]
+[ext_resource type="PackedScene" uid="uid://c5dhqb4exnv2r" path="res://scenes/map/map.tscn" id="2_nevbb"]
+[ext_resource type="PackedScene" uid="uid://cqu2nhyajf5dp" path="res://scenes/UI/player_ui.tscn" id="3_pq8xe"]
 
 [sub_resource type="GDScript" id="GDScript_8cn2p"]
 script/source = "extends Node2D
@@ -17,23 +18,17 @@ func _process(delta: float) -> void:
 	pass
 "
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_5d2gu"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_m2syv")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
 [node name="Main" type="Node2D"]
 script = SubResource("GDScript_8cn2p")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_5d2gu")
-
 [node name="Player" parent="." instance=ExtResource("2_1vtnu")]
+y_sort_enabled = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="Map" parent="." instance=ExtResource("2_nevbb")]
+scale = Vector2(3, 3)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Player_UI" parent="CanvasLayer" instance=ExtResource("3_pq8xe")]

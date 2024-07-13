@@ -1,0 +1,73 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqu2nhyajf5dp"]
+
+[ext_resource type="Texture2D" uid="uid://bec8ggnr76ri7" path="res://assets/image/seeds/eggplant-seeds.png" id="1_f8kdu"]
+[ext_resource type="Script" path="res://scripts/player_ui.gd" id="1_rl3jt"]
+[ext_resource type="Texture2D" uid="uid://c66pqva3pob4x" path="res://Eggplant_Emoji_grande.webp" id="4_7xtwo"]
+
+[node name="Player_UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rl3jt")
+
+[node name="ItemList" type="ItemList" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -327.0
+offset_top = -40.0
+offset_right = 329.0
+grow_horizontal = 2
+grow_vertical = 0
+allow_search = false
+item_count = 5
+max_columns = 5
+fixed_column_width = 122
+item_0/text = "item1"
+item_0/icon = ExtResource("1_f8kdu")
+item_1/text = "item2"
+item_1/icon = ExtResource("1_f8kdu")
+item_2/text = "item3"
+item_2/icon = ExtResource("1_f8kdu")
+item_3/text = "item4"
+item_3/icon = ExtResource("1_f8kdu")
+item_4/text = "item5"
+item_4/icon = ExtResource("1_f8kdu")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_f8kdu")
+
+[node name="Label" type="Label" parent="TextureRect"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 8.0
+offset_right = 119.0
+offset_bottom = 31.0
+text = "Bug Kills: 0"
+
+[node name="FoodProgressBar" type="TextureProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -59.0
+offset_top = 1.0
+offset_right = 541.0
+offset_bottom = 601.0
+grow_horizontal = 2
+scale = Vector2(0.2, 0.2)
+value = 50.0
+rounded = true
+texture_progress = ExtResource("4_7xtwo")
+tint_under = Color(1, 0, 0, 1)
+tint_over = Color(0, 1, 0, 1)
+tint_progress = Color(1, 1, 0, 1)
