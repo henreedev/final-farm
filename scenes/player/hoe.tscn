@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqsyx60crwgod"]
+
+[ext_resource type="Texture2D" uid="uid://x5c15l8dlplw" path="res://assets/image/items/hoe.png" id="1_v0tp4"]
+[ext_resource type="Script" path="res://scenes/player/hoe.gd" id="2_5xjis"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1y8rf"]
+size = Vector2(44, 3)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_repkw"]
+size = Vector2(7, 16)
+
+[node name="Hoe" type="Sprite2D"]
+texture = ExtResource("1_v0tp4")
+script = ExtResource("2_5xjis")
+
+[node name="Hitbox" type="Area2D" parent="."]
+metadata/_edit_group_ = true
+
+[node name="Rect1" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(22, 0.5)
+shape = SubResource("RectangleShape2D_1y8rf")
+
+[node name="Rect2" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(40.5, -6)
+shape = SubResource("RectangleShape2D_repkw")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

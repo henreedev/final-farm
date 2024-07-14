@@ -80,7 +80,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 10.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -97,7 +97,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run_up",
-"speed": 10.0
+"speed": 5.0
 }]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c6gb1"]
@@ -321,13 +321,14 @@ shape = SubResource("CapsuleShape2D_vc0j8")
 
 [node name="Bot" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_0iv6x")
-animation = &"run"
+animation = &"idle"
 autoplay = "idle"
+frame_progress = 0.171933
 offset = Vector2(0, -16)
 
 [node name="Top" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_0tehu")
-animation = &"throw_hold"
+animation = &"idle"
 autoplay = "idle"
 offset = Vector2(0, -16)
 
@@ -337,9 +338,3 @@ offset = Vector2(0, -8)
 zoom = Vector2(5, 5)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
-
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(-5, -11)
-
-[connection signal="frame_changed" from="Bot" to="." method="_on_bot_frame_changed"]
-[connection signal="animation_finished" from="Top" to="." method="_on_top_animation_finished"]
