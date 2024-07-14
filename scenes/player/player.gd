@@ -40,8 +40,12 @@ var hoe_scene : PackedScene = preload("res://scenes/player/hoe.tscn")
 #region: Built-in functions
 func _physics_process(delta: float) -> void:
 	var input_direction := Input.get_vector("Left","Right","Up","Down")
-	input_direction.y *= 0.7 if not input_direction.x else ISOMETRIC_MOVEMENT_ADJUST
-	velocity = input_direction.normalized() * SPEED
+	if input_direction.y and input_direction.x: 
+		input_direction.y *= ISOMETRIC_MOVEMENT_ADJUST
+		input_direction = input_direction.normalized()
+	elif input_direction.y:
+		input_direction.y *= 0.83
+	velocity = input_direction * SPEED
 
 
 	move_and_slide()
@@ -69,7 +73,7 @@ func _calc_animation_vars(input_dir : Vector2):
 
 func _pick_legs_animation():
 	if moving:
-		if moving_vert:
+		if moving_vert and not moving_hoz:
 			bot.animation = "run_up"
 		else:
 			bot.animation = "run"
