@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://cqu2nhyajf5dp"]
+[gd_scene load_steps=6 format=3 uid="uid://cqu2nhyajf5dp"]
 
 [ext_resource type="Texture2D" uid="uid://bec8ggnr76ri7" path="res://assets/image/seeds/eggplant-seeds.png" id="1_f8kdu"]
 [ext_resource type="Script" path="res://scripts/player_ui.gd" id="1_rl3jt"]
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="3_01w31"]
 [ext_resource type="Texture2D" uid="uid://c66pqva3pob4x" path="res://Eggplant_Emoji_grande.webp" id="4_7xtwo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e8do0"]
+shader = ExtResource("3_01w31")
 
 [node name="Player_UI" type="Control"]
 layout_mode = 3
@@ -41,6 +45,7 @@ item_4/text = "item5"
 item_4/icon = ExtResource("1_f8kdu")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_e8do0")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0

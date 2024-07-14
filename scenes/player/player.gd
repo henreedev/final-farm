@@ -7,6 +7,7 @@ const TOP_BASE_OFFSET = Vector2i(0, -16)
 const TOP_HIGHER_OFFSET = Vector2i(0, -17)
 const HOE_ROOT_POS_TOP = Vector2(-5, -17)
 const HOE_ROOT_POS_BOT = Vector2(-5, -11)
+const IGNORE_SWING_AFTER_CANCEL_DUR = 0.4
 const ISOMETRIC_MOVEMENT_ADJUST = 0.5
 const SPEED = 70.0
 
@@ -27,17 +28,37 @@ var holding_throw = false
 # Tracks how many of each seed you have
 var seed_counts = {} # TODO populate with Seed.Type : 0
 
+# Swing vars
+var ignore_swing := false
+
 # Hoe vars
-var hoe_angle_cone = 90.0
-var hoe_duration = 0.5
+var hoe_angle_cone = 180.0
+var hoe_duration = 1.0
 var hoe_scene : PackedScene = preload("res://scenes/player/hoe.tscn")
 
+# Throw vars
+var throw_tween : Tween 
+var throw_zoomout_ratio = 0.7
+var throw_zoomout_time = 1.5
+var initial_zoom : Vector2
+var target_zoom : Vector2
 
 @onready var bot : AnimatedSprite2D = $Bot
 @onready var top : AnimatedSprite2D = $Top
+@onready var cam : Camera2D = $Camera2D
+@onready var throw_zoom_timer : Timer = $ThrowZoomTimer
+@onready var ignore_swing_timer : Timer = $IgnoreSwingTimer
+
 #endregion: Globals
 
 #region: Built-in functions
+func _ready() -> void:
+	_init_vars()
+
+func _init_vars() -> void:
+	initial_zoom = cam.zoom
+	target_zoom = initial_zoom
+
 func _physics_process(delta: float) -> void:
 	var input_direction := Input.get_vector("Left","Right","Up","Down")
 	if input_direction.y and input_direction.x: 
@@ -46,11 +67,13 @@ func _physics_process(delta: float) -> void:
 	elif input_direction.y:
 		input_direction.y *= 0.83
 	velocity = input_direction * SPEED
-
-
 	move_and_slide()
 	_act_on_input()
 	_pick_animations(input_direction)
+
+func _process(delta: float) -> void:
+	_calc_throw_zoom(delta)
+	_calc_camera_zoom(delta)
 
 #endregion: Built-in functions
 
@@ -106,12 +129,18 @@ func _act_on_input():
 		start_throw()
 	elif holding_throw:
 		throw()
+	if Input.is_action_just_pressed("fullscreen"):
+		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		else:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 
 func start_throw():
-	if not (holding_throw or swinging or throwing):
+	if not (holding_throw or swinging or throwing or ignore_swing):
 		holding_throw = true
 		top.animation = "throw_windup"
 		top.play()
+		throw_zoom_timer.start(throw_zoomout_time)
 
 func throw():
 	if not swinging:
@@ -119,10 +148,27 @@ func throw():
 		top.animation = "throw"
 		top.play()
 
+func _calc_throw_zoom(delta):
+	if holding_throw or throwing:
+		var total = throw_zoomout_time
+		var time_elapsed = total - throw_zoom_timer.time_left if not throw_zoom_timer.is_stopped() else throw_zoomout_time
+		const DELAY_RATIO = 0.38
+		var ratio = clampf(time_elapsed / total - DELAY_RATIO, 0, 1) / (1 - DELAY_RATIO) 
+		target_zoom = lerp(initial_zoom, initial_zoom * throw_zoomout_ratio, ratio)
+	else: 
+		const STR = 2.0
+		target_zoom = target_zoom.move_toward(initial_zoom, STR * delta)
+
+func _calc_camera_zoom(delta):
+	const STR = 3.0
+	cam.zoom = lerp(cam.zoom, target_zoom, STR * delta)
+
 func swing():
 	if holding_throw:
 		holding_throw = false
-	elif not (swinging or throwing):
+		ignore_swing_timer.start(IGNORE_SWING_AFTER_CANCEL_DUR)
+		ignore_swing = true
+	elif not (swinging or throwing or ignore_swing):
 		swinging = true
 		_calc_animation_vars(Vector2(0,0))
 		top.animation = "swing_top" if mouse_up else "swing"
@@ -146,6 +192,13 @@ func _create_hoe():
 
 
 
+#region: Helper functions
+
+
+
+#endregion: Helper functions
+
+
 
 func _on_bot_frame_changed() -> void:
 	if bot.frame == 1 or bot.frame == 2:
@@ -163,7 +216,10 @@ func _on_top_animation_finished() -> void:
 			holding_throw = false
 			throwing = false
 		"throw_windup":
-			print("throw windup finsihed")
 			top.animation = "throw_hold"
 			top.play()
 		
+
+
+func _on_ignore_swing_timer_timeout() -> void:
+	ignore_swing = false

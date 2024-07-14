@@ -1,6 +1,7 @@
-[gd_scene load_steps=42 format=3 uid="uid://cem6gwr7id7u8"]
+[gd_scene load_steps=45 format=3 uid="uid://cem6gwr7id7u8"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_4cvge"]
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="2_bep4r"]
 [ext_resource type="Texture2D" uid="uid://dim6b6vi1leqo" path="res://assets/image/player/mc-legs-spritesheet.png" id="2_v527p"]
 [ext_resource type="Texture2D" uid="uid://bln5p1i8434oy" path="res://assets/image/player/mc-arms-spritesheet.png" id="3_rm0ig"]
 
@@ -11,6 +12,9 @@ height = 16.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vc0j8"]
 radius = 2.0
 height = 4.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_njkrv"]
+shader = ExtResource("2_bep4r")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a6ka1"]
 atlas = ExtResource("2_v527p")
@@ -99,6 +103,9 @@ animations = [{
 "name": &"run_up",
 "speed": 10.0
 }]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l00se"]
+shader = ExtResource("2_bep4r")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c6gb1"]
 atlas = ExtResource("3_rm0ig")
@@ -320,12 +327,14 @@ shape = SubResource("CapsuleShape2D_aija1")
 shape = SubResource("CapsuleShape2D_vc0j8")
 
 [node name="Bot" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_njkrv")
 sprite_frames = SubResource("SpriteFrames_0iv6x")
 animation = &"run"
 autoplay = "idle"
 offset = Vector2(0, -16)
 
 [node name="Top" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_l00se")
 sprite_frames = SubResource("SpriteFrames_0tehu")
 animation = &"throw_hold"
 autoplay = "idle"
@@ -334,12 +343,16 @@ offset = Vector2(0, -16)
 [node name="Camera2D" type="Camera2D" parent="."]
 physics_interpolation_mode = 1
 offset = Vector2(0, -8)
-zoom = Vector2(5, 5)
+zoom = Vector2(4.8, 4.8)
 position_smoothing_enabled = true
-position_smoothing_speed = 10.0
 
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(-5, -11)
+[node name="ThrowZoomTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="IgnoreSwingTimer" type="Timer" parent="."]
+one_shot = true
 
 [connection signal="frame_changed" from="Bot" to="." method="_on_bot_frame_changed"]
 [connection signal="animation_finished" from="Top" to="." method="_on_top_animation_finished"]
+[connection signal="timeout" from="IgnoreSwingTimer" to="." method="_on_ignore_swing_timer_timeout"]
