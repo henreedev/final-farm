@@ -167,3 +167,5 @@ func _on_top_animation_finished() -> void:
 			top.animation = "throw_hold"
 			top.play()
 		
+
+

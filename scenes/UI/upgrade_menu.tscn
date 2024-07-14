@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://bkcmq0oly4j8w"]
+[gd_scene load_steps=2 format=3 uid="uid://bkcmq0oly4j8w"]
+
+[ext_resource type="Script" path="res://scenes/UI/upgrade_menu.gd" id="1_yhjbo"]
 
 [node name="Upgrade_Menu" type="Control"]
 layout_mode = 3
@@ -7,8 +9,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_yhjbo")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,9 +37,21 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 current_tab = 0
 
-[node name="TabBar" type="TabBar" parent="MarginContainer/TabContainer"]
+[node name="Player Upgrades" type="TabBar" parent="MarginContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/TabContainer/Player Upgrades"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="MarginContainer/TabContainer/Player Upgrades/ScrollContainer"]
+layout_mode = 2
+text = "Buy Speed Up :10"
 
 [node name="TabBar2" type="TabBar" parent="MarginContainer/TabContainer"]
 visible = false
@@ -46,3 +62,16 @@ metadata/_tab_index = 1
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
+
+[node name="exit" type="Button" parent="."]
+layout_mode = 2
+offset_left = 970.0
+offset_top = 572.0
+offset_right = 1132.0
+offset_bottom = 628.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Close Shop"
+
+[connection signal="button_down" from="MarginContainer/TabContainer/Player Upgrades/ScrollContainer/Button" to="." method="_on_button_button_down"]
+[connection signal="pressed" from="exit" to="." method="_on_exit_pressed"]

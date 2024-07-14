@@ -71,3 +71,13 @@ texture_progress = ExtResource("4_7xtwo")
 tint_under = Color(1, 0, 0, 1)
 tint_over = Color(0, 1, 0, 1)
 tint_progress = Color(1, 1, 0, 1)
+
+[node name="TEST kill increase" type="Button" parent="."]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 12.0
+offset_right = 152.0
+offset_bottom = 20.0
+text = "TEST_ADD_1_KILL"
+
+[connection signal="pressed" from="TEST kill increase" to="." method="_on_test_kill_increase_pressed"]
