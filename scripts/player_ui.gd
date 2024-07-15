@@ -43,5 +43,3 @@ func _on_test_kill_increase_pressed() -> void:
 	$TextureRect/Label.text = str("Bugs Killed:", bugs_killed)
 
 	
-
-

@@ -43,8 +43,8 @@ var throw_zoomout_time = 1.5
 var initial_zoom : Vector2
 var target_zoom : Vector2
 
-@onready var bot : AnimatedSprite2D = $Bot
-@onready var top : AnimatedSprite2D = $Top
+@onready var bot : AnimatedSprite2D = $S/Bot
+@onready var top : AnimatedSprite2D = $S/Top
 @onready var cam : Camera2D = $Camera2D
 @onready var throw_zoom_timer : Timer = $ThrowZoomTimer
 @onready var ignore_swing_timer : Timer = $IgnoreSwingTimer
@@ -186,7 +186,7 @@ func _create_hoe():
 	hoe.rotation = angle
 	hoe.angle_cone = hoe_angle_cone
 	hoe.duration = hoe_duration
-	add_child(hoe)
+	$S.add_child(hoe)
 
 #endregion: Player action functions
 

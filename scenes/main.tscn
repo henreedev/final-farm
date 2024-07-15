@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bxqqm0fji2wwm"]
 
-[ext_resource type="PackedScene" uid="uid://bp5jromeq7qtt" path="res://scenes/player/player.tscn" id="2_1vtnu"]
+[ext_resource type="PackedScene" uid="uid://cem6gwr7id7u8" path="res://scenes/player/player.tscn" id="2_1vtnu"]
 [ext_resource type="PackedScene" uid="uid://c5dhqb4exnv2r" path="res://scenes/map/map.tscn" id="2_nevbb"]
 [ext_resource type="PackedScene" uid="uid://cqu2nhyajf5dp" path="res://scenes/UI/player_ui.tscn" id="3_pq8xe"]
 [ext_resource type="PackedScene" uid="uid://bkcmq0oly4j8w" path="res://scenes/UI/upgrade_menu.tscn" id="4_1qibe"]
@@ -54,12 +54,13 @@ func _on_test_open_shop_pressed() -> void:
 "
 
 [node name="Main" type="Node2D"]
+y_sort_enabled = true
 script = SubResource("GDScript_8cn2p")
 
 [node name="Map" parent="." instance=ExtResource("2_nevbb")]
 
 [node name="Player" parent="." instance=ExtResource("2_1vtnu")]
-y_sort_enabled = true
+position = Vector2(13, -16)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

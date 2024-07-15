@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://bbdg51k23rbjn"]
+
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_gkhbm"]
+[ext_resource type="Texture2D" uid="uid://2sfh6inylksg" path="res://assets/image/map/shop.png" id="2_bltde"]
+[ext_resource type="Script" path="res://scenes/map/shop.gd" id="3_jxoqr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x0xfu"]
+shader = ExtResource("1_gkhbm")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rdwto"]
+radius = 42.0476
+
+[node name="Shop" type="Sprite2D"]
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_x0xfu")
+texture = ExtResource("2_bltde")
+offset = Vector2(0.5, -10.5)
+script = ExtResource("3_jxoqr")
+
+[node name="Hitbox" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
+visible = false
+polygon = PackedVector2Array(0, 12, -22, 1, 1, -12, 24, 0)
+
+[node name="InteractArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+visible = false
+shape = SubResource("CircleShape2D_rdwto")
+
+[connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
