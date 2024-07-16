@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxqqm0fji2wwm"]
+[gd_scene load_steps=7 format=3 uid="uid://bxqqm0fji2wwm"]
 
 [ext_resource type="PackedScene" uid="uid://cem6gwr7id7u8" path="res://scenes/player/player.tscn" id="2_1vtnu"]
 [ext_resource type="PackedScene" uid="uid://c5dhqb4exnv2r" path="res://scenes/map/map.tscn" id="2_nevbb"]
 [ext_resource type="PackedScene" uid="uid://cqu2nhyajf5dp" path="res://scenes/UI/player_ui.tscn" id="3_pq8xe"]
 [ext_resource type="PackedScene" uid="uid://bkcmq0oly4j8w" path="res://scenes/UI/upgrade_menu.tscn" id="4_1qibe"]
+[ext_resource type="PackedScene" uid="uid://fxv5hgqgs5ds" path="res://scenes/UI/pause_menu.tscn" id="5_3rix5"]
 
 [sub_resource type="GDScript" id="GDScript_8cn2p"]
 script/source = "extends Node2D
@@ -11,11 +12,13 @@ class_name Main
 
 @onready var player_ui: Control = $CanvasLayer/Player_UI
 @onready var upgrade_menu: Control = $CanvasLayer/Upgrade_Menu
+@onready var pause_menu: Control = $CanvasLayer/pause_menu
 
+#signal toggle_game_paused(is_paused: bool)
 
-var food_amount := 1
+@export var food_amount := 100
 const WINNING_FOOD_AMOUNT = 1000000
-var bugs_killed = 0
+@export var bugs_killed = 0
 signal upgrade_purchased
 func _ready() -> void:
 	connect_signals()
@@ -28,7 +31,14 @@ func connect_signals():
 func _process(delta: float) -> void:
 	pass
 
-
+func _input(event: InputEvent):
+	if not get_tree().paused:
+		
+		if Input.is_action_just_pressed(\"ui_cancel\"):
+			print(\"pausing game\")
+			get_tree().paused = true
+			pause_menu.visible = true
+			#toggle_game_paused.emit(true)
 
 
 func _on_upgrade_menu_check_if_purchasable(upgrade_name: String, price: int) -> void:
@@ -51,9 +61,15 @@ func _on_player_ui_bug_killed() -> void:
 func _on_test_open_shop_pressed() -> void:
 	upgrade_menu.visible = true
 	pass # Replace with function body.
+
+
+
+func _on_pause_menu_unpausing_with_esc() -> void:
+	get_tree().paused = false
+	pause_menu.visible = false
 "
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" groups=["main"]]
 y_sort_enabled = true
 script = SubResource("GDScript_8cn2p")
 
@@ -76,5 +92,8 @@ offset_right = 200.0
 offset_bottom = 118.0
 text = "TEST_OPEN_SHOP"
 
+[node name="pause_menu" parent="CanvasLayer" instance=ExtResource("5_3rix5")]
+
 [connection signal="bug_killed" from="CanvasLayer/Player_UI" to="." method="_on_player_ui_bug_killed"]
 [connection signal="pressed" from="CanvasLayer/TEST_OPEN_SHOP" to="." method="_on_test_open_shop_pressed"]
+[connection signal="unpausing_with_esc" from="CanvasLayer/pause_menu" to="." method="_on_pause_menu_unpausing_with_esc"]

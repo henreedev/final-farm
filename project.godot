@@ -27,6 +27,11 @@ window/canvas_textures/default_texture_filter=1
 
 enabled=PackedStringArray("res://addons/smoothing/plugin.cfg")
 
+[global_group]
+
+main=""
+upgrade_menu=""
+
 [gui]
 
 theme/default_font_antialiasing=0

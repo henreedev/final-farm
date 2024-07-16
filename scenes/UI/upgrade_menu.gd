@@ -1,6 +1,15 @@
 extends Control
 signal check_if_purchasable
+signal purchased_seed_eggplant
 var isPurchased := [false]
+@onready var main = get_tree().get_first_node_in_group("main")
+
+@onready var player_speed: Button = $"MarginContainer/TabContainer/Player Upgrades/ScrollContainer/player_speed"
+@onready var seed_tomato: Button = $MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer/seed_tomato
+@onready var seed_eggplant: Button = $MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer/seed_eggplant
+
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -12,9 +21,6 @@ func _process(delta: float) -> void:
 
 
 
-func _on_button_button_down() -> void:
-	purchase_upgrade("player_speed_1",10)
-
 func purchase_upgrade(upgrade_name: String,price):
 	check_if_purchasable.emit(upgrade_name, price)
 	pass
@@ -23,4 +29,24 @@ func purchase_upgrade(upgrade_name: String,price):
 
 func _on_exit_pressed() -> void:
 	visible = false
+	pass # Replace with function body.
+
+
+func _on_seed_tomato_pressed() -> void:
+	
+	pass # Replace with function body.
+
+
+func _on_seed_eggplant_pressed() -> void:
+	if main.food_amount > 10:
+		print("egg")
+		main.food_amount -= 10
+		purchased_seed_eggplant.emit()
+		pass
+	else:
+		print("not enough to  egg")
+	pass # Replace with function body.
+
+
+func _on_player_speed_pressed() -> void:
 	pass # Replace with function body.

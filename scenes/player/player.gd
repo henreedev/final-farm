@@ -49,11 +49,21 @@ var target_zoom : Vector2
 @onready var throw_zoom_timer : Timer = $ThrowZoomTimer
 @onready var ignore_swing_timer : Timer = $IgnoreSwingTimer
 
+@onready var upgrade_menu = get_tree().get_first_node_in_group("upgrade_menu")
+
 #endregion: Globals
 
 #region: Built-in functions
 func _ready() -> void:
 	_init_vars()
+	
+	#testing direct connection from upgrade menu to player
+	upgrade_menu.purchased_seed_eggplant.connect(test_connection)
+	
+func test_connection():
+	print("yay")
+	pass
+	
 
 func _init_vars() -> void:
 	initial_zoom = cam.zoom

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/UI/upgrade_menu.gd" id="1_yhjbo"]
 
-[node name="Upgrade_Menu" type="Control"]
+[node name="Upgrade_Menu" type="Control" groups=["upgrade_menu"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,9 +35,10 @@ theme_override_constants/margin_bottom = 20
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer"]
 layout_mode = 2
-current_tab = 0
+current_tab = 1
 
 [node name="Player Upgrades" type="TabBar" parent="MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -49,29 +50,45 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" type="Button" parent="MarginContainer/TabContainer/Player Upgrades/ScrollContainer"]
+[node name="player_speed" type="Button" parent="MarginContainer/TabContainer/Player Upgrades/ScrollContainer"]
 layout_mode = 2
 text = "Buy Speed Up :10"
 
-[node name="TabBar2" type="TabBar" parent="MarginContainer/TabContainer"]
-visible = false
+[node name="Seeds" type="TabBar" parent="MarginContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/TabContainer/Seeds"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Seeds/ScrollContainer"]
+layout_mode = 2
+
+[node name="seed_eggplant" type="Button" parent="MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Buy Eggplant"
+
+[node name="seed_tomato" type="Button" parent="MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Buy other"
 
 [node name="TabBar3" type="TabBar" parent="MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="exit" type="Button" parent="."]
+[node name="exit" type="Button" parent="MarginContainer"]
 layout_mode = 2
-offset_left = 970.0
-offset_top = 572.0
-offset_right = 1132.0
-offset_bottom = 628.0
-grow_horizontal = 0
-grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
 text = "Close Shop"
 
-[connection signal="button_down" from="MarginContainer/TabContainer/Player Upgrades/ScrollContainer/Button" to="." method="_on_button_button_down"]
-[connection signal="pressed" from="exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="MarginContainer/TabContainer/Player Upgrades/ScrollContainer/player_speed" to="." method="_on_player_speed_pressed"]
+[connection signal="pressed" from="MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer/seed_eggplant" to="." method="_on_seed_eggplant_pressed"]
+[connection signal="pressed" from="MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer/seed_tomato" to="." method="_on_seed_tomato_pressed"]
+[connection signal="pressed" from="MarginContainer/exit" to="." method="_on_exit_pressed"]
