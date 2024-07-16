@@ -48,6 +48,7 @@ var target_zoom : Vector2
 @onready var cam : Camera2D = $Camera2D
 @onready var throw_zoom_timer : Timer = $ThrowZoomTimer
 @onready var ignore_swing_timer : Timer = $IgnoreSwingTimer
+var shop : Shop # onready does not work because shop is instantiated in a TileMapLayer after _ready
 
 #endregion: Globals
 
@@ -58,6 +59,8 @@ func _ready() -> void:
 func _init_vars() -> void:
 	initial_zoom = cam.zoom
 	target_zoom = initial_zoom
+	await get_tree().create_timer(0.01).timeout
+	shop = get_tree().get_first_node_in_group("shop")
 
 func _physics_process(delta: float) -> void:
 	var input_direction := Input.get_vector("Left","Right","Up","Down")
@@ -105,7 +108,7 @@ func _pick_legs_animation():
 	bot.flip_h = not going_left
 	bot.play()
 
-func _pick_arms_animation():
+func _pick_arms_animation(): 
 	if holding_throw or throwing or swinging:
 		if swinging:
 			pass
@@ -134,6 +137,14 @@ func _act_on_input():
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	if Input.is_action_just_pressed("purchase_seed"):
+		if not shop: shop = get_tree().get_first_node_in_group("shop")
+		shop.queue_throw(Plant.Type.EGGPLANT)
+	if Input.is_action_just_pressed("interact"):
+		if shop.is_open:
+			shop.close()
+		else:
+			shop.open()
 
 func start_throw():
 	if not (holding_throw or swinging or throwing or ignore_swing):
