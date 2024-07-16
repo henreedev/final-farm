@@ -30,6 +30,8 @@ enabled=PackedStringArray("res://addons/smoothing/plugin.cfg")
 [global_group]
 
 shop=""
+main=""
+upgrade_menu=""
 
 [gui]
 
