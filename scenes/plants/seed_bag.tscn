@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://c62n5plben7pl"]
+
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_kg3cv"]
+[ext_resource type="Texture2D" uid="uid://bec8ggnr76ri7" path="res://assets/image/seeds/eggplant-seeds.png" id="2_3rl5a"]
+[ext_resource type="Script" path="res://scenes/plants/seed_bag.gd" id="3_q1lih"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gae3b"]
+shader = ExtResource("1_kg3cv")
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3irme"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_3rl5a")
+}],
+"loop": false,
+"name": &"eggplant",
+"speed": 0.0
+}]
+
+[sub_resource type="Curve2D" id="Curve2D_xrds8"]
+resource_local_to_scene = true
+
+[node name="SeedBag" type="AnimatedSprite2D"]
+z_index = 1
+z_as_relative = false
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_gae3b")
+scale = Vector2(0.25, 0.25)
+sprite_frames = SubResource("SpriteFrames_3irme")
+animation = &"eggplant"
+offset = Vector2(0, -6)
+script = ExtResource("3_q1lih")
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Path2D" type="Path2D" parent="Node"]
+curve = SubResource("Curve2D_xrds8")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Node/Path2D"]

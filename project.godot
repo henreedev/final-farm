@@ -25,13 +25,15 @@ window/canvas_textures/default_texture_filter=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/smoothing/plugin.cfg")
+enabled=PackedStringArray()
 
 [global_group]
 
 shop=""
 main=""
 upgrade_menu=""
+player=""
+floor=""
 
 [gui]
 

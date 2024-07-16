@@ -2,7 +2,7 @@ extends Node2D
 class_name Plant
 
 enum Type {EGGPLANT}
-var type : Type = Type.EGGPLANT
+var _type : Type = Type.EGGPLANT
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

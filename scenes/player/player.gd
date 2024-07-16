@@ -5,6 +5,7 @@ class_name Player
 
 const TOP_BASE_OFFSET = Vector2i(0, -16)
 const TOP_HIGHER_OFFSET = Vector2i(0, -17)
+const THROW_ROOT = Vector2i(12, -20)
 const HOE_ROOT_POS_TOP = Vector2(-5, -17)
 const HOE_ROOT_POS_BOT = Vector2(-5, -11)
 const IGNORE_SWING_AFTER_CANCEL_DUR = 0.4
@@ -12,6 +13,8 @@ const ISOMETRIC_MOVEMENT_ADJUST = 0.5
 const SPEED = 70.0
 
 # Animation vars
+var showing_arc := false
+var can_plant := false
 var moving := false
 var moving_vert := false
 var moving_hoz := false
@@ -19,6 +22,7 @@ var going_left := false
 var going_up := false
 var mouse_left := false
 var mouse_up := false
+var finished_throw := false
 var locked_swing_animation := false
 
 #State vars
@@ -26,8 +30,10 @@ var swinging = false
 var throwing = false
 var holding_throw = false
 # Tracks how many of each seed you have
-var seed_counts = {} # TODO populate with Seed.Type : 0
-
+var seed_counts = {Plant.Type.EGGPLANT : 10} 
+var equipped_seed_type : Plant.Type = Plant.Type.EGGPLANT
+var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
+var seed_bag : SeedBag
 # Swing vars
 var ignore_swing := false
 
@@ -40,6 +46,8 @@ var hoe_scene : PackedScene = preload("res://scenes/player/hoe.tscn")
 var throw_tween : Tween 
 var throw_zoomout_ratio = 0.7
 var throw_zoomout_time = 1.5
+var throw_duration = 2.0
+var tile : TileData
 var initial_zoom : Vector2
 var target_zoom : Vector2
 
@@ -48,6 +56,8 @@ var target_zoom : Vector2
 @onready var cam : Camera2D = $Camera2D
 @onready var throw_zoom_timer : Timer = $ThrowZoomTimer
 @onready var ignore_swing_timer : Timer = $IgnoreSwingTimer
+@onready var line : Line2D = $LineContainer/Line2D
+@onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
 var shop : Shop # onready does not work because shop is instantiated in a TileMapLayer after _ready
 
 @onready var upgrade_menu = get_tree().get_first_node_in_group("upgrade_menu")
@@ -63,8 +73,7 @@ func _ready() -> void:
 	
 func test_connection():
 	print("yay")
-	pass
-	
+
 
 func _init_vars() -> void:
 	initial_zoom = cam.zoom
@@ -87,6 +96,7 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	_calc_throw_zoom(delta)
 	_calc_camera_zoom(delta)
+	_show_arc()
 
 #endregion: Built-in functions
 
@@ -159,15 +169,23 @@ func _act_on_input():
 func start_throw():
 	if not (holding_throw or swinging or throwing or ignore_swing):
 		holding_throw = true
+		showing_arc = true
+		finished_throw = false
 		top.animation = "throw_windup"
 		top.play()
 		throw_zoom_timer.start(throw_zoomout_time)
+		create_seed_bag()
 
 func throw():
 	if not swinging:
 		throwing = true
+		showing_arc = false
 		top.animation = "throw"
 		top.play()
+
+func create_seed_bag():
+	seed_bag = seed_bag_scene.instantiate()
+	$S.add_child(seed_bag)
 
 func _calc_throw_zoom(delta):
 	if holding_throw or throwing:
@@ -214,8 +232,50 @@ func _create_hoe():
 
 
 #region: Helper functions
+func _get_throw_root():
+	var root = Vector2(THROW_ROOT)
+	if top.flip_h: root *= Vector2(-1, 1)
+	return root
 
+func _show_arc():
+	if showing_arc:
+		var root = _get_throw_root()
+		var end_pos = get_tile_pos_at_mouse()
+		if can_plant: line.default_color = Color(2,2,2,0.8)
+		else: line.default_color = Color(1,.2,.2,0.4)
+		var points = Utils.calc_arc_between(root + position, end_pos)
+		line.clear_points()
+		for point in points:
+			line.add_point(point)
+		if seed_bag:
+			seed_bag.position = root
+	else:
+		if not finished_throw:
+			if seed_bag:
+				if can_plant:
+					seed_bag.throw(line.points[-1], throw_duration)
+				else:
+					seed_bag.delete()
+				seed_bag = null
+			line.clear_points()
+			finished_throw = true
 
+func get_tile_pos_at_mouse():
+	var coords = floor.local_to_map(floor.get_local_mouse_position())
+	var center_pos = floor.map_to_local(coords)
+	tile = floor.get_cell_tile_data(coords)
+	if tile:
+		can_plant = tile.get_custom_data("can_plant")
+	if not can_plant:
+		for neighbor_coords in floor.get_surrounding_cells(coords):
+			var neighbor = floor.get_cell_tile_data(neighbor_coords)
+			if not neighbor: continue
+			if neighbor.get_custom_data("can_plant"):
+				center_pos = floor.map_to_local(neighbor_coords)
+				can_plant = true
+				break
+	if not can_plant: return floor.get_local_mouse_position()
+	else: return center_pos
 
 #endregion: Helper functions
 
