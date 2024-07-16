@@ -352,7 +352,7 @@ offset = Vector2(0, -16)
 [node name="Camera2D" type="Camera2D" parent="."]
 physics_interpolation_mode = 1
 offset = Vector2(0, -8)
-zoom = Vector2(3, 3)
+zoom = Vector2(4.8, 4.8)
 position_smoothing_enabled = true
 
 [node name="ThrowZoomTimer" type="Timer" parent="."]
