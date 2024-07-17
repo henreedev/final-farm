@@ -39,9 +39,14 @@ var seed_bag : SeedBag
 var ignore_swing := false
 
 # Hoe vars
+var hoe_scene : PackedScene = preload("res://scenes/player/hoe.tscn")
 var hoe_angle_cone = 180.0
 var hoe_duration = 1.0
-var hoe_scene : PackedScene = preload("res://scenes/player/hoe.tscn")
+var hoe_buff_duration = 3.0
+var hoe_buff_start_strength = 3.0
+var hoe_buff_end_strength = 1.5
+var hoe_scale = 1.0
+
 
 # Throw vars
 var throw_tween : Tween 
@@ -232,6 +237,10 @@ func _create_hoe():
 	hoe.rotation = angle
 	hoe.angle_cone = hoe_angle_cone
 	hoe.duration = hoe_duration
+	hoe.buff_duration = hoe_buff_duration
+	hoe.buff_start_strength = hoe_buff_start_strength
+	hoe.buff_end_strength = hoe_buff_end_strength
+	hoe.final_scale = hoe_scale
 	$S.add_child(hoe)
 
 #endregion: Player action functions

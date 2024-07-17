@@ -81,3 +81,5 @@ sprite_frames = SubResource("SpriteFrames_3irme")
 animation = &"eggplant_tear"
 offset = Vector2(0, -6)
 script = ExtResource("3_q1lih")
+
+[connection signal="frame_changed" from="." to="." method="_on_frame_changed"]
