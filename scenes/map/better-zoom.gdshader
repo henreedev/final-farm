@@ -1,4 +1,9 @@
 shader_type canvas_item;
+varying vec4 modulate;
+void vertex()
+{
+    modulate = COLOR;
+}
 
 vec4 texturePointSmooth(sampler2D tex, vec2 uv) {
     vec2 size = vec2(textureSize(tex, 0));
@@ -14,4 +19,5 @@ vec4 texturePointSmooth(sampler2D tex, vec2 uv) {
 void fragment() {
     vec4 Texture = texturePointSmooth(TEXTURE, UV);
     COLOR = Texture.rgba;
+	COLOR = COLOR * modulate;
 }

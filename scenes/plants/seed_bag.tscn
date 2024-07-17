@@ -1,25 +1,75 @@
-[gd_scene load_steps=7 format=3 uid="uid://c62n5plben7pl"]
+[gd_scene load_steps=14 format=3 uid="uid://c62n5plben7pl"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_kg3cv"]
-[ext_resource type="Texture2D" uid="uid://bec8ggnr76ri7" path="res://assets/image/seeds/eggplant-seeds.png" id="2_3rl5a"]
+[ext_resource type="Texture2D" uid="uid://br8xou81u3ime" path="res://assets/image/seeds/seed-spritesheet.png" id="2_xy16i"]
 [ext_resource type="Script" path="res://scenes/plants/seed_bag.gd" id="3_q1lih"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gae3b"]
 shader = ExtResource("1_kg3cv")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_c7wjc"]
+atlas = ExtResource("2_xy16i")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0hpmd"]
+atlas = ExtResource("2_xy16i")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_amf4i"]
+atlas = ExtResource("2_xy16i")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8usco"]
+atlas = ExtResource("2_xy16i")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppme6"]
+atlas = ExtResource("2_xy16i")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_63mp5"]
+atlas = ExtResource("2_xy16i")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ufnij"]
+atlas = ExtResource("2_xy16i")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dmtej"]
+atlas = ExtResource("2_xy16i")
+region = Rect2(112, 0, 16, 16)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_3irme"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_3rl5a")
+"texture": SubResource("AtlasTexture_c7wjc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0hpmd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_amf4i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8usco")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppme6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_63mp5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ufnij")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dmtej")
 }],
 "loop": false,
-"name": &"eggplant",
-"speed": 0.0
+"name": &"eggplant_tear",
+"speed": 7.0
 }]
-
-[sub_resource type="Curve2D" id="Curve2D_xrds8"]
-resource_local_to_scene = true
 
 [node name="SeedBag" type="AnimatedSprite2D"]
 z_index = 1
@@ -28,13 +78,6 @@ y_sort_enabled = true
 material = SubResource("ShaderMaterial_gae3b")
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_3irme")
-animation = &"eggplant"
+animation = &"eggplant_tear"
 offset = Vector2(0, -6)
 script = ExtResource("3_q1lih")
-
-[node name="Node" type="Node" parent="."]
-
-[node name="Path2D" type="Path2D" parent="Node"]
-curve = SubResource("Curve2D_xrds8")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="Node/Path2D"]

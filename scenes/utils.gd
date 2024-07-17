@@ -20,6 +20,7 @@ static func tween_arc_between(parent : Node2D, p1 : Vector2, p2 : Vector2, durat
 	var half_dur = duration / 2.0
 	vert_tween.tween_property(parent, "global_position:y", p2.y - arc_height, half_dur).from(p1.y).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	vert_tween.tween_property(parent, "global_position:y", p2.y, half_dur).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	return hoz_tween
 	
 
 # Called when the node enters the scene tree for the first time.

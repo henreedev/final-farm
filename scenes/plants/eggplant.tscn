@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://bbpeldan8lea8"]
+
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_g1b5s"]
+[ext_resource type="Texture2D" uid="uid://bxnq0u28e1734" path="res://assets/image/seeds/eggplant.png" id="2_6uwrm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i6hxl"]
+shader = ExtResource("1_g1b5s")
+
+[node name="Eggplant" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_i6hxl")
+rotation = 0.785398
+texture = ExtResource("2_6uwrm")

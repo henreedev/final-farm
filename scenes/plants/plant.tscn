@@ -1,6 +1,161 @@
-[gd_scene load_steps=2 format=3 uid="uid://qmlvoryj0irv"]
+[gd_scene load_steps=24 format=3 uid="uid://qmlvoryj0irv"]
 
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_7oxxv"]
 [ext_resource type="Script" path="res://scenes/plants/plant.gd" id="1_7ry7i"]
+[ext_resource type="Texture2D" uid="uid://cly5nrvrsyfqm" path="res://assets/image/seeds/plant.png" id="2_6aba3"]
 
-[node name="Plant" type="Node2D"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8lxin"]
+shader = ExtResource("1_7oxxv")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j208p"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sbjmu"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jfl0q"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(64, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_il3a0"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(96, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3s1yj"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(128, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ketd1"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(160, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eopbn"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(192, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmdel"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(224, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eftvi"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(0, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2wl3"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(32, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orcw2"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(64, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g12db"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(96, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xk23g"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(128, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lhjql"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(160, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k0j1e"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(192, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_we4yh"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(224, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8toh"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(256, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j1jbr"]
+atlas = ExtResource("2_6aba3")
+region = Rect2(288, 64, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rowdm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j208p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sbjmu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jfl0q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_il3a0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3s1yj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ketd1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eopbn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lmdel")
+}],
+"loop": false,
+"name": &"eggplant_grow",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eftvi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2wl3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_orcw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g12db")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xk23g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lhjql")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k0j1e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_we4yh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l8toh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j1jbr")
+}],
+"loop": true,
+"name": &"eggplant_shoot",
+"speed": 1.0
+}]
+
+[node name="Plant" type="AnimatedSprite2D"]
+z_index = 1
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_8lxin")
+sprite_frames = SubResource("SpriteFrames_rowdm")
+animation = &"eggplant_grow"
+autoplay = "eggplant_grow"
+frame = 7
+frame_progress = 1.0
 script = ExtResource("1_7ry7i")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
+[connection signal="animation_looped" from="." to="." method="_on_animation_looped"]

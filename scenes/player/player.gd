@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name Player
 
 #region: Globals
+signal throw_tile_changed
 
 const TOP_BASE_OFFSET = Vector2i(0, -16)
 const TOP_HIGHER_OFFSET = Vector2i(0, -17)
@@ -46,10 +47,14 @@ var hoe_scene : PackedScene = preload("res://scenes/player/hoe.tscn")
 var throw_tween : Tween 
 var throw_zoomout_ratio = 0.7
 var throw_zoomout_time = 1.5
-var throw_duration = 2.0
+var throw_duration = 1.5
+var prev_coords : Vector2i
+var indicator_scene : PackedScene = preload("res://scenes/player/indicator.tscn")
+var prev_indicator : Sprite2D
 var tile : TileData
 var initial_zoom : Vector2
 var target_zoom : Vector2
+var waiting_for_release := false
 
 @onready var bot : AnimatedSprite2D = $S/Bot
 @onready var top : AnimatedSprite2D = $S/Top
@@ -167,7 +172,7 @@ func _act_on_input():
 			shop.open()
 
 func start_throw():
-	if not (holding_throw or swinging or throwing or ignore_swing):
+	if not (holding_throw or swinging or throwing or ignore_swing or waiting_for_release):
 		holding_throw = true
 		showing_arc = true
 		finished_throw = false
@@ -207,6 +212,8 @@ func swing():
 		holding_throw = false
 		ignore_swing_timer.start(IGNORE_SWING_AFTER_CANCEL_DUR)
 		ignore_swing = true
+		showing_arc = false
+		can_plant = false
 	elif not (swinging or throwing or ignore_swing):
 		swinging = true
 		_calc_animation_vars(Vector2(0,0))
@@ -241,8 +248,8 @@ func _show_arc():
 	if showing_arc:
 		var root = _get_throw_root()
 		var end_pos = get_tile_pos_at_mouse()
-		if can_plant: line.default_color = Color(2,2,2,0.8)
-		else: line.default_color = Color(1,.2,.2,0.4)
+		if can_plant: line.default_color = Color(200,200,200,1)
+		else: line.default_color = Color(1,.2,.2,1)
 		var points = Utils.calc_arc_between(root + position, end_pos)
 		line.clear_points()
 		for point in points:
@@ -258,24 +265,41 @@ func _show_arc():
 					seed_bag.delete()
 				seed_bag = null
 			line.clear_points()
+			throw_tile_changed.emit()
 			finished_throw = true
 
 func get_tile_pos_at_mouse():
 	var coords = floor.local_to_map(floor.get_local_mouse_position())
 	var center_pos = floor.map_to_local(coords)
+	var indicator_pos = center_pos
 	tile = floor.get_cell_tile_data(coords)
 	if tile:
+		# Sets global bool here
 		can_plant = tile.get_custom_data("can_plant")
 	if not can_plant:
+		# Look nearby for a plantable tile
 		for neighbor_coords in floor.get_surrounding_cells(coords):
 			var neighbor = floor.get_cell_tile_data(neighbor_coords)
 			if not neighbor: continue
 			if neighbor.get_custom_data("can_plant"):
 				center_pos = floor.map_to_local(neighbor_coords)
+				indicator_pos = center_pos
 				can_plant = true
 				break
+	if coords != prev_coords: 
+		throw_tile_changed.emit()
+		_spawn_indicator(indicator_pos)
+		prev_coords = coords
 	if not can_plant: return floor.get_local_mouse_position()
 	else: return center_pos
+
+func _spawn_indicator(pos):
+	var indicator = indicator_scene.instantiate()
+	indicator.position = pos
+	indicator.is_white = can_plant
+	$LineContainer.add_child(indicator)
+	await throw_tile_changed
+	indicator.disappear()
 
 #endregion: Helper functions
 
@@ -299,7 +323,6 @@ func _on_top_animation_finished() -> void:
 		"throw_windup":
 			top.animation = "throw_hold"
 			top.play()
-		
 
 
 func _on_ignore_swing_timer_timeout() -> void:

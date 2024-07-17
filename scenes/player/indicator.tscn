@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://cfsyy8awsn2lu"]
+
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_t6g45"]
+[ext_resource type="Texture2D" uid="uid://bcrmt8juww7pd" path="res://assets/image/player/indicator.png" id="2_nymcu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wq6sc"]
+shader = ExtResource("1_t6g45")
+
+[sub_resource type="GDScript" id="GDScript_gg8by"]
+resource_name = "indicator"
+script/source = "extends Sprite2D
+
+var white = Color(.9,.9,.9,.8)
+var white_invis = Color(1,1,1,0)
+var red = Color(.7,0,0,.6)
+var red_invis = Color(.7,0,0,0)
+
+var is_white = true
+
+var first_tween : Tween
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	first_tween = create_tween()
+	if is_white:
+		first_tween.tween_property(self, \"modulate\", white, 0.2).from(white_invis)
+	else:
+		first_tween.tween_property(self, \"modulate\", red, 0.2).from(red_invis)
+
+func disappear():
+	if first_tween:
+		first_tween.kill()
+	var tween : Tween = create_tween()
+	if is_white:
+		tween.tween_property(self, \"modulate\", white_invis, 0.75).set_trans(Tween.TRANS_CUBIC)
+	else:
+		tween.tween_property(self, \"modulate\", red_invis, 0.75).set_trans(Tween.TRANS_CUBIC)
+		
+	tween.tween_callback(queue_free)
+"
+
+[node name="Indicator" type="Sprite2D"]
+modulate = Color(0.247059, 0.211765, 0.231373, 0)
+material = SubResource("ShaderMaterial_wq6sc")
+texture = ExtResource("2_nymcu")
+script = SubResource("GDScript_gg8by")
