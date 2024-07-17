@@ -6,6 +6,9 @@ var is_open = true
 var should_wave = true
 var throws = []
 var throwing = false
+
+var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
+@onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var wave_timer : Timer = $WaveTimer
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -49,10 +52,10 @@ func wave():
 	wave_timer.start(new_dur)
 
 func _release_seed(type : Plant.Type):
-	print("throwing seed to player")
-	# create seed object of given type
-	# have it throw itself to player
-	pass 
+	var seed_bag : SeedBag = seed_bag_scene.instantiate()
+	seed_bag.thrown_to_player = true
+	main.add_child(seed_bag)
+	
 
 func queue_throw(type : Plant.Type):
 	throws.append(type)

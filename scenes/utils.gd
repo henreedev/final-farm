@@ -13,6 +13,11 @@ static func calc_arc_between(p1 : Vector2, p2 : Vector2):
 		points.append(Vector2(x, y))
 	return points
 
+static func calc_point_on_arc_between(p1 : Vector2, p2 : Vector2, t : float):
+	var x = lerp(p1.x, p2.x, t)
+	var y = lerp(p1.y, p2.y, t) - arc_height * sin(PI * t)
+	return Vector2(x, y)
+	
 static func tween_arc_between(parent : Node2D, p1 : Vector2, p2 : Vector2, duration : float):
 	var hoz_tween = parent.create_tween()
 	var vert_tween = parent.create_tween()

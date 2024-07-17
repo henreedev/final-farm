@@ -253,6 +253,10 @@ func _get_throw_root():
 	if top.flip_h: root *= Vector2(-1, 1)
 	return root
 
+func receive_seed(seed_type : Plant.Type):
+	seed_counts[seed_type] += 1
+	print("Player now has ", seed_counts[seed_type], " of type ", seed_type)
+
 func _show_arc():
 	if showing_arc:
 		var root = _get_throw_root()

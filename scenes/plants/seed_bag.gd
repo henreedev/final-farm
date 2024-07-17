@@ -4,17 +4,38 @@ class_name SeedBag
 signal spawn_plant
 
 var type : Plant.Type = Plant.Type.EGGPLANT
-@onready var player : Player = get_tree().get_first_node_in_group("player")
-@onready var main = get_tree().get_first_node_in_group("main")
-@onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
-var plant_scene : PackedScene = preload("res://scenes/plants/plant.tscn")
+
+var thrown_to_player := false
+var prog_to_player := 0.0
+var throw_duration = 1.0
+
 var thrown = false
 var arrived = false
+
+
+var plant_scene : PackedScene = preload("res://scenes/plants/plant.tscn")
+@onready var player : Player = get_tree().get_first_node_in_group("player")
+var shop : Shop
+@onready var main : Main = get_tree().get_first_node_in_group("main")
+@onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pick_animation()
-	create_tween().tween_property(self, "scale", Vector2(0.5, 0.5), 0.5).set_trans(Tween.TRANS_CUBIC)
+	if not thrown_to_player:
+		create_tween().tween_property(self, "scale", Vector2(0.5, 0.5), 0.5).set_trans(Tween.TRANS_CUBIC)
+	else:
+		shop = get_tree().get_first_node_in_group("shop")
+		create_tween().tween_property(self, "prog_to_player", 1.0, throw_duration)
+		var half_dur = throw_duration / 2.0
+		var scale_tween = create_tween()
+		var rot_tween = create_tween()
+		scale_tween.tween_property(self, "scale", Vector2(0.75, 0.75), half_dur).set_trans(Tween.TRANS_LINEAR)
+		scale_tween.tween_property(self, "scale", Vector2(0.6, 0.6), half_dur).set_trans(Tween.TRANS_LINEAR)
+		rot_tween.tween_property(self, "rotation", randf_range(TAU - 0.4, TAU + 0.4), throw_duration)
+		rot_tween.tween_callback(delete)
+		rot_tween.tween_callback(player.receive_seed.bind(type))
+		
 
 func delete():
 	reparent(main)
@@ -38,7 +59,6 @@ func throw(final_pos, duration):
 func _set_tile_unplantable(final_pos):
 	var coords = floor.local_to_map(final_pos)
 	floor.set_cell(coords, 0, Vector2i(3, 1))
-	
 
 func arrive():
 	arrived = true
@@ -73,3 +93,8 @@ func pick_animation():
 func _on_frame_changed():
 	if frame == 5:
 		spawn_plant.emit()
+
+func _process(delta):
+	if thrown_to_player:
+		global_position = Utils.calc_point_on_arc_between(shop.global_position, player.global_position + Vector2(0, -16), prog_to_player)
+		
