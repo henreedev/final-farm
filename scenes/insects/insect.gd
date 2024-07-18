@@ -25,7 +25,7 @@ var target : Plant
 var attacking = false
 var going_right = false
 var going_down = false
- 
+
 @onready var movement_timer : Timer = $MovementTimer
 @onready var attack_timer : Timer = $AttackTimer
 @onready var detection_area : Area2D = $DetectionArea
@@ -59,30 +59,27 @@ func _set_range_area_radii():
 
 func retarget():
 	attacking = false
-	var food_supply : Plant
-	var production_plants : Array[Plant] = []
+	var food_supply := {}
+	var production_plants := {}
 	var other_plants := {}
 	for target_option in target_options:
+		var dist = position.distance_squared_to(target_option.position)
 		match target_option.type:
 			Plant.Type.FOOD_SUPPLY:
-				food_supply = target_option
+				food_supply[dist] = target_option
 			Plant.Type.EGGPLANT: # TODO add orange to be targeted first
-				production_plants.append(target_option)
+				production_plants[dist] = target_option
 			_:
-				var dist = position.distance_squared_to(target_option.position)
-				other_plants[target_option] = dist
+				other_plants[dist] = target_option
 
 	# Below defines type-specific targeting behavior
 	match type:
 		Type.FLY:
-			if not production_plants.is_empty():
-				target = production_plants[0]
-			else:
-				if len(other_plants) > 0:
-					var distances = other_plants.values()
-					distances.sort()
-					print(distances)
-					target = other_plants.find_key(distances[0])
+			var all_plants = food_supply.merged(production_plants.merged(other_plants))
+			if len(all_plants) > 0:
+				var distances := all_plants.keys()
+				distances.sort()
+				target = all_plants[distances[0]]
 
 	if target:
 		recalc_movement_vars()

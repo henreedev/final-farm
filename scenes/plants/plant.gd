@@ -13,11 +13,11 @@ var health : int
 var time_to_grow : int
 var damage : int
 var range : int
+var health_decay : int
 var upgrade_fire_rate_mod := 1.0
 var hoe_fire_rate_mod := 1.0
 var is_sleeping := false
 var is_dead := false
-var health_decay := 60
 #endregion: Global vars
 
 #region: Eggplant vars
@@ -44,11 +44,15 @@ func pick_stats():
 		Type.EGGPLANT:
 			cost = 5
 			health = 100
+		Type.FOOD_SUPPLY:
+			health = 100
 
 func pick_animation():
 	match type:
 		Type.EGGPLANT:
 			animation = "eggplant_grow"
+		Type.FOOD_SUPPLY:
+			animation = "none"
 	play()
 
 func on_hit_by_hoe(duration, start_strength, end_strength):
@@ -100,7 +104,7 @@ func fire_eggplant():
 	
 	const DUR = 1.25
 	var half_dur = DUR / 2.0
-	var final_pos = Vector2(randf_range(-16, 16), randf_range(-9, 9)) + main.food_pile_height
+	var final_pos = Vector2(randf_range(-16, 16), randf_range(-9, 9)) + main.food_supply_height
 	
 	var scale_tween = eggplant.create_tween()
 	scale_tween.tween_property(eggplant, "scale", Vector2(1.25, 1.25), half_dur).set_trans(Tween.TRANS_LINEAR)

@@ -11,8 +11,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	$FoodProgressBar.value = main.food_amount
-	
-	
 	process_scroll()
 
 	

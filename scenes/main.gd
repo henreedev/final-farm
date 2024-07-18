@@ -10,7 +10,9 @@ const WINNING_FOOD_AMOUNT = 1000
 @export var passive_seed_income_per_wave := 5
 @export var bugs_killed = 0
 
-var food_pile_height = Vector2(0,0)
+var food_supply_height = Vector2(0,0)
+var food_supply_plant : Plant 
+var plant_scene : PackedScene = preload("res://scenes/plants/plant.tscn")
 
 @onready var food_holder = $FoodHolder
 @onready var player_ui: Control = $CanvasLayer/Player_UI
@@ -26,15 +28,27 @@ func connect_signals():
 func receive_food():
 	food_amount += 1
 	var ratio = float(food_amount) / float(WINNING_FOOD_AMOUNT)
-	food_pile_height = lerp(Vector2(0,0), MAX_FOOD_HEIGHT, ratio)
-	food_pile_height.x = int(food_pile_height.x)
-	food_pile_height.y = int(food_pile_height.y)
-	print("food now = ", food_amount)
+	food_supply_height = lerp(Vector2(0,0), MAX_FOOD_HEIGHT, ratio)
+	food_supply_height.x = int(food_supply_height.x)
+	food_supply_height.y = int(food_supply_height.y)
+	if not food_supply_plant:
+		create_food_supply_plant()
 	if food_amount >= WINNING_FOOD_AMOUNT:
 		win()
 
+func create_food_supply_plant():
+	food_supply_plant = plant_scene.instantiate()
+	food_supply_plant.type = Plant.Type.FOOD_SUPPLY
+	add_child(food_supply_plant)
+	await food_supply_plant.died
+	lose()
+
+
 func win():
 	print("dubski")
+
+func lose():
+	print("L ski")
 
 
 func _input(event: InputEvent):

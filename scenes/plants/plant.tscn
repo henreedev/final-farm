@@ -144,6 +144,11 @@ animations = [{
 "loop": true,
 "name": &"eggplant_shoot",
 "speed": 1.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"none",
+"speed": 0.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e8q67"]
@@ -154,9 +159,7 @@ z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_8lxin")
 sprite_frames = SubResource("SpriteFrames_rowdm")
-animation = &"eggplant_shoot"
-autoplay = "eggplant_grow"
-frame = 9
+animation = &"eggplant_grow"
 script = ExtResource("1_7ry7i")
 
 [node name="Hitbox" type="Area2D" parent="."]
