@@ -4,9 +4,12 @@ class_name Insect
 #region: Globals
 enum Type {FLY}
 
+signal died 
+
 const MOVEMENT_REFRESH_DUR_MIN = 0.5
 const MOVEMENT_REFRESH_DUR_MAX = 1.2
-const MOVEMENT_DEVIATION_MAX = 20.0 # degrees
+const MOVEMENT_DEVIATION_MAX = 25.0 # degrees
+const SPEED_DEVIATION = 0.05
 const BASE_SPEED = 20.0
 
 var type : Type = Type.FLY
@@ -26,6 +29,7 @@ var attacking = false
 var going_right = false
 var going_down = false
 var marked_by_player = false # TODO add red outline and target reticle when true
+var is_dead = false
 
 @onready var movement_timer : Timer = $MovementTimer
 @onready var attack_timer : Timer = $AttackTimer
@@ -46,8 +50,8 @@ func pick_values_on_type():
 	match type:
 		Type.FLY:
 			asprite.animation = "fly_front"
-			health = 10
-			damage = 50
+			health = 30
+			damage = 10
 			attack_cooldown = 1.0
 			attack_range = 0
 			detection_range = 8
@@ -131,7 +135,9 @@ func recalc_movement_vars():
 			target_dir = -position.normalized() # go towards center map
 		var deviation = deg_to_rad(randf_range(-MOVEMENT_DEVIATION_MAX, MOVEMENT_DEVIATION_MAX))
 		movement_dir = Vector2.from_angle(target_dir.angle() + deviation)
-		movement_speed = BASE_SPEED * lerpf(1, 0.5, abs(movement_dir.y)) # go half speed when going vertical (isometric)
+		var speed_deviation = randf_range(1 - SPEED_DEVIATION, 1 + SPEED_DEVIATION)
+		var speed_isometric_factor = lerpf(1, 0.5, abs(movement_dir.y))
+		movement_speed = BASE_SPEED * speed_isometric_factor * speed_deviation
 	
 	# Calculate variables to choose animations with
 	going_right = movement_dir.x >= 0 
@@ -155,6 +161,16 @@ func _attack(bypass : bool):
 func _do_attack_cooldown():
 	attack_timer.start(attack_cooldown)
 	await attack_timer.timeout
+
+func take_damage(amount : int):
+	health -= amount
+	if health <= 0:
+		die()
+
+func die():
+	is_dead = true
+	died.emit()
+	queue_free()
 
 #endregion: Universal functions
 
@@ -182,7 +198,8 @@ func _on_attack_area_area_entered(area):
 	if area.get_parent() == target:
 		if not attack_timer.is_stopped():
 			await attack_timer.timeout
-		_attack(false)
+		if target:
+			_attack(false)
 
 
 func _on_animated_sprite_2d_animation_finished():

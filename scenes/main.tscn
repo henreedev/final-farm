@@ -38,6 +38,30 @@ text = "TEST_OPEN_SHOP"
 [node name="Insect" parent="." instance=ExtResource("7_twlm1")]
 position = Vector2(-31, -31)
 
+[node name="Insect2" parent="." instance=ExtResource("7_twlm1")]
+position = Vector2(-31, -31)
+
+[node name="Insect3" parent="." instance=ExtResource("7_twlm1")]
+position = Vector2(-31, -31)
+
+[node name="Insect4" parent="." instance=ExtResource("7_twlm1")]
+position = Vector2(-31, -31)
+
+[node name="Insect5" parent="." instance=ExtResource("7_twlm1")]
+position = Vector2(-31, -31)
+
+[node name="Insect6" parent="." instance=ExtResource("7_twlm1")]
+position = Vector2(-31, -31)
+
+[node name="Insect7" parent="." instance=ExtResource("7_twlm1")]
+position = Vector2(-31, -31)
+
+[node name="Insect8" parent="." instance=ExtResource("7_twlm1")]
+position = Vector2(-31, -31)
+
+[node name="Insect9" parent="." instance=ExtResource("7_twlm1")]
+position = Vector2(-31, -31)
+
 [connection signal="bug_killed" from="CanvasLayer/Player_UI" to="." method="_on_player_ui_bug_killed"]
 [connection signal="pressed" from="CanvasLayer/TEST_OPEN_SHOP" to="." method="_on_test_open_shop_pressed"]
 [connection signal="unpausing_with_esc" from="CanvasLayer/pause_menu" to="." method="_on_pause_menu_unpausing_with_esc"]

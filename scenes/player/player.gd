@@ -32,7 +32,7 @@ var throwing = false
 var holding_throw = false
 # Tracks how many of each seed you have
 var seed_counts = {Plant.Type.EGGPLANT : 10} 
-var equipped_seed_type : Plant.Type = Plant.Type.EGGPLANT
+var equipped_seed_type : Plant.Type = Plant.Type.BROCCOLI
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 var seed_bag : SeedBag
 # Swing vars
@@ -195,6 +195,7 @@ func throw():
 
 func create_seed_bag():
 	seed_bag = seed_bag_scene.instantiate()
+	seed_bag.type = equipped_seed_type
 	$S.add_child(seed_bag)
 
 func _calc_throw_zoom(delta):

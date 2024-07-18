@@ -1,11 +1,44 @@
-[gd_scene load_steps=14 format=3 uid="uid://c62n5plben7pl"]
+[gd_scene load_steps=23 format=3 uid="uid://c62n5plben7pl"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_kg3cv"]
-[ext_resource type="Texture2D" uid="uid://br8xou81u3ime" path="res://assets/image/seeds/seed-spritesheet.png" id="2_xy16i"]
+[ext_resource type="Texture2D" uid="uid://cgcjf6nxv7e76" path="res://assets/image/seeds/broccoli/broccoli-seed-spritesheet.png" id="2_61d4n"]
+[ext_resource type="Texture2D" uid="uid://br8xou81u3ime" path="res://assets/image/seeds/eggplant/seed-spritesheet.png" id="2_xy16i"]
 [ext_resource type="Script" path="res://scenes/plants/seed_bag.gd" id="3_q1lih"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gae3b"]
 shader = ExtResource("1_kg3cv")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bsqwr"]
+atlas = ExtResource("2_61d4n")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5po6e"]
+atlas = ExtResource("2_61d4n")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ah2yq"]
+atlas = ExtResource("2_61d4n")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uhb8k"]
+atlas = ExtResource("2_61d4n")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mb3pn"]
+atlas = ExtResource("2_61d4n")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3dig0"]
+atlas = ExtResource("2_61d4n")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_senv4"]
+atlas = ExtResource("2_61d4n")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ycntt"]
+atlas = ExtResource("2_61d4n")
+region = Rect2(112, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c7wjc"]
 atlas = ExtResource("2_xy16i")
@@ -43,6 +76,35 @@ region = Rect2(112, 0, 16, 16)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_bsqwr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5po6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ah2yq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uhb8k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mb3pn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3dig0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_senv4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ycntt")
+}],
+"loop": false,
+"name": &"broccoli_tear",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_c7wjc")
 }, {
 "duration": 1.0,
@@ -78,7 +140,7 @@ y_sort_enabled = true
 material = SubResource("ShaderMaterial_gae3b")
 scale = Vector2(1e-05, 1e-05)
 sprite_frames = SubResource("SpriteFrames_3irme")
-animation = &"eggplant_tear"
+animation = &"broccoli_tear"
 offset = Vector2(0, -6)
 script = ExtResource("3_q1lih")
 

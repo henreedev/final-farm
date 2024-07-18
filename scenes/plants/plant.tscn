@@ -1,9 +1,10 @@
-[gd_scene load_steps=47 format=3 uid="uid://qmlvoryj0irv"]
+[gd_scene load_steps=48 format=3 uid="uid://qmlvoryj0irv"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_7oxxv"]
 [ext_resource type="Script" path="res://scenes/plants/plant.gd" id="1_7ry7i"]
-[ext_resource type="Texture2D" uid="uid://cly5nrvrsyfqm" path="res://assets/image/seeds/plant.png" id="2_6aba3"]
-[ext_resource type="Texture2D" uid="uid://hqreowdgc7tp" path="res://assets/image/seeds/broccoli-spritesheet.png" id="2_hhxel"]
+[ext_resource type="Texture2D" uid="uid://cly5nrvrsyfqm" path="res://assets/image/seeds/eggplant/plant.png" id="2_6aba3"]
+[ext_resource type="Texture2D" uid="uid://hqreowdgc7tp" path="res://assets/image/seeds/broccoli/broccoli-spritesheet.png" id="2_hhxel"]
+[ext_resource type="Script" path="res://scenes/utils/scalable_timer.gd" id="5_sqecx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lxin"]
 shader = ExtResource("1_7oxxv")
@@ -321,6 +322,7 @@ animations = [{
 radius = 2.5
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7l117"]
+radius = 40.0
 
 [node name="Plant" type="AnimatedSprite2D"]
 z_index = 1
@@ -328,11 +330,10 @@ y_sort_enabled = true
 material = SubResource("ShaderMaterial_8lxin")
 sprite_frames = SubResource("SpriteFrames_rowdm")
 animation = &"broccoli_shoot_back"
-frame = 1
-frame_progress = 1.0
 script = ExtResource("1_7ry7i")
 
 [node name="Hurtbox" type="Area2D" parent="."]
+collision_mask = 0
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
@@ -341,14 +342,16 @@ shape = SubResource("CircleShape2D_t3bua")
 
 [node name="AttackArea" type="Area2D" parent="."]
 scale = Vector2(1, 0.5)
+collision_layer = 16
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 shape = SubResource("CircleShape2D_7l117")
 
-[node name="AttackTimer" type="Timer" parent="."]
-autostart = true
+[node name="AttackTimer" type="Node" parent="."]
+script = ExtResource("5_sqecx")
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
 [connection signal="animation_looped" from="." to="." method="_on_animation_looped"]
-[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="area_entered" from="AttackArea" to="." method="_on_attack_area_area_entered"]
+[connection signal="area_exited" from="AttackArea" to="." method="_on_attack_area_area_exited"]

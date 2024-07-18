@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=3 uid="uid://bc2thpswuubp"]
+
+[ext_resource type="Texture2D" uid="uid://dfj4ofuulehi" path="res://assets/image/seeds/broccoli/floret-projectile.png" id="1_ay28c"]
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_cetc4"]
+[ext_resource type="Script" path="res://scenes/plants/projectile.gd" id="2_s1110"]
+[ext_resource type="PackedScene" uid="uid://brdpee5pykcx5" path="res://scenes/utils/shadow.tscn" id="3_o6g11"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u1v7a"]
+shader = ExtResource("1_cetc4")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3hlgb"]
+shader = ExtResource("1_cetc4")
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ncj44"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ay28c")
+}],
+"loop": false,
+"name": &"floret",
+"speed": 0.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cje0s"]
+radius = 3.0
+
+[node name="Projectile" type="Area2D"]
+z_index = 1
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_u1v7a")
+collision_layer = 2
+script = ExtResource("2_s1110")
+
+[node name="Holder" type="Node" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Holder"]
+material = SubResource("ShaderMaterial_3hlgb")
+scale = Vector2(1, 1)
+sprite_frames = SubResource("SpriteFrames_ncj44")
+animation = &"floret"
+
+[node name="Shadow" parent="." instance=ExtResource("3_o6g11")]
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_cje0s")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(10, 10)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

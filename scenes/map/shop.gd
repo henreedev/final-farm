@@ -10,6 +10,7 @@ var throwing = false
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var wave_timer : Timer = $WaveTimer
+@onready var interact_icon : AnimatedSprite2D = $InteractIcon
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -64,11 +65,14 @@ func queue_throw(type : Plant.Type):
 func _on_interact_area_body_entered(body: Node2D) -> void:
 	if body is Player:
 		player_in_range = true
+		interact_icon.show()
+		interact_icon.play()
 
 func _on_interact_area_body_exited(body: Node2D) -> void:
 	if body is Player:
 		player_in_range = false
-
+		interact_icon.hide()
+		interact_icon.stop()
 
 func _on_animation_finished() -> void:
 	match animation:
