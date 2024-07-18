@@ -46,7 +46,7 @@ func pick_values_on_type():
 		Type.FLY:
 			asprite.animation = "fly_front"
 			health = 10
-			damage = 10
+			damage = 50
 			attack_cooldown = 1.0
 			attack_range = 0
 			detection_range = 8
@@ -58,7 +58,6 @@ func _set_range_area_radii():
 	attack_shape.shape.radius = 8 + 16 * attack_range
 
 func retarget():
-	attacking = false
 	var food_supply := {}
 	var production_plants := {}
 	var other_plants := {}
@@ -82,15 +81,25 @@ func retarget():
 				target = all_plants[distances[0]]
 
 	if target:
+		if not _target_in_range():
+			attacking = false
 		recalc_movement_vars()
 		await target.died
 		target = null
 		get_new_target_options()
 		retarget()
 	else:
+		attacking = false
 		recalc_movement_vars()
 		await movement_timer.timeout
 		retarget()
+
+func _target_in_range():
+	for area in attack_area.get_overlapping_areas():
+		var parent = area.get_parent()
+		if parent == target:
+			return true
+	return false
 
 func get_new_target_options():
 	target_options.clear()
@@ -130,14 +139,16 @@ func recalc_movement_vars():
 func _attack():
 	attacking = true
 	recalc_movement_vars()
-	target.take_damage(damage)
 	match type:
 		Type.FLY:
+			target.take_damage(damage)
 			asprite.animation = "fly_attack_front" if going_down else "fly_attack_back"
 			asprite.frame = 0
 			asprite.play()
+	var current_target = target
+	print("ATTAACKED")
 	await _do_attack_cooldown()
-	if attacking:
+	if attacking and target and target == current_target:
 		_attack()
 	
 
@@ -169,6 +180,7 @@ func _on_detection_area_area_exited(area):
 
 func _on_attack_area_area_entered(area):
 	if area.get_parent() == target:
+		await attack_timer.timeout
 		_attack()
 
 
@@ -180,3 +192,7 @@ func _on_animated_sprite_2d_animation_finished():
 		"fly_attack_back":
 			asprite.animation = "fly_back"
 			asprite.play()
+
+
+func _on_attack_timer_timeout():
+	attack_timer.start(0.1)
