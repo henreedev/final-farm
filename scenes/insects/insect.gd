@@ -25,6 +25,7 @@ var target : Plant
 var attacking = false
 var going_right = false
 var going_down = false
+var marked_by_player = false # TODO add red outline and target reticle when true
 
 @onready var movement_timer : Timer = $MovementTimer
 @onready var attack_timer : Timer = $AttackTimer
@@ -54,8 +55,8 @@ func pick_values_on_type():
 	asprite.play()
 
 func _set_range_area_radii():
-	detection_shape.shape.radius = 8 + 16 * detection_range
-	attack_shape.shape.radius = 8 + 16 * attack_range
+	Utils.set_range_area_radii(detection_shape, detection_range)
+	Utils.set_range_area_radii(attack_shape, attack_range)
 
 func retarget():
 	var food_supply := {}
@@ -117,7 +118,7 @@ func pick_animation():
 	asprite.flip_h = going_right
 	match type:
 		Type.FLY:
-			if not attacking:
+			if not attacking and not (asprite.animation == "fly_attack_front" or asprite.animation == "fly_attack_back"):
 				asprite.animation = "fly_front" if going_down else "fly_back"
 	asprite.play()
 
@@ -136,21 +137,20 @@ func recalc_movement_vars():
 	going_right = movement_dir.x >= 0 
 	going_down = movement_dir.y >= 0 
 
-func _attack():
-	attacking = true
-	recalc_movement_vars()
-	match type:
-		Type.FLY:
-			target.take_damage(damage)
-			asprite.animation = "fly_attack_front" if going_down else "fly_attack_back"
-			asprite.frame = 0
-			asprite.play()
-	var current_target = target
-	print("ATTAACKED")
-	await _do_attack_cooldown()
-	if attacking and target and target == current_target:
-		_attack()
-	
+func _attack(bypass : bool):
+	if (not attacking) or bypass:
+		attacking = true
+		recalc_movement_vars()
+		var current_target = target
+		match type:
+			Type.FLY:
+				target.take_damage(damage)
+				asprite.animation = "fly_attack_front" if going_down else "fly_attack_back"
+				asprite.frame = 0
+				asprite.play()
+		await _do_attack_cooldown()
+		if attacking and target:
+			_attack(true)
 
 func _do_attack_cooldown():
 	attack_timer.start(attack_cooldown)
@@ -169,19 +169,20 @@ func _on_detection_area_area_entered(area):
 	var parent = area.get_parent()
 	if parent is Plant:
 		if not parent.is_dead: 
-			target_options.append(area.get_parent())
+			target_options.append(parent)
 
 
 func _on_detection_area_area_exited(area):
 	var parent = area.get_parent()
 	if parent is Plant:
-		target_options.erase(area.get_parent())
+		target_options.erase(parent)
 
 
 func _on_attack_area_area_entered(area):
 	if area.get_parent() == target:
-		await attack_timer.timeout
-		_attack()
+		if not attack_timer.is_stopped():
+			await attack_timer.timeout
+		_attack(false)
 
 
 func _on_animated_sprite_2d_animation_finished():
@@ -192,7 +193,3 @@ func _on_animated_sprite_2d_animation_finished():
 		"fly_attack_back":
 			asprite.animation = "fly_back"
 			asprite.play()
-
-
-func _on_attack_timer_timeout():
-	attack_timer.start(0.1)

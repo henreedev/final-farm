@@ -1,11 +1,92 @@
-[gd_scene load_steps=25 format=3 uid="uid://qmlvoryj0irv"]
+[gd_scene load_steps=47 format=3 uid="uid://qmlvoryj0irv"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_7oxxv"]
 [ext_resource type="Script" path="res://scenes/plants/plant.gd" id="1_7ry7i"]
 [ext_resource type="Texture2D" uid="uid://cly5nrvrsyfqm" path="res://assets/image/seeds/plant.png" id="2_6aba3"]
+[ext_resource type="Texture2D" uid="uid://hqreowdgc7tp" path="res://assets/image/seeds/broccoli-spritesheet.png" id="2_hhxel"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lxin"]
 shader = ExtResource("1_7oxxv")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uhhqc"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ilc7c"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bvyvu"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(64, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4l5tk"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(96, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wtoq6"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(128, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pak6s"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(160, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vo6gs"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(192, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q32c2"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(224, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u46a4"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(0, 128, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lf00c"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(32, 128, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bifp"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(64, 128, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqbsk"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(96, 128, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_68350"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(0, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1gr6l"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(32, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_glqyx"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(64, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_34gph"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(96, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5yxyq"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(0, 256, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6nmr2"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(32, 256, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vkec4"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(0, 192, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3d6dp"]
+atlas = ExtResource("2_hhxel")
+region = Rect2(32, 192, 32, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j208p"]
 atlas = ExtResource("2_6aba3")
@@ -83,6 +164,91 @@ region = Rect2(288, 64, 32, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_uhhqc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ilc7c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bvyvu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4l5tk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wtoq6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pak6s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vo6gs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q32c2")
+}],
+"loop": false,
+"name": &"broccoli_grow",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u46a4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lf00c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3bifp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqbsk")
+}],
+"loop": true,
+"name": &"broccoli_idle_back",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_68350")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1gr6l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_glqyx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_34gph")
+}],
+"loop": true,
+"name": &"broccoli_idle_front",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5yxyq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6nmr2")
+}],
+"loop": false,
+"name": &"broccoli_shoot_back",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vkec4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3d6dp")
+}],
+"loop": false,
+"name": &"broccoli_shoot_front",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_j208p")
 }, {
 "duration": 1.0,
@@ -151,22 +317,38 @@ animations = [{
 "speed": 0.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_e8q67"]
-size = Vector2(5, 4)
+[sub_resource type="CircleShape2D" id="CircleShape2D_t3bua"]
+radius = 2.5
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7l117"]
 
 [node name="Plant" type="AnimatedSprite2D"]
 z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_8lxin")
 sprite_frames = SubResource("SpriteFrames_rowdm")
-animation = &"eggplant_grow"
+animation = &"broccoli_shoot_back"
+frame = 1
+frame_progress = 1.0
 script = ExtResource("1_7ry7i")
 
-[node name="Hitbox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="."]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_e8q67")
+shape = SubResource("CircleShape2D_t3bua")
+
+[node name="AttackArea" type="Area2D" parent="."]
+scale = Vector2(1, 0.5)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_7l117")
+
+[node name="AttackTimer" type="Timer" parent="."]
+autostart = true
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
 [connection signal="animation_looped" from="." to="." method="_on_animation_looped"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]

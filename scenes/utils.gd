@@ -4,6 +4,9 @@ class_name Utils
 static var num_points = 50
 static var arc_height = 50
 
+static func set_range_area_radii(shape : CollisionShape2D, tile_radius : int):
+	shape.shape.radius = 8 + 16 * tile_radius
+
 static func calc_arc_between(p1 : Vector2, p2 : Vector2):
 	var points = []
 	for i in range(num_points + 1):

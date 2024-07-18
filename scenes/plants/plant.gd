@@ -2,22 +2,26 @@ extends AnimatedSprite2D
 class_name Plant
 
 #region: Global vars
-enum Type {EGGPLANT, FOOD_SUPPLY}
+enum Type {EGGPLANT, BROCCOLI, FOOD_SUPPLY}
 enum Level {Level1, Level2, Level3A, Level3B}
 signal died
 
 var type : Type = Type.EGGPLANT
+var level : Level = Level.Level1
 
 var cost : int
 var health : int
 var time_to_grow : int
 var damage : int
-var range : int
+var attack_range : int
 var health_decay : int
+var attack_cooldown : float
 var upgrade_fire_rate_mod := 1.0
 var hoe_fire_rate_mod := 1.0
 var is_sleeping := false
 var is_dead := false
+
+
 #endregion: Global vars
 
 #region: Eggplant vars
@@ -30,7 +34,7 @@ var eggplant_spawn_angle = -PI / 4.0
 #region: Other vars
 var hoe_tween : Tween
 #endregion: Other vars
-
+@onready var attack_timer : Timer = $AttackTimer
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
 #region: Universal functions
@@ -44,8 +48,20 @@ func pick_stats():
 		Type.EGGPLANT:
 			cost = 5
 			health = 100
+			attack_range = 0
 		Type.FOOD_SUPPLY:
 			health = 100
+			attack_range = 0
+		Type.BROCCOLI:
+			health = 100
+			damage = 1
+			attack_range = 3
+			attack_cooldown = 1.0
+	Utils.set_range_area_radii($AttackArea/CollisionShape2D, attack_range)
+
+func _do_attack_cooldown():
+	attack_timer.start(attack_cooldown)
+	await attack_timer.timeout
 
 func pick_animation():
 	match type:
@@ -53,6 +69,7 @@ func pick_animation():
 			animation = "eggplant_grow"
 		Type.FOOD_SUPPLY:
 			animation = "none"
+		
 	play()
 
 func on_hit_by_hoe(duration, start_strength, end_strength):
@@ -135,9 +152,19 @@ func _on_animation_finished():
 		"eggplant_grow":
 			animation = "eggplant_shoot"
 			play()
+		"broccoli_attack_front":
+			animation = "broccoli_idle_front"
+			play()
+		"broccoli_attack_back":
+			animation = "broccoli_idle_back"
+			play()
 
 
 func _on_animation_looped():
 	match animation: 
 		"eggplant_shoot":
 			fire_eggplant()
+
+
+func _on_attack_timer_timeout():
+	attack_timer.start(0.1)

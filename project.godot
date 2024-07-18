@@ -101,6 +101,14 @@ purchase_seed={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Hurtboxes"
+2d_physics/layer_2="Projectiles"
+2d_physics/layer_3="Collisions"
+2d_physics/layer_4="Detections"
+2d_physics/layer_5="AttackAreas"
+
 [physics]
 
 common/physics_jitter_fix=0.0
