@@ -241,6 +241,7 @@ func _create_hoe():
 	hoe.buff_start_strength = hoe_buff_start_strength
 	hoe.buff_end_strength = hoe_buff_end_strength
 	hoe.final_scale = hoe_scale
+	hoe.ccw = not top.flip_h
 	$S.add_child(hoe)
 
 #endregion: Player action functions

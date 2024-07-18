@@ -79,7 +79,7 @@ func _finish():
 
 func _spawn_plant():
 	var plant : Plant = plant_scene.instantiate()
-	plant._type = type
+	plant.type = type
 	plant.position = global_position
 	main.add_child(plant)
 
@@ -96,5 +96,5 @@ func _on_frame_changed():
 
 func _process(delta):
 	if thrown_to_player:
-		global_position = Utils.calc_point_on_arc_between(shop.global_position, player.global_position + Vector2(0, -16), prog_to_player)
+		global_position = Utils.calc_point_on_arc_between(shop.global_position + Vector2(-2, 2), player.global_position + Vector2(0, -16), prog_to_player)
 		

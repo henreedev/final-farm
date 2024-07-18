@@ -1,0 +1,153 @@
+[gd_scene load_steps=18 format=3 uid="uid://c8uklt2csnoh6"]
+
+[ext_resource type="Texture2D" uid="uid://drxj5jytj73fa" path="res://assets/image/insects/fly-spritesheet.png" id="1_ijdku"]
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_uluky"]
+[ext_resource type="Script" path="res://scenes/insects/insect.gd" id="3_m4tex"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4jhf0"]
+shader = ExtResource("1_uluky")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1lygg"]
+atlas = ExtResource("1_ijdku")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0pe4a"]
+atlas = ExtResource("1_ijdku")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_la0kk"]
+atlas = ExtResource("1_ijdku")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u0vs6"]
+atlas = ExtResource("1_ijdku")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xch4"]
+atlas = ExtResource("1_ijdku")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yh6oo"]
+atlas = ExtResource("1_ijdku")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nxkif"]
+atlas = ExtResource("1_ijdku")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iph6j"]
+atlas = ExtResource("1_ijdku")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qdrvt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1lygg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0pe4a")
+}],
+"loop": false,
+"name": &"fly_attack_back",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_la0kk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u0vs6")
+}],
+"loop": false,
+"name": &"fly_attack_front",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xch4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yh6oo")
+}],
+"loop": true,
+"name": &"fly_back",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nxkif")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iph6j")
+}],
+"loop": true,
+"name": &"fly_front",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vav8g"]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a1533"]
+radius = 136.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hiu7l"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0qtki"]
+radius = 2.0
+
+[node name="Insect" type="CharacterBody2D"]
+z_index = 1
+y_sort_enabled = true
+motion_mode = 1
+script = ExtResource("3_m4tex")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_4jhf0")
+sprite_frames = SubResource("SpriteFrames_qdrvt")
+animation = &"fly_attack_front"
+autoplay = "fly_front"
+offset = Vector2(0, -8)
+
+[node name="Hitbox" type="Area2D" parent="."]
+monitoring = false
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_vav8g")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+scale = Vector2(1, 0.5)
+monitorable = false
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_a1533")
+debug_color = Color(0, 0.6, 0, 0.033)
+
+[node name="AttackArea" type="Area2D" parent="."]
+scale = Vector2(1, 0.5)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_hiu7l")
+debug_color = Color(0.993118, 0, 0.242322, 0.42)
+
+[node name="MovementTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="CollisionBox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_0qtki")
+debug_color = Color(0, 0, 0, 0.42)
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="area_entered" from="DetectionArea" to="." method="_on_detection_area_area_entered"]
+[connection signal="area_exited" from="DetectionArea" to="." method="_on_detection_area_area_exited"]
+[connection signal="area_entered" from="AttackArea" to="." method="_on_attack_area_area_entered"]
+[connection signal="timeout" from="MovementTimer" to="." method="_on_movement_timer_timeout"]

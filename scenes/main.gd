@@ -36,6 +36,7 @@ func receive_food():
 func win():
 	print("dubski")
 
+
 func _input(event: InputEvent):
 	if not get_tree().paused:
 		

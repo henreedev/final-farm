@@ -2,9 +2,12 @@ extends AnimatedSprite2D
 class_name Plant
 
 #region: Global vars
-enum Type {EGGPLANT}
-enum Level {Level1, Level2, Level3}
-var _type : Type = Type.EGGPLANT
+enum Type {EGGPLANT, FOOD_SUPPLY}
+enum Level {Level1, Level2, Level3A, Level3B}
+signal died
+
+var type : Type = Type.EGGPLANT
+
 var cost : int
 var health : int
 var time_to_grow : int
@@ -13,6 +16,7 @@ var range : int
 var upgrade_fire_rate_mod := 1.0
 var hoe_fire_rate_mod := 1.0
 var is_sleeping := false
+var is_dead := false
 var health_decay := 60
 #endregion: Global vars
 
@@ -23,6 +27,10 @@ var eggplant_spawn_pos = Vector2(12, -13)
 var eggplant_spawn_angle = -PI / 4.0
 #endregion: Eggplant vars
 
+#region: Other vars
+var hoe_tween : Tween
+#endregion: Other vars
+
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
 #region: Universal functions
@@ -32,13 +40,13 @@ func _ready() -> void:
 	pick_stats()
 
 func pick_stats():
-	match _type:
+	match type:
 		Type.EGGPLANT:
 			cost = 5
 			health = 100
 
 func pick_animation():
-	match _type:
+	match type:
 		Type.EGGPLANT:
 			animation = "eggplant_grow"
 	play()
@@ -47,20 +55,33 @@ func on_hit_by_hoe(duration, start_strength, end_strength):
 	# TODO wakeup if sleeping, display such
 	var start_modulate = Color(start_strength, start_strength, start_strength, 1)
 	var end_modulate = Color(end_strength, end_strength, end_strength, 1)
-	var tween = create_tween()
-	tween.tween_property(self, "hoe_fire_rate_mod", end_strength, duration)\
+	if hoe_tween:
+		hoe_tween.kill()
+	hoe_tween = create_tween()
+	hoe_tween.tween_property(self, "hoe_fire_rate_mod", end_strength, duration)\
 		.from(start_strength)\
 		.set_trans(Tween.TRANS_LINEAR)
-	tween.parallel().tween_property(self, "modulate", end_modulate, duration)\
+	hoe_tween.parallel().tween_property(self, "modulate", end_modulate, duration)\
 		.from(start_modulate)\
 		.set_trans(Tween.TRANS_LINEAR)
-	tween.tween_property(self, "hoe_fire_rate_mod", 1.0, 0)
-	tween.tween_property(self, "modulate", Color(1,1,1,1), 0.5).set_trans(Tween.TRANS_CUBIC)
+	hoe_tween.tween_property(self, "hoe_fire_rate_mod", 1.0, 0)
+	hoe_tween.tween_property(self, "modulate", Color(1,1,1,1), 0.5).set_trans(Tween.TRANS_CUBIC)
 
 func _physics_process(delta) -> void:
-	speed_scale = upgrade_fire_rate_mod * hoe_fire_rate_mod
+	speed_scale = (upgrade_fire_rate_mod * hoe_fire_rate_mod) if not is_dead else 1
+
+func take_damage(amount : int):
+	health -= amount
+	if health <= 0:
+		die()
 
 func die():
+	is_dead = true
+	died.emit()
+	if hoe_tween:
+		hoe_tween.kill()
+	modulate = Color(1,1,1,1)
+	
 	var coords = floor.local_to_map(global_position)
 	if coords: 
 		var tile = floor.get_cell_tile_data(coords)

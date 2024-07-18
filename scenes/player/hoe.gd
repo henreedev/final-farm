@@ -1,7 +1,7 @@
 extends AnimatedSprite2D
 class_name Hoe
 
-static var ccw = true
+var ccw = true
 
 var angle_cone : float
 var duration : float
