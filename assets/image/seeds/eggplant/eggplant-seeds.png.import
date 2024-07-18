@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bec8ggnr76ri7"
-path="res://.godot/imported/eggplant-seeds.png-c69d4da130b8848a96e47e8fad87306f.ctex"
+path="res://.godot/imported/eggplant-seeds.png-ec6795113af962d332c5b0dd0b90f846.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/image/seeds/eggplant-seeds.png"
-dest_files=["res://.godot/imported/eggplant-seeds.png-c69d4da130b8848a96e47e8fad87306f.ctex"]
+source_file="res://assets/image/seeds/eggplant/eggplant-seeds.png"
+dest_files=["res://.godot/imported/eggplant-seeds.png-ec6795113af962d332c5b0dd0b90f846.ctex"]
 
 [params]
 

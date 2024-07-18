@@ -1,8 +1,10 @@
-[gd_scene load_steps=43 format=3 uid="uid://bbdg51k23rbjn"]
+[gd_scene load_steps=46 format=3 uid="uid://bbdg51k23rbjn"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_gkhbm"]
 [ext_resource type="Texture2D" uid="uid://c2ns6nhumsnlw" path="res://assets/image/map/shop-spritesheet.png" id="2_exlpd"]
 [ext_resource type="Script" path="res://scenes/map/shop.gd" id="3_jxoqr"]
+[ext_resource type="Texture2D" uid="uid://dhqvq4i14o16d" path="res://assets/image/map/buy-icon1.png" id="4_ouhwp"]
+[ext_resource type="Texture2D" uid="uid://b1gui48fbprf6" path="res://assets/image/map/buy-icon2.png" id="5_hej84"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x0xfu"]
 shader = ExtResource("1_gkhbm")
@@ -300,6 +302,20 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_rdwto"]
 radius = 42.0476
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_dff68"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_ouhwp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_hej84")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
+
 [node name="Shop" type="AnimatedSprite2D" groups=["shop"]]
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_x0xfu")
@@ -322,6 +338,16 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
 visible = false
 shape = SubResource("CircleShape2D_rdwto")
+
+[node name="InteractIcon" type="AnimatedSprite2D" parent="."]
+visible = false
+z_index = 1
+y_sort_enabled = true
+use_parent_material = true
+position = Vector2(2, -35)
+sprite_frames = SubResource("SpriteFrames_dff68")
+autoplay = "default"
+frame_progress = 0.504771
 
 [node name="WaveTimer" type="Timer" parent="."]
 

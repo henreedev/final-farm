@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bbpeldan8lea8"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_g1b5s"]
-[ext_resource type="Texture2D" uid="uid://bxnq0u28e1734" path="res://assets/image/seeds/eggplant.png" id="2_6uwrm"]
+[ext_resource type="Texture2D" uid="uid://bxnq0u28e1734" path="res://assets/image/seeds/eggplant/eggplant.png" id="2_6uwrm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i6hxl"]
 shader = ExtResource("1_g1b5s")

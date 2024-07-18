@@ -87,6 +87,8 @@ func pick_animation():
 	match type:
 		Plant.Type.EGGPLANT:
 			animation = "eggplant_tear"
+		Plant.Type.BROCCOLI:
+			animation = "broccoli_tear"
 		_:
 			print("SEED TYPE ANIMATION NOT DEFINED (seed_bag.gd)")
 

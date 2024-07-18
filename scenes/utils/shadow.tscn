@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://brdpee5pykcx5"]
+
+[ext_resource type="Texture2D" uid="uid://ngdnmfx1kyv2" path="res://assets/image/insects/shadow.png" id="1_jwwcc"]
+
+[node name="Shadow" type="Sprite2D"]
+show_behind_parent = true
+use_parent_material = true
+texture = ExtResource("1_jwwcc")

@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://c8uklt2csnoh6"]
+[gd_scene load_steps=19 format=3 uid="uid://c8uklt2csnoh6"]
 
 [ext_resource type="Texture2D" uid="uid://drxj5jytj73fa" path="res://assets/image/insects/fly-spritesheet.png" id="1_ijdku"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_uluky"]
 [ext_resource type="Script" path="res://scenes/insects/insect.gd" id="3_m4tex"]
+[ext_resource type="PackedScene" uid="uid://brdpee5pykcx5" path="res://scenes/utils/shadow.tscn" id="4_r2i2y"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4jhf0"]
 shader = ExtResource("1_uluky")
@@ -113,6 +114,8 @@ animation = &"fly_attack_front"
 autoplay = "fly_front"
 offset = Vector2(0, -8)
 
+[node name="Shadow" parent="AnimatedSprite2D" instance=ExtResource("4_r2i2y")]
+
 [node name="Hitbox" type="Area2D" parent="."]
 monitoring = false
 metadata/_edit_group_ = true
@@ -145,7 +148,7 @@ autostart = true
 
 [node name="AttackTimer" type="Timer" parent="."]
 wait_time = 0.291
-autostart = true
+one_shot = true
 
 [node name="CollisionBox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_0qtki")
@@ -155,5 +158,6 @@ debug_color = Color(0, 0, 0, 0.42)
 [connection signal="area_entered" from="DetectionArea" to="." method="_on_detection_area_area_entered"]
 [connection signal="area_exited" from="DetectionArea" to="." method="_on_detection_area_area_exited"]
 [connection signal="area_entered" from="AttackArea" to="." method="_on_attack_area_area_entered"]
+[connection signal="area_exited" from="AttackArea" to="." method="_on_attack_area_area_exited"]
 [connection signal="timeout" from="MovementTimer" to="." method="_on_movement_timer_timeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
