@@ -3,6 +3,7 @@ class_name Main
 signal upgrade_purchased
 
 
+
 const MAX_FOOD_HEIGHT = Vector2(0, -24)
 const WINNING_FOOD_AMOUNT = 1000
 
@@ -13,16 +14,27 @@ const WINNING_FOOD_AMOUNT = 1000
 var food_supply_height = Vector2(0,0)
 var food_supply_plant : Plant 
 var plant_scene : PackedScene = preload("res://scenes/plants/plant.tscn")
+#var has_init_shop = false
 
 @onready var food_holder = $FoodHolder
 @onready var player_ui: Control = $CanvasLayer/Player_UI
 @onready var upgrade_menu: Control = $CanvasLayer/Upgrade_Menu
 @onready var pause_menu: Control = $CanvasLayer/pause_menu
-
+var shop : Shop
 func _ready() -> void:
+	_init_vars()
 	connect_signals()
 
+func _process(delta: float) -> void:
+	pass
+		
+func _init_vars():
+	await get_tree().create_timer(0.01).timeout
+	shop = get_tree().get_first_node_in_group("shop")
+	pass
 func connect_signals():
+	await get_tree().create_timer(0.02).timeout
+	shop.toggle_shop.connect(_toggle_shop)
 	upgrade_menu.check_if_purchasable.connect(_on_upgrade_menu_check_if_purchasable)
 
 func receive_food():
@@ -77,9 +89,13 @@ func _on_player_ui_bug_killed() -> void:
 
 
 func _on_test_open_shop_pressed() -> void:
+	print("toggling shop to", shop.is_open)
+	if shop.is_open: shop.close
+	else: shop.open
+	
+func _toggle_shop():
+	print("opening shop")
 	upgrade_menu.visible = true
-	pass # Replace with function body.
-
 
 
 func _on_pause_menu_unpausing_with_esc() -> void:

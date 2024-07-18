@@ -3,6 +3,7 @@ class_name Player
 
 #region: Globals
 signal throw_tile_changed
+signal seed_count_changed
 
 const TOP_BASE_OFFSET = Vector2i(0, -16)
 const TOP_HIGHER_OFFSET = Vector2i(0, -17)
@@ -31,7 +32,7 @@ var swinging = false
 var throwing = false
 var holding_throw = false
 # Tracks how many of each seed you have
-var seed_counts = {Plant.Type.EGGPLANT : 10} 
+@export var seed_counts = {Plant.Type.EGGPLANT : 10} 
 var equipped_seed_type : Plant.Type = Plant.Type.EGGPLANT
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 var seed_bag : SeedBag
@@ -77,12 +78,10 @@ var shop : Shop # onready does not work because shop is instantiated in a TileMa
 #region: Built-in functions
 func _ready() -> void:
 	_init_vars()
+	_connect_signals()
 	
-	#testing direct connection from upgrade menu to player
-	upgrade_menu.purchased_seed_eggplant.connect(test_connection)
-	
-func test_connection():
-	print("yay")
+func _connect_signals():
+	upgrade_menu.purchased_seed.connect(_on_upgrade_menu_purchased_seed)
 
 
 func _init_vars() -> void:
@@ -170,11 +169,13 @@ func _act_on_input():
 	if Input.is_action_just_pressed("purchase_seed"):
 		if not shop: shop = get_tree().get_first_node_in_group("shop")
 		shop.queue_throw(Plant.Type.EGGPLANT)
+"""
 	if Input.is_action_just_pressed("interact"):
 		if shop.is_open:
 			shop.close()
 		else:
 			shop.open()
+			"""
 
 func start_throw():
 	if not (holding_throw or swinging or throwing or ignore_swing or waiting_for_release):
@@ -243,6 +244,10 @@ func _create_hoe():
 	hoe.final_scale = hoe_scale
 	hoe.ccw = not top.flip_h
 	$S.add_child(hoe)
+	
+func _on_upgrade_menu_purchased_seed(seed_type: Plant.Type):
+	receive_seed(seed_type)
+	pass
 
 #endregion: Player action functions
 
@@ -257,6 +262,7 @@ func _get_throw_root():
 func receive_seed(seed_type : Plant.Type):
 	seed_counts[seed_type] += 1
 	print("Player now has ", seed_counts[seed_type], " of type ", seed_type)
+	seed_count_changed.emit()
 
 func _show_arc():
 	if showing_arc:

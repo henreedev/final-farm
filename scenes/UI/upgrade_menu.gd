@@ -1,12 +1,12 @@
 extends Control
 signal check_if_purchasable
-signal purchased_seed_eggplant
+signal purchased_seed(type: Plant.Type)
 var isPurchased := [false]
 @onready var main = get_tree().get_first_node_in_group("main")
 
 @onready var player_speed: Button = $"MarginContainer/TabContainer/Player Upgrades/ScrollContainer/player_speed"
-@onready var seed_tomato: Button = $MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer/seed_tomato
-@onready var seed_eggplant: Button = $MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer/seed_eggplant
+@onready var seed_tomato: Button = $MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer/seed_tomato
+@onready var seed_eggplant: Button = $MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer/seed_eggplant
 
 
 
@@ -22,7 +22,6 @@ func _process(delta: float) -> void:
 
 
 func purchase_upgrade(upgrade_name: String,price):
-	check_if_purchasable.emit(upgrade_name, price)
 	pass
 
 
@@ -41,7 +40,7 @@ func _on_seed_eggplant_pressed() -> void:
 	if main.food_amount > 10:
 		print("egg")
 		main.food_amount -= 10
-		purchased_seed_eggplant.emit()
+		purchased_seed.emit(Plant.Type.EGGPLANT)
 		pass
 	else:
 		print("not enough to  egg")

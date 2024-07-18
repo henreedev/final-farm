@@ -6,6 +6,7 @@ var is_open = true
 var should_wave = true
 var throws = []
 var throwing = false
+signal toggle_shop
 
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 @onready var main : Main = get_tree().get_first_node_in_group("main")
@@ -21,6 +22,7 @@ func _input(event: InputEvent) -> void:
 
 func player_interact():
 	print("Player interacted with shop (TODO)")
+	toggle_shop.emit()
 
 func throw():
 	animation = "throw" if is_open else "closed_throw"
