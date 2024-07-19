@@ -1,5 +1,6 @@
 extends Control
 var currentSelectedItemIndex = 0
+var num_of_seed_types = 4
 signal bug_killed
 @export var bugs_killed = 0
 @onready var main : Main = get_tree().get_first_node_in_group("main")
@@ -12,6 +13,7 @@ func _ready() -> void:
 
 func connect_signals():
 	player.seed_count_changed.connect(_on_player_seed_count_changed)
+	#player.seed_list_changed.connect(_on_player_seed_list_changed)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -27,9 +29,9 @@ func process_scroll():
 	
 	if scroll_direction != 0:
 		currentSelectedItemIndex+= scroll_direction 
-		currentSelectedItemIndex = fmod(currentSelectedItemIndex,5)
+		currentSelectedItemIndex = fmod(currentSelectedItemIndex,num_of_seed_types)
 		if currentSelectedItemIndex <= -1:
-			currentSelectedItemIndex += 5
+			currentSelectedItemIndex += num_of_seed_types
 	scroll_direction = 0
 	
 	
@@ -55,3 +57,16 @@ func _on_player_seed_count_changed():
 		$ItemList.set_item_text(cur_pos,str(player.seed_counts[seed_type]))
 		cur_pos+=1
 		pass
+
+func add_seed_type(seed:Plant.Type):
+	for type in player.seed_counts:
+		
+		pass
+	pass
+	
+func remove_seed_type():
+	pass
+	
+func _on_player_seed_list_changed():
+	
+	pass

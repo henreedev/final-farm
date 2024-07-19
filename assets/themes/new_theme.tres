@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://1brel1qvmfio"]
+
+[ext_resource type="FontFile" uid="uid://mpjdnkqeym20" path="res://resources/fonts/Pxlvetica-XymZ.ttf" id="1_brcuo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nbjxp"]
+
+[resource]
+ItemList/colors/font_color = Color(0.65, 0.65, 0.65, 1)
+ItemList/colors/font_hovered_color = Color(0.65098, 0.65098, 0.65098, 1)
+ItemList/colors/font_outline_color = Color(0.65098, 0.65098, 0.65098, 1)
+ItemList/colors/font_selected_color = Color(0.65098, 0.65098, 0.65098, 1)
+ItemList/fonts/font = ExtResource("1_brcuo")
+ItemList/styles/hovered = SubResource("StyleBoxEmpty_nbjxp")

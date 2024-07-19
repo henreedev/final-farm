@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cqu2nhyajf5dp"]
+[gd_scene load_steps=7 format=3 uid="uid://cqu2nhyajf5dp"]
 
 [ext_resource type="Texture2D" uid="uid://bec8ggnr76ri7" path="res://assets/image/seeds/eggplant/eggplant-seeds.png" id="1_f8kdu"]
 [ext_resource type="Script" path="res://scripts/player_ui.gd" id="1_rl3jt"]
+[ext_resource type="Theme" uid="uid://1brel1qvmfio" path="res://assets/themes/new_theme.tres" id="2_26sb1"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="3_01w31"]
 [ext_resource type="Texture2D" uid="uid://c66pqva3pob4x" path="res://Eggplant_Emoji_grande.webp" id="4_7xtwo"]
 
@@ -29,10 +30,10 @@ offset_top = -40.0
 offset_right = 329.0
 grow_horizontal = 2
 grow_vertical = 0
+theme = ExtResource("2_26sb1")
 allow_search = false
-item_count = 5
-max_columns = 5
-fixed_column_width = 122
+item_count = 4
+max_columns = 0
 item_0/text = "item1"
 item_0/icon = ExtResource("1_f8kdu")
 item_1/text = "item2"
@@ -41,8 +42,6 @@ item_2/text = "item3"
 item_2/icon = ExtResource("1_f8kdu")
 item_3/text = "item4"
 item_3/icon = ExtResource("1_f8kdu")
-item_4/text = "item5"
-item_4/icon = ExtResource("1_f8kdu")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_e8do0")

@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://bkcmq0oly4j8w"]
+[gd_scene load_steps=7 format=3 uid="uid://bkcmq0oly4j8w"]
 
 [ext_resource type="Script" path="res://scenes/UI/upgrade_menu.gd" id="1_yhjbo"]
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="2_hngr3"]
 [ext_resource type="Texture2D" uid="uid://18raibx3000c" path="res://resources/shop-ui.png" id="2_vesi3"]
-[ext_resource type="Texture2D" uid="uid://dmwpl1jfc7mdb" path="res://resources/eggplant-packet-placeholder.png" id="3_g4jqk"]
 [ext_resource type="Texture2D" uid="uid://c3wpjxeeslmsl" path="res://resources/shop-seed-bag.png" id="3_sqy7p"]
+[ext_resource type="Texture2D" uid="uid://bggiycsxyyna5" path="res://resources/seed-bag-big.png" id="5_marj1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_edwx2"]
+shader = ExtResource("2_hngr3")
 
 [node name="Upgrade_Menu" type="Control" groups=["upgrade_menu"]]
 layout_mode = 3
@@ -31,46 +35,25 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 200
-theme_override_constants/margin_top = 150
-theme_override_constants/margin_right = 200
-theme_override_constants/margin_bottom = 150
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 
-[node name="TabContainer" type="TabContainer" parent="MarginContainer"]
+[node name="exit" type="Button" parent="MarginContainer"]
+z_index = 2
+z_as_relative = false
 layout_mode = 2
-current_tab = 1
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Close Shop"
 
-[node name="Player Upgrades" type="TabBar" parent="MarginContainer/TabContainer"]
-visible = false
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+material = SubResource("ShaderMaterial_edwx2")
 layout_mode = 2
-metadata/_tab_index = 0
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/TabContainer/Player Upgrades"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="player_speed" type="Button" parent="MarginContainer/TabContainer/Player Upgrades/ScrollContainer"]
-layout_mode = 2
-text = "Buy Speed Up :10"
-
-[node name="Button" type="Button" parent="MarginContainer/TabContainer/Player Upgrades/ScrollContainer"]
-layout_mode = 2
-
-[node name="Seeds" type="TabBar" parent="MarginContainer/TabContainer"]
-layout_mode = 2
-metadata/_tab_index = 1
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/TabContainer/Seeds"]
-layout_mode = 2
-offset_right = 752.0
-offset_bottom = 317.0
 texture = ExtResource("2_vesi3")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/TabContainer/Seeds/TextureRect"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/TextureRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -78,52 +61,73 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextureRect/ScrollContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
 alignment = 1
 
-[node name="TextureButton" type="TextureButton" parent="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer"]
+[node name="seed_eggplant" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
+custom_minimum_size = Vector2(504, 600)
 layout_mode = 2
 texture_normal = ExtResource("3_sqy7p")
-texture_hover = ExtResource("3_g4jqk")
+texture_hover = ExtResource("5_marj1")
+stretch_mode = 5
 
-[node name="Label" type="Label" parent="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer/TextureButton"]
+[node name="Label" type="Label" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_eggplant"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
+offset_left = -33.5
 offset_top = -11.5
-offset_right = 20.0
+offset_right = 33.5
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Eggplant"
 
-[node name="seed_tomato" type="Button" parent="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer"]
+[node name="seed_broccoli" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
+custom_minimum_size = Vector2(504, 600)
 layout_mode = 2
-text = "Buy other"
+texture_normal = ExtResource("3_sqy7p")
+texture_hover = ExtResource("5_marj1")
+stretch_mode = 5
 
-[node name="seed_eggplant" type="Button" parent="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer"]
+[node name="seed_tomato" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
 layout_mode = 2
-text = "Buy Eggplant"
+texture_normal = ExtResource("3_sqy7p")
+stretch_mode = 5
 
-[node name="TabBar3" type="TabBar" parent="MarginContainer/TabContainer"]
-visible = false
+[node name="seed_pepper" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
 layout_mode = 2
-metadata/_tab_index = 2
+texture_normal = ExtResource("3_sqy7p")
+stretch_mode = 5
 
-[node name="exit" type="Button" parent="MarginContainer"]
+[node name="seed_pepper2" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-text = "Close Shop"
+texture_normal = ExtResource("3_sqy7p")
+stretch_mode = 5
 
-[connection signal="pressed" from="MarginContainer/TabContainer/Player Upgrades/ScrollContainer/player_speed" to="." method="_on_player_speed_pressed"]
-[connection signal="pressed" from="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer/seed_tomato" to="." method="_on_seed_tomato_pressed"]
-[connection signal="pressed" from="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer/seed_eggplant" to="." method="_on_seed_eggplant_pressed"]
+[node name="seed_pepper3" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_sqy7p")
+stretch_mode = 5
+
+[node name="seed_pepper4" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_sqy7p")
+stretch_mode = 5
+
+[node name="seed_pepper5" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_sqy7p")
+stretch_mode = 5
+
 [connection signal="pressed" from="MarginContainer/exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_eggplant" to="." method="_on_seed_eggplant_pressed"]
+[connection signal="pressed" from="MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_broccoli" to="." method="_on_seed_broccoli_pressed"]
+[connection signal="pressed" from="MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_tomato" to="." method="_on_seed_tomato_pressed"]
