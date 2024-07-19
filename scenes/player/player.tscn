@@ -1,11 +1,13 @@
-[gd_scene load_steps=47 format=3 uid="uid://cem6gwr7id7u8"]
+[gd_scene load_steps=51 format=3 uid="uid://cem6gwr7id7u8"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_4cvge"]
 [ext_resource type="Script" path="res://addons/smoothing/smoothing_2d.gd" id="2_ak4hf"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="2_bep4r"]
 [ext_resource type="Texture2D" uid="uid://dim6b6vi1leqo" path="res://assets/image/player/mc-legs-spritesheet.png" id="2_v527p"]
 [ext_resource type="Texture2D" uid="uid://bln5p1i8434oy" path="res://assets/image/player/mc-arms-spritesheet.png" id="3_rm0ig"]
+[ext_resource type="Texture2D" uid="uid://dl032r2w8f1sn" path="res://assets/image/player/wave_bug.png" id="6_5vxee"]
 [ext_resource type="Texture2D" uid="uid://8v0fi6acvw05" path="res://assets/image/player/line_texture.png" id="6_mnvkn"]
+[ext_resource type="Texture2D" uid="uid://dj3bb81e048yc" path="res://assets/image/player/wave_arrow.png" id="7_lbmes"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vc0j8"]
 radius = 2.0
@@ -311,6 +313,60 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8y8dn"]
+shader = ExtResource("2_bep4r")
+
+[sub_resource type="GDScript" id="GDScript_vy72f"]
+script/source = "extends Sprite2D
+
+
+var spawner_1 : Node2D
+var spawner_2 : Node2D
+var spawner_3 : Node2D
+var spawner_4 : Node2D
+@onready var a1 = $RedArrow
+@onready var a2 = $RedArrow2
+@onready var a3 = $RedArrow3
+@onready var a4 = $RedArrow4
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	# make each arrow wiggle a bit
+	var arrow_wiggle_tween1 = create_tween().set_loops()
+	arrow_wiggle_tween1.tween_property(a1, \"offset:x\", 20, 0.75).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	arrow_wiggle_tween1.tween_property(a1, \"offset:x\", 18, 0.75).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	var arrow_wiggle_tween2 = create_tween().set_loops()
+	arrow_wiggle_tween2.tween_property(a2, \"offset:x\", 20, 0.75).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	arrow_wiggle_tween2.tween_property(a2, \"offset:x\", 18, 0.75).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	var arrow_wiggle_tween3 = create_tween().set_loops()
+	arrow_wiggle_tween3.tween_property(a3, \"offset:x\", 20, 0.75).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	arrow_wiggle_tween3.tween_property(a3, \"offset:x\", 18, 0.75).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	var arrow_wiggle_tween4 = create_tween().set_loops()
+	arrow_wiggle_tween4.tween_property(a4, \"offset:x\", 20, 0.75).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	arrow_wiggle_tween4.tween_property(a4, \"offset:x\", 18, 0.75).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+
+# called by  should be pointed at
+func set_spawners(spawners : Array[Spawner] = []):
+	var s1 = spawners[0] if len(spawners) > 0 else null
+	var s2 = spawners[1] if len(spawners) > 1 else null
+	var s3 = spawners[2] if len(spawners) > 2 else null
+	var s4 = spawners[3] if len(spawners) > 3 else null
+	spawner_1 = s1
+	spawner_2 = s2
+	spawner_3 = s3
+	spawner_4 = s4
+
+func _process(delta):
+	if spawner_1: a1.look_at(spawner_1.position)
+	else: a1.hide()
+	if spawner_2: a2.look_at(spawner_2.position)
+	else: a2.hide()
+	if spawner_3: a3.look_at(spawner_3.position)
+	else: a3.hide()
+	if spawner_4: a4.look_at(spawner_4.position)
+	else: a4.hide()
+"
+
 [sub_resource type="Curve" id="Curve_tr4nr"]
 bake_resolution = 20
 _data = [Vector2(0, 0), 0.0, 3.35881, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.52335, 0.0, 0, 0]
@@ -346,6 +402,32 @@ sprite_frames = SubResource("SpriteFrames_0tehu")
 animation = &"throw_hold"
 autoplay = "idle"
 offset = Vector2(0, -16)
+
+[node name="WaveIndicator" type="Sprite2D" parent="S"]
+material = SubResource("ShaderMaterial_8y8dn")
+position = Vector2(0, -36.175)
+texture = ExtResource("6_5vxee")
+script = SubResource("GDScript_vy72f")
+
+[node name="RedArrow" type="Sprite2D" parent="S/WaveIndicator"]
+use_parent_material = true
+texture = ExtResource("7_lbmes")
+offset = Vector2(18, 0)
+
+[node name="RedArrow2" type="Sprite2D" parent="S/WaveIndicator"]
+use_parent_material = true
+texture = ExtResource("7_lbmes")
+offset = Vector2(18, 0)
+
+[node name="RedArrow3" type="Sprite2D" parent="S/WaveIndicator"]
+use_parent_material = true
+texture = ExtResource("7_lbmes")
+offset = Vector2(18, 0)
+
+[node name="RedArrow4" type="Sprite2D" parent="S/WaveIndicator"]
+use_parent_material = true
+texture = ExtResource("7_lbmes")
+offset = Vector2(18, 0)
 
 [node name="LineContainer" type="Node" parent="."]
 

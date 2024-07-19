@@ -1,9 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://c8uklt2csnoh6"]
+[gd_scene load_steps=20 format=3 uid="uid://c8uklt2csnoh6"]
 
 [ext_resource type="Texture2D" uid="uid://drxj5jytj73fa" path="res://assets/image/insects/fly-spritesheet.png" id="1_ijdku"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_uluky"]
 [ext_resource type="Script" path="res://scenes/insects/insect.gd" id="3_m4tex"]
 [ext_resource type="PackedScene" uid="uid://brdpee5pykcx5" path="res://scenes/utils/shadow.tscn" id="4_r2i2y"]
+[ext_resource type="Script" path="res://scenes/utils/scalable_timer.gd" id="5_gry4m"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4jhf0"]
 shader = ExtResource("1_uluky")
@@ -99,11 +100,11 @@ radius = 8.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_0qtki"]
 radius = 2.0
 
-[node name="Insect" type="CharacterBody2D"]
+[node name="Insect" type="CharacterBody2D" groups=["insect"]]
 z_index = 1
 y_sort_enabled = true
-collision_layer = 4
-collision_mask = 4
+collision_layer = 0
+collision_mask = 0
 motion_mode = 1
 script = ExtResource("3_m4tex")
 
@@ -142,13 +143,11 @@ metadata/_edit_group_ = true
 shape = SubResource("CircleShape2D_hiu7l")
 debug_color = Color(0.993118, 0, 0.242322, 0.42)
 
-[node name="MovementTimer" type="Timer" parent="."]
-one_shot = true
-autostart = true
+[node name="MovementTimer" type="Node" parent="."]
+script = ExtResource("5_gry4m")
 
-[node name="AttackTimer" type="Timer" parent="."]
-wait_time = 0.291
-one_shot = true
+[node name="AttackTimer" type="Node" parent="."]
+script = ExtResource("5_gry4m")
 
 [node name="CollisionBox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_0qtki")

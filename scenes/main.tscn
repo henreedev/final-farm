@@ -1,16 +1,47 @@
-[gd_scene load_steps=8 format=3 uid="uid://bxqqm0fji2wwm"]
+[gd_scene load_steps=13 format=3 uid="uid://bxqqm0fji2wwm"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_n7gso"]
+[ext_resource type="Script" path="res://scenes/map/wave.gd" id="2_1hows"]
 [ext_resource type="PackedScene" uid="uid://cem6gwr7id7u8" path="res://scenes/player/player.tscn" id="2_1vtnu"]
 [ext_resource type="PackedScene" uid="uid://c5dhqb4exnv2r" path="res://scenes/map/map.tscn" id="2_nevbb"]
+[ext_resource type="Script" path="res://scenes/map/wave-group.gd" id="3_nwf1e"]
 [ext_resource type="PackedScene" uid="uid://cqu2nhyajf5dp" path="res://scenes/UI/player_ui.tscn" id="3_pq8xe"]
 [ext_resource type="PackedScene" uid="uid://bkcmq0oly4j8w" path="res://scenes/UI/upgrade_menu.tscn" id="4_1qibe"]
 [ext_resource type="PackedScene" uid="uid://fxv5hgqgs5ds" path="res://scenes/UI/pause_menu.tscn" id="5_3rix5"]
-[ext_resource type="PackedScene" uid="uid://c8uklt2csnoh6" path="res://scenes/insects/insect.tscn" id="7_twlm1"]
+
+[sub_resource type="Resource" id="Resource_mwtrt"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 30
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_5ygsf"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 45
+spawn_time = 5.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_oh76m"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 50
+spawn_time = 10.0
+streams = true
+stream_duration = 10.0
+
+[sub_resource type="Resource" id="Resource_vwnyj"]
+script = ExtResource("2_1hows")
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_mwtrt"), SubResource("Resource_5ygsf"), SubResource("Resource_oh76m")])
 
 [node name="Main" type="Node2D" groups=["main"]]
 y_sort_enabled = true
 script = ExtResource("1_n7gso")
+quarter_1_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_vwnyj")])
+fly_sightings_until_mutation = 5
 
 [node name="Map" parent="." instance=ExtResource("2_nevbb")]
 
@@ -34,33 +65,6 @@ text = "TEST_OPEN_SHOP"
 [node name="pause_menu" parent="CanvasLayer" instance=ExtResource("5_3rix5")]
 
 [node name="FoodHolder" type="CanvasGroup" parent="."]
-
-[node name="Insect" parent="." instance=ExtResource("7_twlm1")]
-position = Vector2(-31, -31)
-
-[node name="Insect2" parent="." instance=ExtResource("7_twlm1")]
-position = Vector2(-31, -31)
-
-[node name="Insect3" parent="." instance=ExtResource("7_twlm1")]
-position = Vector2(-31, -31)
-
-[node name="Insect4" parent="." instance=ExtResource("7_twlm1")]
-position = Vector2(-31, -31)
-
-[node name="Insect5" parent="." instance=ExtResource("7_twlm1")]
-position = Vector2(-31, -31)
-
-[node name="Insect6" parent="." instance=ExtResource("7_twlm1")]
-position = Vector2(-31, -31)
-
-[node name="Insect7" parent="." instance=ExtResource("7_twlm1")]
-position = Vector2(-31, -31)
-
-[node name="Insect8" parent="." instance=ExtResource("7_twlm1")]
-position = Vector2(-31, -31)
-
-[node name="Insect9" parent="." instance=ExtResource("7_twlm1")]
-position = Vector2(-31, -31)
 
 [connection signal="bug_killed" from="CanvasLayer/Player_UI" to="." method="_on_player_ui_bug_killed"]
 [connection signal="pressed" from="CanvasLayer/TEST_OPEN_SHOP" to="." method="_on_test_open_shop_pressed"]

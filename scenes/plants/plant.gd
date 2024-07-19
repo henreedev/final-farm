@@ -47,6 +47,7 @@ var target_options : Array[Insect] = []
 var attack_dir : Vector2
 var attacking := false
 var growing := true
+var paused := false
 var facing_right := false
 var facing_down := false
 #endregion: Other vars
@@ -111,7 +112,12 @@ func on_hit_by_hoe(duration, start_strength, end_strength):
 	
 
 func _physics_process(delta) -> void:
-	speed_scale = (upgrade_fire_rate_mod * hoe_fire_rate_mod) if not is_dead else 1
+	if paused:
+		speed_scale = 0
+	elif is_dead:
+		speed_scale = 1
+	else:
+		speed_scale = upgrade_fire_rate_mod * hoe_fire_rate_mod
 	attack_timer.speed_scale = speed_scale
 	calc_facing_vars()
 	pick_animation()

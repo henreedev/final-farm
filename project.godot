@@ -34,6 +34,8 @@ main=""
 upgrade_menu=""
 player=""
 floor=""
+plant=""
+insect=""
 
 [gui]
 

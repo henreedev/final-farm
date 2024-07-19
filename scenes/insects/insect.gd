@@ -12,6 +12,9 @@ const MOVEMENT_DEVIATION_MAX = 25.0 # degrees
 const SPEED_DEVIATION = 0.05
 const BASE_SPEED = 20.0
 
+# Mutation tracking
+static var fly_mutated := false 
+
 var type : Type = Type.FLY
 var health : int
 var damage : int
@@ -30,9 +33,12 @@ var going_right = false
 var going_down = false
 var marked_by_player = false # TODO add red outline and target reticle when true
 var is_dead = false
+var speed_scale := 1.0
+var paused := false
 
-@onready var movement_timer : Timer = $MovementTimer
-@onready var attack_timer : Timer = $AttackTimer
+
+@onready var movement_timer : ScalableTimer = $MovementTimer
+@onready var attack_timer : ScalableTimer = $AttackTimer
 @onready var detection_area : Area2D = $DetectionArea
 @onready var detection_shape : CollisionShape2D = $DetectionArea/CollisionShape2D
 @onready var attack_area : Area2D = $AttackArea
@@ -115,6 +121,14 @@ func get_new_target_options():
 				target_options.append(area.get_parent())
 
 func _physics_process(delta):
+	if paused:
+		speed_scale = 0.0
+	else:
+		speed_scale = 1.0
+	movement_timer.speed_scale = speed_scale
+	attack_timer.speed_scale = speed_scale
+	asprite.speed_scale = speed_scale
+	delta *= speed_scale
 	position += movement_speed * movement_dir * delta
 	pick_animation()
 
@@ -177,8 +191,7 @@ func die():
 #region: Connection functions
 func _on_movement_timer_timeout():
 	recalc_movement_vars()
-	movement_timer.wait_time = randf_range(MOVEMENT_REFRESH_DUR_MIN, MOVEMENT_REFRESH_DUR_MAX)
-	movement_timer.start()
+	movement_timer.start(randf_range(MOVEMENT_REFRESH_DUR_MIN, MOVEMENT_REFRESH_DUR_MAX))
 
 
 func _on_detection_area_area_entered(area):

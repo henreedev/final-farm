@@ -61,6 +61,7 @@ var initial_zoom : Vector2
 var target_zoom : Vector2
 var waiting_for_release := false
 
+@onready var wave_indicator = $S/WaveIndicator
 @onready var bot : AnimatedSprite2D = $S/Bot
 @onready var top : AnimatedSprite2D = $S/Top
 @onready var cam : Camera2D = $Camera2D
@@ -83,6 +84,7 @@ func _ready() -> void:
 	
 func test_connection():
 	print("yay")
+
 
 
 func _init_vars() -> void:
@@ -167,14 +169,6 @@ func _act_on_input():
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
-	if Input.is_action_just_pressed("purchase_seed"):
-		if not shop: shop = get_tree().get_first_node_in_group("shop")
-		shop.queue_throw(Plant.Type.EGGPLANT)
-	if Input.is_action_just_pressed("interact"):
-		if shop.is_open:
-			shop.close()
-		else:
-			shop.open()
 
 func start_throw():
 	if not (holding_throw or swinging or throwing or ignore_swing or waiting_for_release):
@@ -250,6 +244,10 @@ func _create_hoe():
 
 
 #region: Helper functions
+
+func toggle_indicator(on : bool):
+	wave_indicator.visible = on
+
 func _get_throw_root():
 	var root = Vector2(THROW_ROOT)
 	if top.flip_h: root *= Vector2(-1, 1)
