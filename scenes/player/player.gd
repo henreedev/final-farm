@@ -245,6 +245,9 @@ func _on_upgrade_menu_purchased_seed(seed_type: Plant.Type):
 	receive_seed(seed_type)
 	pass
 
+func _on_upgrade_menu_player_upgrade(upgrade_name: String):
+	pass
+
 #endregion: Player action functions
 
 

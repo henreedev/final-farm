@@ -409,23 +409,16 @@ func on_insect_died():
 	if get_tree().get_node_count_in_group("insect") == 0:
 		wave_ended.emit()
 
-func _on_upgrade_menu_check_if_purchasable(upgrade_name: String, price: int) -> void:
-	if bugs_killed >= price:
-		bugs_killed -= price
-		player_ui.bugs_killed = bugs_killed
-		upgrade_purchased.emit(upgrade_name,price)
-		print("emitting upgrade name of: ",upgrade_name)
-	else:
-		print("upgrade failed: not enough muns")
-
 
 func _on_player_ui_bug_killed() -> void:
 	bugs_killed+=1
 
 func _on_test_open_shop_pressed() -> void:
-	print("toggling shop to", shop.is_open)
-	if shop.is_open: shop.close
-	else: shop.open
+	if shop.is_open:
+		shop.close()
+		upgrade_menu.visible = false
+	else: 
+		shop.open()
 	
 func _toggle_shop():
 	print("opening shop")
