@@ -173,8 +173,8 @@ func fire_projectile():
 			projectile.speed = projectile_speed
 			projectile.dir = attack_dir
 			projectile.rotation = attack_dir.angle()
-			var projectile_offset = Vector2(PROJECTILE_OFFSET.x * -1 if facing_right else 1,\
-						PROJECTILE_OFFSET.y * -1 if facing_down else 1) 
+			var projectile_offset = Vector2(PROJECTILE_OFFSET.x * -1 if facing_right else 1.0,\
+						PROJECTILE_OFFSET.y * -1 if facing_down else 1.0) 
 			projectile.position = position + projectile_offset
 			projectile.lifespan = projectile_lifespan
 			projectile.should_fire = true
@@ -248,7 +248,7 @@ func eggplant_arrive(eggplant):
 	bounce_tween.tween_property(eggplant, "global_position:y", eggplant.global_position.y - BOUNCE_HEIGHT, BOUNCE_DUR).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	bounce_tween.tween_property(eggplant, "global_position:y", eggplant.global_position.y, BOUNCE_DUR).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	main.receive_food()
-	create_tween().tween_property(eggplant, "rotation", lerp_angle(eggplant.rotation, 0 if randf() > 0.5 else PI, 0.9), BOUNCE_DUR).set_trans(Tween.TRANS_SINE)
+	create_tween().tween_property(eggplant, "rotation", lerp_angle(eggplant.rotation, 0.0 if randf() > 0.5 else PI, 0.9), BOUNCE_DUR).set_trans(Tween.TRANS_SINE)
 #endregion: Eggplant functions
 
 

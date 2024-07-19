@@ -18,7 +18,6 @@ func _ready() -> void:
 	
 	var actual_duration = duration * (1 - SPAWN_DURATION_RATIO)
 	var half_spawn_dur = duration * SPAWN_DURATION_RATIO / 2.0
-	var flip = 1 if ccw else -1
 	var final_scale_vec = Vector2(final_scale, final_scale)
 	
 	var scale_tween : Tween = create_tween()

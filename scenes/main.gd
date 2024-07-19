@@ -13,6 +13,7 @@ var state : State = State.PREWAVE
 var quarter : Quarter = Quarter.Quarter1
 var third : Third = Third.Third1
 
+
 const MAX_FOOD_HEIGHT = Vector2(0, -24)
 
 @export_group("Waves")
@@ -76,6 +77,7 @@ var plant_scene : PackedScene = preload("res://scenes/plants/plant.tscn")
 var spawner_scene : PackedScene = preload("res://assets/image/map/spawner.tscn")
 var spawners : Array[Spawner] = []
 var shop : Shop
+#var has_init_shop = false
 
 @onready var food_holder = $FoodHolder
 @onready var player_ui: Control = $CanvasLayer/Player_UI
@@ -84,9 +86,9 @@ var shop : Shop
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 
 func _ready() -> void:
-	_connect_signals()
 	_calculate_thresholds()
 	begin_prewave()
+	_connect_signals()
 
 func begin_prewave():
 	if state == State.GAME_OVER: return
@@ -316,7 +318,9 @@ func _calculate_thresholds():
 
 
 func _connect_signals():
+	await get_tree().create_timer(0.1).timeout
 	upgrade_menu.check_if_purchasable.connect(_on_upgrade_menu_check_if_purchasable)
+	shop.toggle_shop.connect(_toggle_shop)
 
 func receive_food():
 	food_amount += 1
@@ -393,14 +397,12 @@ func lose():
 	print("L ski")
 
 
-func _input(event: InputEvent):
+func _input(_event: InputEvent):
 	if not get_tree().paused:
-		
 		if Input.is_action_just_pressed("ui_cancel"):
 			print("pausing game")
 			get_tree().paused = true
 			pause_menu.visible = true
-			#toggle_game_paused.emit(true)
 
 func on_insect_died():
 	await get_tree().create_timer(0.1).timeout
@@ -420,12 +422,14 @@ func _on_upgrade_menu_check_if_purchasable(upgrade_name: String, price: int) -> 
 func _on_player_ui_bug_killed() -> void:
 	bugs_killed+=1
 
-
-
 func _on_test_open_shop_pressed() -> void:
+	print("toggling shop to", shop.is_open)
+	if shop.is_open: shop.close
+	else: shop.open
+	
+func _toggle_shop():
+	print("opening shop")
 	upgrade_menu.visible = true
-	pass # Replace with function body.
-
 
 
 func _on_pause_menu_unpausing_with_esc() -> void:

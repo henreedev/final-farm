@@ -6,15 +6,13 @@ var is_open = true
 var should_wave = true
 var throws = []
 var throwing = false
+signal toggle_shop
 
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var wave_timer : Timer = $WaveTimer
 @onready var interact_icon : AnimatedSprite2D = $InteractIcon
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 func _input(event: InputEvent) -> void:
 	if player_in_range and is_open and event.is_action_pressed("interact"):
@@ -22,6 +20,7 @@ func _input(event: InputEvent) -> void:
 
 func player_interact():
 	print("Player interacted with shop (TODO)")
+	toggle_shop.emit()
 
 func throw():
 	animation = "throw" if is_open else "closed_throw"
@@ -55,8 +54,8 @@ func wave():
 func _release_seed(type : Plant.Type):
 	var seed_bag : SeedBag = seed_bag_scene.instantiate()
 	seed_bag.thrown_to_player = true
+	seed_bag.type = type
 	main.add_child(seed_bag)
-	
 
 func queue_throw(type : Plant.Type):
 	throws.append(type)

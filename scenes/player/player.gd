@@ -3,6 +3,7 @@ class_name Player
 
 #region: Globals
 signal throw_tile_changed
+signal seed_count_changed
 
 const TOP_BASE_OFFSET = Vector2i(0, -16)
 const TOP_HIGHER_OFFSET = Vector2i(0, -17)
@@ -31,8 +32,8 @@ var swinging = false
 var throwing = false
 var holding_throw = false
 # Tracks how many of each seed you have
-var seed_counts = {Plant.Type.EGGPLANT : 10} 
-var equipped_seed_type : Plant.Type = Plant.Type.BROCCOLI
+@export var seed_counts = {Plant.Type.EGGPLANT : 10}
+var equipped_seed_type : Plant.Type = Plant.Type.EGGPLANT
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 var seed_bag : SeedBag
 # Swing vars
@@ -49,7 +50,7 @@ var hoe_scale = 1.0
 
 
 # Throw vars
-var throw_tween : Tween 
+var throw_tween : Tween
 var throw_zoomout_ratio = 0.7
 var throw_zoomout_time = 1.5
 var throw_duration = 1.5
@@ -79,12 +80,10 @@ var shop : Shop # onready does not work because shop is instantiated in a TileMa
 #region: Built-in functions
 func _ready() -> void:
 	_init_vars()
-	
-	#testing direct connection from upgrade menu to player
-	upgrade_menu.purchased_seed_eggplant.connect(test_connection)
-	
-func test_connection():
-	print("yay")
+	_connect_signals()
+
+func _connect_signals():
+	upgrade_menu.purchased_seed.connect(_on_upgrade_menu_purchased_seed)
 
 
 
@@ -94,9 +93,9 @@ func _init_vars() -> void:
 	await get_tree().create_timer(0.01).timeout
 	shop = get_tree().get_first_node_in_group("shop")
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var input_direction := Input.get_vector("Left","Right","Up","Down")
-	if input_direction.y and input_direction.x: 
+	if input_direction.y and input_direction.x:
 		input_direction.y *= ISOMETRIC_MOVEMENT_ADJUST
 		input_direction = input_direction.normalized()
 	elif input_direction.y:
@@ -141,11 +140,11 @@ func _pick_legs_animation():
 	bot.flip_h = not going_left
 	bot.play()
 
-func _pick_arms_animation(): 
+func _pick_arms_animation():
 	if holding_throw or throwing or swinging:
 		if swinging:
 			pass
-		elif holding_throw or throwing: 
+		elif holding_throw or throwing:
 			top.flip_h = not mouse_left
 	else:
 		if moving:
@@ -200,9 +199,9 @@ func _calc_throw_zoom(delta):
 		var total = throw_zoomout_time
 		var time_elapsed = total - throw_zoom_timer.time_left if not throw_zoom_timer.is_stopped() else throw_zoomout_time
 		const DELAY_RATIO = 0.38
-		var ratio = clampf(time_elapsed / total - DELAY_RATIO, 0, 1) / (1 - DELAY_RATIO) 
+		var ratio = clampf(time_elapsed / total - DELAY_RATIO, 0, 1) / (1 - DELAY_RATIO)
 		target_zoom = lerp(initial_zoom, initial_zoom * throw_zoomout_ratio, ratio)
-	else: 
+	else:
 		const STR = 2.0
 		target_zoom = target_zoom.move_toward(initial_zoom, STR * delta)
 
@@ -228,7 +227,7 @@ func swing():
 
 func _create_hoe():
 	var root_pos = HOE_ROOT_POS_TOP if mouse_up else HOE_ROOT_POS_BOT
-	root_pos.x *= -1 if not mouse_left else 1 
+	root_pos.x *= -1 if not mouse_left else 1
 	var angle = (get_local_mouse_position() - root_pos).angle()
 	var hoe : Hoe = hoe_scene.instantiate()
 	hoe.position = root_pos
@@ -241,6 +240,10 @@ func _create_hoe():
 	hoe.final_scale = hoe_scale
 	hoe.ccw = not top.flip_h
 	$S.add_child(hoe)
+
+func _on_upgrade_menu_purchased_seed(seed_type: Plant.Type):
+	receive_seed(seed_type)
+	pass
 
 #endregion: Player action functions
 
@@ -259,6 +262,7 @@ func _get_throw_root():
 func receive_seed(seed_type : Plant.Type):
 	seed_counts[seed_type] += 1
 	print("Player now has ", seed_counts[seed_type], " of type ", seed_type)
+	seed_count_changed.emit()
 
 func _show_arc():
 	if showing_arc:
@@ -302,7 +306,7 @@ func get_tile_pos_at_mouse():
 				indicator_pos = center_pos
 				can_plant = true
 				break
-	if coords != prev_coords: 
+	if coords != prev_coords:
 		throw_tile_changed.emit()
 		_spawn_indicator(indicator_pos)
 		prev_coords = coords

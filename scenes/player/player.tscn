@@ -357,13 +357,24 @@ func set_spawners(spawners : Array[Spawner] = []):
 	spawner_4 = s4
 
 func _process(delta):
-	if spawner_1: a1.look_at(spawner_1.position)
-	else: a1.hide()
-	if spawner_2: a2.look_at(spawner_2.position)
+	if spawner_1: 
+		a1.look_at(spawner_1.position)
+		a1.show()
+		show()
+	else: 
+		a1.hide()
+		hide()
+	if spawner_2: 
+		a2.look_at(spawner_2.position)
+		a2.show()
 	else: a2.hide()
-	if spawner_3: a3.look_at(spawner_3.position)
+	if spawner_3: 
+		a3.look_at(spawner_3.position)
+		a3.show()
 	else: a3.hide()
-	if spawner_4: a4.look_at(spawner_4.position)
+	if spawner_4: 
+		a4.look_at(spawner_4.position)
+		a4.show()
 	else: a4.hide()
 "
 
@@ -404,9 +415,10 @@ autoplay = "idle"
 offset = Vector2(0, -16)
 
 [node name="WaveIndicator" type="Sprite2D" parent="S"]
+modulate = Color(1, 1, 1, 0.751)
 material = SubResource("ShaderMaterial_8y8dn")
 position = Vector2(0, -40)
-scale = Vector2(0.7, 0.7)
+scale = Vector2(0.805, 0.805)
 texture = ExtResource("6_5vxee")
 script = SubResource("GDScript_vy72f")
 

@@ -97,7 +97,7 @@ func _on_frame_changed():
 	if frame == 5:
 		spawn_plant.emit()
 
-func _process(delta):
+func _process(_delta):
 	if thrown_to_player:
 		global_position = Utils.calc_point_on_arc_between(shop.global_position + Vector2(-2, 2), player.global_position + Vector2(0, -16), prog_to_player)
 		

@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://bkcmq0oly4j8w"]
+[gd_scene load_steps=5 format=3 uid="uid://bkcmq0oly4j8w"]
 
 [ext_resource type="Script" path="res://scenes/UI/upgrade_menu.gd" id="1_yhjbo"]
+[ext_resource type="Texture2D" uid="uid://18raibx3000c" path="res://resources/shop-ui.png" id="2_vesi3"]
+[ext_resource type="Texture2D" uid="uid://dmwpl1jfc7mdb" path="res://resources/eggplant-packet-placeholder.png" id="3_g4jqk"]
+[ext_resource type="Texture2D" uid="uid://c3wpjxeeslmsl" path="res://resources/shop-seed-bag.png" id="3_sqy7p"]
 
 [node name="Upgrade_Menu" type="Control" groups=["upgrade_menu"]]
 layout_mode = 3
@@ -28,10 +31,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 150
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 150
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -58,7 +61,13 @@ text = "Buy Speed Up :10"
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/TabContainer/Seeds"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/TabContainer/Seeds"]
+layout_mode = 2
+offset_right = 752.0
+offset_bottom = 317.0
+texture = ExtResource("2_vesi3")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/TabContainer/Seeds/TextureRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,16 +75,39 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Seeds/ScrollContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+alignment = 1
 
-[node name="seed_eggplant" type="Button" parent="MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer"]
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer"]
 layout_mode = 2
-text = "Buy Eggplant"
+texture_normal = ExtResource("3_sqy7p")
+texture_hover = ExtResource("3_g4jqk")
 
-[node name="seed_tomato" type="Button" parent="MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer/TextureButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Eggplant"
+
+[node name="seed_tomato" type="Button" parent="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer"]
 layout_mode = 2
 text = "Buy other"
+
+[node name="seed_eggplant" type="Button" parent="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+text = "Buy Eggplant"
 
 [node name="TabBar3" type="TabBar" parent="MarginContainer/TabContainer"]
 visible = false
@@ -89,6 +121,6 @@ size_flags_vertical = 8
 text = "Close Shop"
 
 [connection signal="pressed" from="MarginContainer/TabContainer/Player Upgrades/ScrollContainer/player_speed" to="." method="_on_player_speed_pressed"]
-[connection signal="pressed" from="MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer/seed_eggplant" to="." method="_on_seed_eggplant_pressed"]
-[connection signal="pressed" from="MarginContainer/TabContainer/Seeds/ScrollContainer/VBoxContainer/seed_tomato" to="." method="_on_seed_tomato_pressed"]
+[connection signal="pressed" from="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer/seed_tomato" to="." method="_on_seed_tomato_pressed"]
+[connection signal="pressed" from="MarginContainer/TabContainer/Seeds/TextureRect/ScrollContainer/HBoxContainer/seed_eggplant" to="." method="_on_seed_eggplant_pressed"]
 [connection signal="pressed" from="MarginContainer/exit" to="." method="_on_exit_pressed"]

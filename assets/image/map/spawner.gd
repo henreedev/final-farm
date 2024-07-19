@@ -34,7 +34,3 @@ func _spawn_insect(type : Insect.Type):
 								randf_range(-spawn_radius, spawn_radius) / 2)
 	insect.position = position + random_offset
 	main.add_child(insect)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
