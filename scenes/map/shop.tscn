@@ -320,8 +320,7 @@ animations = [{
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_x0xfu")
 sprite_frames = SubResource("SpriteFrames_j14be")
-animation = &"idle"
-autoplay = "idle"
+animation = &"closed_idle"
 offset = Vector2(0.5, -10.5)
 script = ExtResource("3_jxoqr")
 

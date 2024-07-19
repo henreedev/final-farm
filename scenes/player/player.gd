@@ -69,6 +69,7 @@ var waiting_for_release := false
 @onready var ignore_swing_timer : Timer = $IgnoreSwingTimer
 @onready var line : Line2D = $LineContainer/Line2D
 @onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
+@onready var main : Main = get_tree().get_first_node_in_group("main")
 var shop : Shop # onready does not work because shop is instantiated in a TileMapLayer after _ready
 
 @onready var upgrade_menu = get_tree().get_first_node_in_group("upgrade_menu")
@@ -169,7 +170,9 @@ func _act_on_input():
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
-
+	if Input.is_action_just_pressed("start_wave"):
+		main.trigger_wave_begun()
+		
 func start_throw():
 	if not (holding_throw or swinging or throwing or ignore_swing or waiting_for_release):
 		holding_throw = true

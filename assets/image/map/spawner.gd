@@ -7,14 +7,11 @@ var insect_scene : PackedScene = preload("res://scenes/insects/insect.tscn")
 var insects_to_spawn : Array[WaveGroup] 
 var progress := 0.0
 @onready var main : Main = get_tree().get_first_node_in_group("main")
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	if not insects_to_spawn: print("EPIC FAIL SPAWNER DIDNT HAVE INSECTS TO SPAWN LOL")
 
 func begin_spawning():
 	var spawner_tween = create_tween().set_parallel()
 	for wave_group : WaveGroup in insects_to_spawn:
-		spawner_tween.tween_callback(_spawn_group.bind(wave_group)).set_delay(wave_group.spawn_at)
+		spawner_tween.tween_callback(_spawn_group.bind(wave_group)).set_delay(wave_group.spawn_time)
 		
 func _spawn_group(wave_group : WaveGroup):
 	if wave_group.streams:

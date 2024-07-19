@@ -71,9 +71,11 @@ var quarter_4_threshold_2 : float
 
 var food_supply_height = Vector2(0,0)
 var food_supply_plant : Plant 
+var plants_paused := false
 var plant_scene : PackedScene = preload("res://scenes/plants/plant.tscn")
 var spawner_scene : PackedScene = preload("res://assets/image/map/spawner.tscn")
 var spawners : Array[Spawner] = []
+var shop : Shop
 
 @onready var food_holder = $FoodHolder
 @onready var player_ui: Control = $CanvasLayer/Player_UI
@@ -96,7 +98,7 @@ func begin_prewave():
 	_pause_plants(true)
 	_create_spawners()
 	_toggle_dir_indicator(true)
-	#_open_shop()
+	_toggle_shop_open(true)
 	# TODO show wave info
 	await wave_begun
 	begin_wave()
@@ -109,6 +111,18 @@ func begin_wave():
 	_toggle_dir_indicator(false)
 	await wave_ended
 	begin_prewave()
+
+func _toggle_shop_open(open : bool):
+	await get_tree().create_timer(0.05).timeout
+	if not shop:
+		shop = get_tree().get_first_node_in_group("shop")
+	if open:
+		shop.open()
+	else:
+		shop.close()
+
+func trigger_wave_begun():
+	wave_begun.emit()
 
 func _toggle_dir_indicator(on : bool):
 	if on:
@@ -147,6 +161,8 @@ func _create_spawners():
 			split_wave_group_with_leftover.streams = split_wave_group.streams
 			split_wave_group_with_leftover.stream_duration = split_wave_group.stream_duration
 			wave_delegation_with_leftover.append(split_wave_group_with_leftover)
+		else:
+			wave_delegation_with_leftover.append(split_wave_group)
 	# Give spawners the wave groups; first spawner gets leftovers :yum:
 	var first = true
 	for i in range(num_spawners):
@@ -182,13 +198,14 @@ func _pick_random_spawner_pos(index : int, total : int):
 	var rand_angle = randf_range(start, end)
 	
 	const ISOMETRIC_ADJUST = 0.5
-	const SPAWNER_DIST_RADIUS = 16 * 25
+	const SPAWNER_DIST_RADIUS = 16 * 30
 	var spawner_pos = Vector2.from_angle(rand_angle) * SPAWNER_DIST_RADIUS
 	spawner_pos.y *= ISOMETRIC_ADJUST
 	return spawner_pos
 
 
 func _pause_plants(paused : bool):
+	plants_paused = paused
 	for plant : Plant in get_tree().get_nodes_in_group("plant"):
 		plant.paused = paused
 

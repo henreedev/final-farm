@@ -81,6 +81,7 @@ func _spawn_plant():
 	var plant : Plant = plant_scene.instantiate()
 	plant.type = type
 	plant.position = global_position
+	plant.paused = main.plants_paused
 	main.add_child(plant)
 
 func pick_animation():

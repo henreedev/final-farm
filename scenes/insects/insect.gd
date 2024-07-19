@@ -51,6 +51,7 @@ var paused := false
 func _ready():
 	pick_values_on_type()
 	retarget()
+	movement_timer.start(1.0)
 
 func pick_values_on_type():
 	match type:

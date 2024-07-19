@@ -48,8 +48,8 @@ var attack_dir : Vector2
 var attacking := false
 var growing := true
 var paused := false
-var facing_right := false
-var facing_down := false
+var facing_right := randf() > 0.5
+var facing_down := true
 #endregion: Other vars
 
 @onready var attack_timer : ScalableTimer = $AttackTimer
