@@ -35,7 +35,6 @@ func _init_vars():
 func connect_signals():
 	await get_tree().create_timer(0.02).timeout
 	shop.toggle_shop.connect(_toggle_shop)
-	upgrade_menu.check_if_purchasable.connect(_on_upgrade_menu_check_if_purchasable)
 
 func receive_food():
 	food_amount += 1
@@ -73,15 +72,6 @@ func _input(event: InputEvent):
 			#toggle_game_paused.emit(true)
 
 
-func _on_upgrade_menu_check_if_purchasable(upgrade_name: String, price: int) -> void:
-	if bugs_killed >= price:
-		bugs_killed -= price
-		player_ui.bugs_killed = bugs_killed
-		upgrade_purchased.emit(upgrade_name,price)
-		print("emitting upgrade name of: ",upgrade_name)
-	else:
-		print("upgrade failed: not enough muns")
-
 
 func _on_player_ui_bug_killed() -> void:
 	bugs_killed+=1
@@ -89,9 +79,11 @@ func _on_player_ui_bug_killed() -> void:
 
 
 func _on_test_open_shop_pressed() -> void:
-	print("toggling shop to", shop.is_open)
-	if shop.is_open: shop.close
-	else: shop.open
+	if shop.is_open:
+		shop.close()
+		upgrade_menu.visible = false
+	else: 
+		shop.open()
 	
 func _toggle_shop():
 	print("opening shop")

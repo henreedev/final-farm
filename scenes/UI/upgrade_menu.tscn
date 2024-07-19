@@ -57,6 +57,9 @@ grow_vertical = 2
 layout_mode = 2
 text = "Buy Speed Up :10"
 
+[node name="Button" type="Button" parent="MarginContainer/TabContainer/Player Upgrades/ScrollContainer"]
+layout_mode = 2
+
 [node name="Seeds" type="TabBar" parent="MarginContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 1

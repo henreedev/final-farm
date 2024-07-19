@@ -22,7 +22,6 @@ func _input(event: InputEvent) -> void:
 		player_interact()
 
 func player_interact():
-	print("Player interacted with shop (TODO)")
 	toggle_shop.emit()
 
 func throw():
@@ -38,6 +37,8 @@ func close():
 	play()
 	is_open = false
 	wave_timer.paused = true
+	interact_icon.hide()
+	interact_icon.stop()	
 
 func open():
 	if throwing:
@@ -46,6 +47,9 @@ func open():
 	play()
 	is_open = true
 	wave_timer.paused = false
+	if player_in_range:
+			interact_icon.show()
+			interact_icon.play()
 
 func wave():
 	animation = "wave"
@@ -67,8 +71,9 @@ func queue_throw(type : Plant.Type):
 func _on_interact_area_body_entered(body: Node2D) -> void:
 	if body is Player:
 		player_in_range = true
-		interact_icon.show()
-		interact_icon.play()
+		if is_open:
+			interact_icon.show()
+			interact_icon.play()
 
 func _on_interact_area_body_exited(body: Node2D) -> void:
 	if body is Player:
@@ -102,6 +107,7 @@ func _on_frame_changed() -> void:
 			elif frame == 2:
 				if not throws.is_empty(): throw()
 				else: throwing = false
+
 
 
 func _on_wave_timer_timeout() -> void:

@@ -1,6 +1,6 @@
 extends Control
-signal check_if_purchasable
 signal purchased_seed(type: Plant.Type)
+signal player_upgrade(tempstring: String)
 var isPurchased := [false]
 @onready var main = get_tree().get_first_node_in_group("main")
 
@@ -48,4 +48,5 @@ func _on_seed_eggplant_pressed() -> void:
 
 
 func _on_player_speed_pressed() -> void:
+	player_upgrade.emit("speed")
 	pass # Replace with function body.

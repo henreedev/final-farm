@@ -169,13 +169,6 @@ func _act_on_input():
 	if Input.is_action_just_pressed("purchase_seed"):
 		if not shop: shop = get_tree().get_first_node_in_group("shop")
 		shop.queue_throw(Plant.Type.EGGPLANT)
-"""
-	if Input.is_action_just_pressed("interact"):
-		if shop.is_open:
-			shop.close()
-		else:
-			shop.open()
-			"""
 
 func start_throw():
 	if not (holding_throw or swinging or throwing or ignore_swing or waiting_for_release):
@@ -248,6 +241,9 @@ func _create_hoe():
 
 func _on_upgrade_menu_purchased_seed(seed_type: Plant.Type):
 	receive_seed(seed_type)
+	pass
+
+func _on_upgrade_menu_player_upgrade(upgrade_name: String):
 	pass
 
 #endregion: Player action functions
