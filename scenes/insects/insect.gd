@@ -57,8 +57,8 @@ func pick_values_on_type():
 	match type:
 		Type.FLY:
 			asprite.animation = "fly_front"
-			health = 30
-			damage = 10
+			health = 3
+			damage = 25
 			attack_cooldown = 1.0
 			attack_range = 0
 			detection_range = 8

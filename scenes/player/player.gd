@@ -33,7 +33,7 @@ var throwing = false
 var holding_throw = false
 # Tracks how many of each seed you have
 @export var seed_counts = {Plant.Type.EGGPLANT : 10}
-var equipped_seed_type : Plant.Type = Plant.Type.EGGPLANT
+var equipped_seed_type : Plant.Type = Plant.Type.BROCCOLI
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 var seed_bag : SeedBag
 # Swing vars

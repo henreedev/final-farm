@@ -319,7 +319,6 @@ func _calculate_thresholds():
 
 func _connect_signals():
 	await get_tree().create_timer(0.1).timeout
-	upgrade_menu.check_if_purchasable.connect(_on_upgrade_menu_check_if_purchasable)
 	shop.toggle_shop.connect(_toggle_shop)
 
 func receive_food():

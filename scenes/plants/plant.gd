@@ -3,7 +3,7 @@ class_name Plant
 
 #region: Global vars
 enum Type {EGGPLANT, BROCCOLI, FOOD_SUPPLY}
-enum Level {Level1, Level2, Level3A, Level3B}
+enum Level {Level0, Level1, Level2, Level3}
 
 const PROJECTILE_OFFSET = Vector2(-4, 2)
 
@@ -63,21 +63,48 @@ func _ready() -> void:
 
 func pick_stats():
 	match type:
+		Type.FOOD_SUPPLY:
+			health = 100
+			attack_range = 0
 		Type.EGGPLANT:
 			cost = 5
 			health = 100
 			attack_range = 0
-		Type.FOOD_SUPPLY:
-			health = 100
-			attack_range = 0
 		Type.BROCCOLI:
-			health = 100
-			damage = 1
-			attack_range = 3
-			attack_cooldown = 1.0
-			projectile_lifespan = 0.7
-			projectile_radius = 3
-			projectile_speed = 90.0
+			match level:
+				Level.Level0:
+					health = 100
+					damage = 1
+					attack_range = 3
+					attack_cooldown = 1.0
+					projectile_lifespan = 0.7
+					projectile_radius = 3
+					projectile_speed = 90.0
+				Level.Level1:
+					health = 125
+					damage = 2
+					attack_range = 3
+					attack_cooldown = 1.0
+					projectile_lifespan = 0.7
+					projectile_radius = 3
+					projectile_speed = 90.0
+				Level.Level2:
+					health = 150
+					damage = 3
+					attack_range = 4
+					attack_cooldown = .9
+					projectile_lifespan = 0.7
+					projectile_radius = 3
+					projectile_speed = 90.0
+				Level.Level3:
+					health = 200
+					damage = 4
+					attack_range = 4
+					attack_cooldown = .8
+					projectile_lifespan = 0.7
+					projectile_radius = 3
+					projectile_speed = 90.0
+					
 	Utils.set_range_area_radii($AttackArea/CollisionShape2D, attack_range)
 
 func _do_attack_cooldown():
