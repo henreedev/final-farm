@@ -1,5 +1,16 @@
 shader_type canvas_item;
+//render_mode unshaded;
+
+// Bag selected outline color (black)
+uniform vec4 outline_color_1 : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+// Insect targeting outline color (red)
+uniform vec4 outline_color_2 : source_color = vec4(1.0, 0.0, 0.0, 1.0);
+uniform bool outline_1_active = false;
+uniform bool outline_2_active = false;
+
+
 varying vec4 modulate;
+
 void vertex()
 {
     modulate = COLOR;
@@ -16,8 +27,35 @@ vec4 texturePointSmooth(sampler2D tex, vec2 uv) {
     return textureLod(tex, uv + (clamp(delta_pixel / ddxy, 0.0, 1.0) - delta_pixel) * pixel, min(mip.x, mip.y));
 }
 
+
+
+
+
 void fragment() {
-    vec4 Texture = texturePointSmooth(TEXTURE, UV);
+	vec4 Texture = texturePointSmooth(TEXTURE, UV);
     COLOR = Texture.rgba;
+	
+	vec4 outline_color;
+	if (outline_1_active) {
+		outline_color = outline_color_1;
+	} else if (outline_2_active) {
+		outline_color = outline_color_2;
+	} else {
+		
+	}
+	float size_x = 1.0/float(textureSize(TEXTURE, 0).x);
+	float size_y = 1.0/float(textureSize(TEXTURE, 0).y);
+	vec4 sprite_color = COLOR;
+	float alpha = -4.0 * sprite_color.a;
+	if (!outline_1_active && !outline_2_active) {
+		alpha = 0.0;
+	} else {
+		alpha += texturePointSmooth(TEXTURE, UV + vec2(size_x, 0)).a;
+		alpha += texturePointSmooth(TEXTURE, UV + vec2(-size_x, 0)).a;
+		alpha += texturePointSmooth(TEXTURE, UV + vec2(0, size_y)).a;
+		alpha += texturePointSmooth(TEXTURE, UV + vec2(0, -size_y)).a;
+	}
+	vec4 final_color = mix(sprite_color, outline_color, clamp(alpha, 0.0, 1.0));
+	COLOR = vec4(final_color.rgb, clamp(abs(alpha) + sprite_color.a, 0.0, 1.0));
 	COLOR = COLOR * modulate;
 }

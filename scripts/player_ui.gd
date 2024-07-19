@@ -9,7 +9,6 @@ signal bug_killed
 func _ready() -> void:
 	connect_signals()
 	$ItemList.select(0)
-	_on_player_seed_count_changed()
 
 func connect_signals():
 	player.seed_count_changed.connect(_on_player_seed_count_changed)
@@ -50,7 +49,7 @@ func _on_test_kill_increase_pressed() -> void:
 	bugs_killed+=1
 	$TextureRect/Label.text = str("Bugs Killed:", bugs_killed)
 
-func _on_player_seed_count_changed():
+func _on_player_seed_count_changed(type : Plant.Type):
 	var cur_pos = 0
 	for seed_type in player.seed_counts.keys():
 		print(player.seed_counts[seed_type])

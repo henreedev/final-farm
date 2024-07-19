@@ -58,7 +58,7 @@ func wave():
 func _release_seed(type : Plant.Type):
 	var seed_bag : SeedBag = seed_bag_scene.instantiate()
 	seed_bag.thrown_to_player = true
-	seed_bag.type = type
+	seed_bag.type = Plant.Type.BROCCOLI # FIXME 
 	main.add_child(seed_bag)
 
 func queue_throw(type : Plant.Type):

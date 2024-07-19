@@ -36,6 +36,7 @@ player=""
 floor=""
 plant=""
 insect=""
+inventory=""
 
 [gui]
 

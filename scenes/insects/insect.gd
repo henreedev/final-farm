@@ -49,6 +49,7 @@ var paused := false
 #region: Universal functions
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Utils.give_zoom_shader(self)
 	pick_values_on_type()
 	retarget()
 	movement_timer.start(1.0)

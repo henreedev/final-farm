@@ -8,6 +8,10 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lxin"]
 shader = ExtResource("1_7oxxv")
+shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
+shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
+shader_parameter/outline_1_active = false
+shader_parameter/outline_2_active = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uhhqc"]
 atlas = ExtResource("2_hhxel")

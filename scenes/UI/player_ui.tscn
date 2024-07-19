@@ -1,13 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://cqu2nhyajf5dp"]
+[gd_scene load_steps=8 format=3 uid="uid://cqu2nhyajf5dp"]
 
 [ext_resource type="Texture2D" uid="uid://bec8ggnr76ri7" path="res://assets/image/seeds/eggplant/eggplant-seeds.png" id="1_f8kdu"]
 [ext_resource type="Script" path="res://scripts/player_ui.gd" id="1_rl3jt"]
 [ext_resource type="Theme" uid="uid://1brel1qvmfio" path="res://assets/themes/new_theme.tres" id="2_26sb1"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="3_01w31"]
 [ext_resource type="Texture2D" uid="uid://c66pqva3pob4x" path="res://Eggplant_Emoji_grande.webp" id="4_7xtwo"]
+[ext_resource type="PackedScene" uid="uid://8ueeb1pc60hq" path="res://scenes/UI/Inventory.tscn" id="6_wgex6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e8do0"]
 shader = ExtResource("3_01w31")
+shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
+shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
+shader_parameter/outline_1_active = false
+shader_parameter/outline_2_active = false
 
 [node name="Player_UI" type="Control"]
 layout_mode = 3
@@ -19,6 +24,7 @@ grow_vertical = 2
 script = ExtResource("1_rl3jt")
 
 [node name="ItemList" type="ItemList" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -44,6 +50,7 @@ item_3/text = "item4"
 item_3/icon = ExtResource("1_f8kdu")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_e8do0")
 layout_mode = 0
 offset_right = 40.0
@@ -59,6 +66,7 @@ offset_bottom = 31.0
 text = "Bug Kills: 0"
 
 [node name="FoodProgressBar" type="TextureProgressBar" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -71,7 +79,6 @@ grow_horizontal = 2
 scale = Vector2(0.2, 0.2)
 max_value = 36.885
 value = 6.0
-exp_edit = true
 rounded = true
 texture_under = ExtResource("4_7xtwo")
 texture_progress = ExtResource("4_7xtwo")
@@ -79,11 +86,26 @@ tint_under = Color(0, 0, 0, 1)
 tint_over = Color(0, 1, 0, 1)
 
 [node name="TEST kill increase" type="Button" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 144.0
 offset_top = 12.0
 offset_right = 152.0
 offset_bottom = 20.0
 text = "TEST_ADD_1_KILL"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -75.73
+offset_bottom = -75.73
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Inventory" parent="Control" instance=ExtResource("6_wgex6")]
 
 [connection signal="pressed" from="TEST kill increase" to="." method="_on_test_kill_increase_pressed"]

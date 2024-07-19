@@ -3,6 +3,10 @@ class_name Utils
 
 static var num_points = 50
 static var arc_height = 50
+static var better_zoom_shader = preload("res://scenes/map/better-zoom.gdshader")
+static func give_zoom_shader(node_with_mat : Node2D):
+	node_with_mat.material = ShaderMaterial.new()
+	node_with_mat.material.shader = better_zoom_shader
 
 static func set_range_area_radii(shape : CollisionShape2D, tile_radius : int):
 	shape.shape.radius = 8 + 16 * tile_radius

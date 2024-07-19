@@ -3,7 +3,7 @@ class_name Player
 
 #region: Globals
 signal throw_tile_changed
-signal seed_count_changed
+signal seed_count_changed(type : Plant.Type)
 
 const TOP_BASE_OFFSET = Vector2i(0, -16)
 const TOP_HIGHER_OFFSET = Vector2i(0, -17)
@@ -32,7 +32,10 @@ var swinging = false
 var throwing = false
 var holding_throw = false
 # Tracks how many of each seed you have
-@export var seed_counts = {Plant.Type.EGGPLANT : 10}
+var seed_counts = { # TODO add all plants
+	Plant.Type.EGGPLANT : 1,
+	Plant.Type.BROCCOLI : 0,
+	}
 var equipped_seed_type : Plant.Type = Plant.Type.BROCCOLI
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 var seed_bag : SeedBag
@@ -74,7 +77,7 @@ var waiting_for_release := false
 var shop : Shop # onready does not work because shop is instantiated in a TileMapLayer after _ready
 
 @onready var upgrade_menu = get_tree().get_first_node_in_group("upgrade_menu")
-
+@onready var inventory : Inventory = get_tree().get_first_node_in_group("inventory")
 #endregion: Globals
 
 #region: Built-in functions
@@ -88,6 +91,7 @@ func _connect_signals():
 
 
 func _init_vars() -> void:
+	scale = Vector2(1, 1)
 	initial_zoom = cam.zoom
 	target_zoom = initial_zoom
 	await get_tree().create_timer(0.01).timeout
@@ -171,6 +175,8 @@ func _act_on_input():
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 	if Input.is_action_just_pressed("start_wave"):
 		main.trigger_wave_begun()
+	if Input.is_action_just_pressed("purchase_seed"):
+		shop.queue_throw(inventory.selected_type)
 		
 func start_throw():
 	if not (holding_throw or swinging or throwing or ignore_swing or waiting_for_release):
@@ -265,7 +271,7 @@ func _get_throw_root():
 func receive_seed(seed_type : Plant.Type):
 	seed_counts[seed_type] += 1
 	print("Player now has ", seed_counts[seed_type], " of type ", seed_type)
-	seed_count_changed.emit()
+	seed_count_changed.emit(seed_type)
 
 func _show_arc():
 	if showing_arc:

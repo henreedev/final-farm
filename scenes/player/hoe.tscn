@@ -7,6 +7,10 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cgcit"]
 shader = ExtResource("1_srv8m")
+shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
+shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
+shader_parameter/outline_1_active = false
+shader_parameter/outline_2_active = false
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kbn6t"]
 animations = [{

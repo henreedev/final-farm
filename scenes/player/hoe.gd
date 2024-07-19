@@ -36,7 +36,6 @@ func _ready() -> void:
 		rot_tween.tween_property(self, "rotation", start_rot, duration).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
 	rot_tween.tween_callback(queue_free)
 	
-	ccw = not ccw
 
 func _on_hitbox_area_entered(area) -> void:
 	var parent = area.get_parent()

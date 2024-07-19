@@ -10,10 +10,10 @@ const PROJECTILE_OFFSET = Vector2(-4, 2)
 signal died
 
 var type : Type = Type.EGGPLANT
-var level : Level = Level.Level1
 
 var cost : int
 var health : int
+var health_drain_percent : float
 var time_to_grow : int
 var damage : int
 var attack_range : int
@@ -34,10 +34,15 @@ var is_dead := false
 
 #region: Eggplant vars
 signal eggplant_arrived
+static var eggplant_level : Level = Level.Level0
 var eggplant_scene : PackedScene = preload("res://scenes/plants/eggplant.tscn")
 var eggplant_spawn_pos = Vector2(12, -13)
 var eggplant_spawn_angle = -PI / 4.0
 #endregion: Eggplant vars
+
+#region: Broccoli vars
+static var broccoli_level : Level = Level.Level0
+#endregion: Broccoli vars
 
 #region: Other vars
 var projectile_scene : PackedScene = preload("res://scenes/plants/projectile.tscn")
@@ -70,8 +75,9 @@ func pick_stats():
 			cost = 5
 			health = 100
 			attack_range = 0
+			flip_h = facing_right
 		Type.BROCCOLI:
-			match level:
+			match broccoli_level:
 				Level.Level0:
 					health = 100
 					damage = 1
