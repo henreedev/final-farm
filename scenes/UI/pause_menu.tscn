@@ -50,6 +50,14 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 50
 
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(330.275, 0)
+layout_mode = 2
+theme = ExtResource("3_pnmeu")
+bbcode_enabled = true
+text = "[wave amp=50.0 freq=5.0 connected=1]Final Farm[/wave]"
+fit_content = true
+
 [node name="Continue" type="Button" parent="MarginContainer/VBoxContainer"]
 use_parent_material = true
 custom_minimum_size = Vector2(245.44, 0)
@@ -79,6 +87,9 @@ layout_mode = 2
 theme = ExtResource("3_pnmeu")
 keep_pressed_outside = true
 text = "Exit"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
 
 [node name="options_menu" parent="MarginContainer" instance=ExtResource("2_n4544")]
 layout_mode = 2

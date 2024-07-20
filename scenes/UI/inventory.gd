@@ -12,7 +12,7 @@ var selected_type : Plant.Type
 var bag_icon_scene : PackedScene = preload("res://scenes/UI/bag_icon.tscn")
 
 @onready var player : Player = get_tree().get_first_node_in_group("player")
-
+@onready var shop_inventory : ShopInventory = get_tree().get_first_node_in_group("shop_inventory")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_initialize_seen_types()
@@ -44,6 +44,10 @@ func _add_icon(type : Plant.Type):
 		add_child(bag_icon)
 		selected_icon_index = len(icons) - 1
 		_update_icons()
+		await get_tree().create_timer(0.5).timeout
+		if shop_inventory:
+			var bag : ShopBag = shop_inventory.types_to_bags[type]
+			bag.discover()
 
 func _input(event):
 	var scroll_dir = 0

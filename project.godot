@@ -37,6 +37,7 @@ floor=""
 plant=""
 insect=""
 inventory=""
+shop_inventory=""
 
 [gui]
 

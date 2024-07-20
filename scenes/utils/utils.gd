@@ -153,7 +153,7 @@ static func get_plant_upgrade_blurb(type : Plant.Type, level : Plant.Level):
 				Plant.Level.Level1:
 					return "Level 1 upgrade blurb not added yet"
 				Plant.Level.Level2: 
-					return "Level 1 upgrade blurb not added yet"
+					return "Level 2 upgrade blurb not added yet"
 				Plant.Level.Level3: 
 					return "Level 3 upgrade blurb not added yet"
 		Plant.Type.BROCCOLI:
@@ -161,7 +161,7 @@ static func get_plant_upgrade_blurb(type : Plant.Type, level : Plant.Level):
 				Plant.Level.Level1:
 					return "Level 1 upgrade blurb not added yet"
 				Plant.Level.Level2: 
-					return "Level 1 upgrade blurb not added yet"
+					return "Level 2 upgrade blurb not added yet"
 				Plant.Level.Level3: 
 					return "Level 3 upgrade blurb not added yet"
 		_:

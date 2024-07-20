@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" path="res://scenes/UI/shop_inventory.gd" id="1_afgk4"]
 
-[node name="ShopInventory" type="Node2D"]
+[node name="ShopInventory" type="Node2D" groups=["shop_inventory"]]
 script = ExtResource("1_afgk4")

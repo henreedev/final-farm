@@ -37,6 +37,10 @@ var initial_scale : Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	hidden_stuff.show()
+	special_blurb.hide()
+	upgrade_1_label.hide()
+	upgrade_2_label.hide()
+	upgrade_3_label.hide()
 	blurb.modulate = Color(1,1,1,0)
 	initial_scale = scale
 	pick_animation()
@@ -106,7 +110,7 @@ func _on_mouse_zone_mouse_entered():
 	if bag_tween:
 		bag_tween.kill()
 	bag_tween = create_tween().set_parallel()
-	var scale_factor = 1.2 if hidden else 3.0
+	var scale_factor = 1.2 if not discovered_first_time else 3.0
 	bag_tween.tween_property(self, "scale", initial_scale * scale_factor, 1.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func _on_mouse_zone_mouse_exited():
