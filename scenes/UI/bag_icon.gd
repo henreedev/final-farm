@@ -10,8 +10,10 @@ var empty := true
 var dist_to_center_ratio : float
 const FADE_CUTOFF := 300
 var initial_scale : Vector2
+var tint := Color(1,1,1)
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 @onready var inventory : Inventory = get_parent()
+@onready var label : Label = $Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,7 +29,14 @@ func _ready():
 
 func update():
 	amount = player.seed_counts[type]
+	label.text = str(amount)
 	empty = amount <= 0
+	if empty:
+		tint = Color(0.8, 0.5, 0.5, 1)
+		label.label_settings.font_color = tint
+	else:
+		tint = Color(1, 1, 1, 1)
+		label.label_settings.font_color = tint
 	selected = self == inventory.selected_icon
 	material.set_shader_parameter("outline_1_active", selected)
 
@@ -40,5 +49,5 @@ func _process(delta):
 	else:
 		show()
 		dist_to_center_ratio = 1 - clampf(dist_to_center / FADE_CUTOFF, 0.0, 1.0)
-		modulate = Color(1,1,1,dist_to_center_ratio)
+		modulate = Color(tint.r,tint.g,tint.b,dist_to_center_ratio)
 		scale = initial_scale * Vector2(dist_to_center_ratio, dist_to_center_ratio)

@@ -4,6 +4,41 @@ class_name Utils
 static var num_points = 50
 static var arc_height = 50
 static var better_zoom_shader = preload("res://scenes/map/better-zoom.gdshader")
+
+static func upgrade(type : Plant.Type):
+	match type:
+		Plant.Type.EGGPLANT:
+			Plant.eggplant_level += 1 as Plant.Level
+		Plant.Type.BROCCOLI:
+			Plant.broccoli_level += 1 as Plant.Level			
+
+static func get_cost_of_next_upgrade(type : Plant.Type):
+	match type:
+		Plant.Type.EGGPLANT:
+			match Plant.eggplant_level: # TODO
+				Plant.Level.Level0:
+					return 69
+				Plant.Level.Level1:
+					return 69 * 69
+				Plant.Level.Level2: 
+					return 69 * 3
+		Plant.Type.BROCCOLI:
+			match Plant.broccoli_level: # TODO
+				Plant.Level.Level0:
+					return 10
+				Plant.Level.Level1:
+					return 69 * 69
+				Plant.Level.Level2: 
+					return 69 * 3
+	return -1
+
+static func get_cost_of_type(type : Plant.Type): # TODO add all plants
+	match type:
+		Plant.Type.EGGPLANT:
+			return 5
+		Plant.Type.BROCCOLI:
+			return 1
+
 static func give_zoom_shader(node_with_mat : Node2D):
 	node_with_mat.material = ShaderMaterial.new()
 	node_with_mat.material.shader = better_zoom_shader

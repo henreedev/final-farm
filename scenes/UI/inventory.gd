@@ -17,9 +17,6 @@ var bag_icon_scene : PackedScene = preload("res://scenes/UI/bag_icon.tscn")
 func _ready():
 	player.seed_count_changed.connect(on_player_seed_counts_change)
 	_add_icon(Plant.Type.EGGPLANT)
-	_add_icon(Plant.Type.EGGPLANT)
-	_add_icon(Plant.Type.EGGPLANT)
-	_add_icon(Plant.Type.EGGPLANT)
 
 func on_player_seed_counts_change(type : Plant.Type):
 	if not seen_types or not seen_types[type]:
@@ -47,7 +44,31 @@ func _input(event):
 		scroll_dir -= 1
 	elif event.is_action_released("scroll_down"):
 		scroll_dir += 1
-	selected_icon_index = clampi(selected_icon_index + scroll_dir, 0, len(icons) - 1)
+	selected_icon_index = selected_icon_index + scroll_dir
+	var set_seed_index = -1
+	if event.is_action_pressed("select_seed_0"):
+		set_seed_index = 0
+	if event.is_action_pressed("select_seed_1"):
+		set_seed_index = 1
+	if event.is_action_pressed("select_seed_2"):
+		set_seed_index = 2
+	if event.is_action_pressed("select_seed_3"):
+		set_seed_index = 3
+	if event.is_action_pressed("select_seed_4"):
+		set_seed_index = 4
+	if event.is_action_pressed("select_seed_5"):
+		set_seed_index = 5
+	if event.is_action_pressed("select_seed_6"):
+		set_seed_index = 6
+	if event.is_action_pressed("select_seed_7"):
+		set_seed_index = 7
+	if event.is_action_pressed("select_seed_8"):
+		set_seed_index = 8
+	if event.is_action_pressed("select_seed_9"):
+		set_seed_index = 9
+	if not set_seed_index < 0:
+		selected_icon_index = set_seed_index
+	selected_icon_index = clampi(selected_icon_index, 0, len(icons) - 1)
 	_update_icons()
 
 func _update_selection():

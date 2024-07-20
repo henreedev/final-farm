@@ -3,6 +3,7 @@ signal unpausing_with_esc
 @onready var main = get_tree().get_first_node_in_group("main")
 @onready var options_menu: Control = $MarginContainer/options_menu
 @onready var main_options: VBoxContainer = $MarginContainer/VBoxContainer
+@onready var upgrade_menu : UpgradeMenu = get_tree().get_first_node_in_group("upgrade_menu")
 
 
 # Called when the node enters the scene tree for the first time.

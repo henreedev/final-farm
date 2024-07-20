@@ -34,14 +34,14 @@ vec4 texturePointSmooth(sampler2D tex, vec2 uv) {
 void fragment() {
 	vec4 Texture = texturePointSmooth(TEXTURE, UV);
     COLOR = Texture.rgba;
-	
+
 	vec4 outline_color;
 	if (outline_1_active) {
 		outline_color = outline_color_1;
 	} else if (outline_2_active) {
 		outline_color = outline_color_2;
 	} else {
-		
+
 	}
 	float size_x = 1.0/float(textureSize(TEXTURE, 0).x);
 	float size_y = 1.0/float(textureSize(TEXTURE, 0).y);

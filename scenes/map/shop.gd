@@ -6,20 +6,22 @@ var is_open = true
 var should_wave = true
 var throws = []
 var throwing = false
-signal toggle_shop
 
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var wave_timer : Timer = $WaveTimer
 @onready var interact_icon : AnimatedSprite2D = $InteractIcon
-
+@onready var upgrade_menu : UpgradeMenu = get_tree().get_first_node_in_group("upgrade_menu")
 
 func _input(event: InputEvent) -> void:
 	if player_in_range and is_open and event.is_action_pressed("interact"):
 		player_interact()
 
 func player_interact():
-	toggle_shop.emit()
+	if not upgrade_menu.is_open:
+		upgrade_menu.open()
+	else:
+		upgrade_menu.close()
 
 func throw():
 	animation = "throw" if is_open else "closed_throw"

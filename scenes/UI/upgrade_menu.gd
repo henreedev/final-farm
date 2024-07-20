@@ -1,64 +1,44 @@
 extends Control
-signal purchased_seed(type: Plant.Type)
-signal player_upgrade(tempstring: String)
-var isPurchased := [false]
-@onready var main = get_tree().get_first_node_in_group("main")
-
-@onready var seed_eggplant: TextureButton = $MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_eggplant
-@onready var seed_broccoli: TextureButton = $MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_broccoli
-@onready var seed_pepper: TextureButton = $MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_pepper
-@onready var scroll_container: ScrollContainer = $MarginContainer/TextureRect/ScrollContainer
+class_name UpgradeMenu
+var is_open := false
 
 
+@onready var main : Main = get_tree().get_first_node_in_group("main")
+@onready var player : Player = get_tree().get_first_node_in_group("player")
+@onready var shop_inventory : ShopInventory = $MarginContainer/TextureRect/InventoryRoot/ShopInventory
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	#scroll_container.
-	pass # Replace with function body.
+func _ready():
+	set_process(false)
+
+func _input(event):
+	if event.is_action_pressed("escape_menu"):
+		close()
+
+func open():
+	if not is_open:
+		print("opened")
+		is_open = true
+		set_process(true)
+		show()
+		if main.upgrade_menu_tween:
+			main.upgrade_menu_tween.kill()
+		main.upgrade_menu_tween = create_tween().set_parallel()
+		main.upgrade_menu_tween.tween_property(self, "modulate", Color(1,1,1,1), 1.0).set_delay(0.25).set_trans(Tween.TRANS_CUBIC)
+		main.upgrade_menu_tween.tween_property(player, "target_zoom_override", Vector2(10,10), 0.0)
+
+func close():
+	if is_open:
+		print("closed")
+		is_open = false
+		set_process(false)
+		if main.upgrade_menu_tween:
+			main.upgrade_menu_tween.kill()
+		main.upgrade_menu_tween = create_tween().set_parallel()
+		main.upgrade_menu_tween.tween_property(self, "modulate", Color(1,1,1,0), 0.25)
+		main.upgrade_menu_tween.tween_property(player, "target_zoom_override", Vector2(0,0), 0)
+		main.upgrade_menu_tween.tween_callback(hide).set_delay(0.25)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
-
-
-func purchase_upgrade(upgrade_name: String,price):
-	pass
-
-
-
-func _on_exit_pressed() -> void:
-	visible = false
-	pass # Replace with function body.
-
-#region:Purchase seeds
-
-func _on_seed_tomato_pressed() -> void:
-	pass
-	
-func _on_seed_broccoli_pressed() -> void:
-	if main.food_amount > 10:
-		print("broc")
-		main.food_amount -= 10
-		purchased_seed.emit(Plant.Type.BROCCOLI)
-		pass
-	else:
-		print("not enough to  broc")
-
-
-func _on_seed_eggplant_pressed() -> void:
-	if main.food_amount > 10:
-		print("egg")
-		main.food_amount -= 10
-		purchased_seed.emit(Plant.Type.EGGPLANT)
-		pass
-	else:
-		print("not enough to  egg")
-
-#endregion:Purchase seeds
-
-func _on_player_speed_pressed() -> void:
-	player_upgrade.emit("speed")
-	pass # Replace with function body.
-	
+func _on_color_rect_focus_entered():
+	close()

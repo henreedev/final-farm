@@ -77,18 +77,19 @@ var plant_scene : PackedScene = preload("res://scenes/plants/plant.tscn")
 var spawner_scene : PackedScene = preload("res://assets/image/map/spawner.tscn")
 var spawners : Array[Spawner] = []
 var shop : Shop
+
+var upgrade_menu_tween : Tween
 #var has_init_shop = false
 
 @onready var food_holder = $FoodHolder
 @onready var player_ui: Control = $CanvasLayer/Player_UI
-@onready var upgrade_menu: Control = $CanvasLayer/Upgrade_Menu
+@onready var upgrade_menu: UpgradeMenu = $CanvasLayer/Upgrade_Menu
 @onready var pause_menu: Control = $CanvasLayer/pause_menu
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 
 func _ready() -> void:
 	_calculate_thresholds()
 	begin_prewave()
-	_connect_signals()
 
 func begin_prewave():
 	if state == State.GAME_OVER: return
@@ -97,6 +98,7 @@ func begin_prewave():
 	if not waves_set_up:
 		_setup_waves()
 	_select_wave()
+	player.adjust_total_seeds(5)
 	_pause_plants(true)
 	_create_spawners()
 	_toggle_dir_indicator(true)
@@ -316,13 +318,9 @@ func _calculate_thresholds():
 	print(quarter_4_threshold_1)
 	print(quarter_4_threshold_2)
 
-
-func _connect_signals():
-	await get_tree().create_timer(0.1).timeout
-	shop.toggle_shop.connect(_toggle_shop)
-
 func receive_food():
 	food_amount += 1
+	player.adjust_total_seeds(1)
 	_check_food_thresholds()
 	var ratio = float(food_amount) / float(WINNING_FOOD_AMOUNT)
 	food_supply_height = lerp(Vector2(0,0), MAX_FOOD_HEIGHT, ratio)
@@ -420,9 +418,7 @@ func _on_test_open_shop_pressed() -> void:
 		shop.open()
 	
 func _toggle_shop():
-	print("opening shop")
-	upgrade_menu.visible = true
-
+	upgrade_menu.close
 
 func _on_pause_menu_unpausing_with_esc() -> void:
 	get_tree().paused = false

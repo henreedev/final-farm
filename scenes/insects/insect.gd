@@ -44,6 +44,7 @@ var paused := false
 @onready var attack_area : Area2D = $AttackArea
 @onready var attack_shape : CollisionShape2D = $AttackArea/CollisionShape2D
 @onready var asprite : AnimatedSprite2D = $AnimatedSprite2D
+@onready var player : Player = get_tree().get_first_node_in_group("player")
 #endregion: Globals
 
 #region: Universal functions
@@ -185,6 +186,7 @@ func take_damage(amount : int):
 
 func die():
 	is_dead = true
+	player.adjust_bug_kills(1)
 	died.emit()
 	queue_free()
 

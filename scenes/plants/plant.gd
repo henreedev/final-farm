@@ -5,6 +5,10 @@ class_name Plant
 enum Type {EGGPLANT, BROCCOLI, FOOD_SUPPLY}
 enum Level {Level0, Level1, Level2, Level3}
 
+const EGGPLANT_COST := 5
+const BROCCOLI_COST := 1
+
+
 const PROJECTILE_OFFSET = Vector2(-4, 2)
 
 signal died

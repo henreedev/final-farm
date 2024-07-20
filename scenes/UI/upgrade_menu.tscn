@@ -3,30 +3,36 @@
 [ext_resource type="Script" path="res://scenes/UI/upgrade_menu.gd" id="1_yhjbo"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="2_hngr3"]
 [ext_resource type="Texture2D" uid="uid://18raibx3000c" path="res://resources/shop-ui.png" id="2_vesi3"]
-[ext_resource type="Texture2D" uid="uid://c3wpjxeeslmsl" path="res://resources/shop-seed-bag.png" id="3_sqy7p"]
-[ext_resource type="Texture2D" uid="uid://bggiycsxyyna5" path="res://resources/seed-bag-big.png" id="5_marj1"]
+[ext_resource type="PackedScene" uid="uid://dfnmp8x7omvv5" path="res://scenes/UI/shop_bag.tscn" id="4_ja4l8"]
+[ext_resource type="PackedScene" uid="uid://bg0yfmosdhipt" path="res://scenes/UI/shop_inventory.tscn" id="4_nogqa"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_edwx2"]
 shader = ExtResource("2_hngr3")
+shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
+shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
+shader_parameter/outline_1_active = false
+shader_parameter/outline_2_active = false
 
 [node name="Upgrade_Menu" type="Control" groups=["upgrade_menu"]]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_yhjbo")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.156863, 0.580392, 0, 1)
+mouse_filter = 2
+color = Color(0, 0, 0, 0.519)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -35,99 +41,40 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
-
-[node name="exit" type="Button" parent="MarginContainer"]
-z_index = 2
-z_as_relative = false
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-text = "Close Shop"
+mouse_filter = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 18
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer"]
 material = SubResource("ShaderMaterial_edwx2")
+clip_contents = true
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_vesi3")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/TextureRect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextureRect/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 0
-alignment = 1
-
-[node name="seed_eggplant" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
-custom_minimum_size = Vector2(504, 600)
-layout_mode = 2
-texture_normal = ExtResource("3_sqy7p")
-texture_hover = ExtResource("5_marj1")
-stretch_mode = 5
-
-[node name="Label" type="Label" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_eggplant"]
+[node name="InventoryRoot" type="Control" parent="MarginContainer/TextureRect"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -33.5
-offset_top = -11.5
-offset_right = 33.5
-offset_bottom = 11.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Eggplant"
+mouse_filter = 2
 
-[node name="seed_broccoli" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
-custom_minimum_size = Vector2(504, 600)
-layout_mode = 2
-texture_normal = ExtResource("3_sqy7p")
-texture_hover = ExtResource("5_marj1")
-stretch_mode = 5
+[node name="ShopInventory" parent="MarginContainer/TextureRect/InventoryRoot" instance=ExtResource("4_nogqa")]
 
-[node name="seed_tomato" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-texture_normal = ExtResource("3_sqy7p")
-stretch_mode = 5
+[node name="Broc" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(576, 0)
+type = 1
 
-[node name="seed_pepper" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-texture_normal = ExtResource("3_sqy7p")
-stretch_mode = 5
+[node name="Egg" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
 
-[node name="seed_pepper2" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-texture_normal = ExtResource("3_sqy7p")
-stretch_mode = 5
-
-[node name="seed_pepper3" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-texture_normal = ExtResource("3_sqy7p")
-stretch_mode = 5
-
-[node name="seed_pepper4" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-texture_normal = ExtResource("3_sqy7p")
-stretch_mode = 5
-
-[node name="seed_pepper5" type="TextureButton" parent="MarginContainer/TextureRect/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-texture_normal = ExtResource("3_sqy7p")
-stretch_mode = 5
-
-[connection signal="pressed" from="MarginContainer/exit" to="." method="_on_exit_pressed"]
-[connection signal="pressed" from="MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_eggplant" to="." method="_on_seed_eggplant_pressed"]
-[connection signal="pressed" from="MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_broccoli" to="." method="_on_seed_broccoli_pressed"]
-[connection signal="pressed" from="MarginContainer/TextureRect/ScrollContainer/HBoxContainer/seed_tomato" to="." method="_on_seed_tomato_pressed"]
+[connection signal="focus_entered" from="ColorRect" to="." method="_on_color_rect_focus_entered"]

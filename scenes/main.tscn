@@ -55,17 +55,6 @@ position = Vector2(13, -16)
 [node name="Upgrade_Menu" parent="CanvasLayer" instance=ExtResource("4_1qibe")]
 visible = false
 
-[node name="TEST_OPEN_SHOP" type="Button" parent="CanvasLayer"]
-offset_left = 55.0
-offset_top = 87.0
-offset_right = 200.0
-offset_bottom = 118.0
-text = "TEST_OPEN_SHOP"
-
 [node name="pause_menu" parent="CanvasLayer" instance=ExtResource("5_3rix5")]
 
 [node name="FoodHolder" type="CanvasGroup" parent="."]
-
-[connection signal="bug_killed" from="CanvasLayer/Player_UI" to="." method="_on_player_ui_bug_killed"]
-[connection signal="pressed" from="CanvasLayer/TEST_OPEN_SHOP" to="." method="_on_test_open_shop_pressed"]
-[connection signal="unpausing_with_esc" from="CanvasLayer/pause_menu" to="." method="_on_pause_menu_unpausing_with_esc"]
