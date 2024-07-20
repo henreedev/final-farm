@@ -19,10 +19,7 @@ func _ready():
 	_add_icon(Plant.Type.EGGPLANT)
 
 func on_player_seed_counts_change(type : Plant.Type):
-	if not seen_types or not seen_types[type]:
-		# First time seeing seed
-		seen_types[type] = true
-		_add_icon(type)
+	_add_icon(type)
 	_update_icons()
 
 func _update_icons():
@@ -31,12 +28,15 @@ func _update_icons():
 		icon.update()
 
 func _add_icon(type : Plant.Type):
-	var bag_icon : BagIcon = bag_icon_scene.instantiate()
-	bag_icon.type = type
-	icons.append(bag_icon)
-	bag_icon.position = next_icon_pos
-	next_icon_pos += Vector2(ICON_HOZ_OFFSET, 0)
-	add_child(bag_icon)
+	if not seen_types or not seen_types[type]:
+		# First time seeing seed
+		seen_types[type] = true
+		var bag_icon : BagIcon = bag_icon_scene.instantiate()
+		bag_icon.type = type
+		icons.append(bag_icon)
+		bag_icon.position = next_icon_pos
+		next_icon_pos += Vector2(ICON_HOZ_OFFSET, 0)
+		add_child(bag_icon)
 
 func _input(event):
 	var scroll_dir = 0

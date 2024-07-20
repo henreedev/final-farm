@@ -223,7 +223,9 @@ antialiasing = 0
 font_name = "Pxlvetica"
 style_name = "Medium"
 font_weight = 500
+subpixel_positioning = 0
 msdf_pixel_range = 8
+msdf_size = 128
 cache/0/16/0/ascent = 11.0
 cache/0/16/0/descent = 3.0
 cache/0/16/0/underline_position = 2.39063
@@ -328,7 +330,6 @@ script = ExtResource("4_cxq4w")
 [node name="Hidden" type="Node2D" parent="."]
 visible = false
 use_parent_material = true
-scale = Vector2(1, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Hidden"]
 use_parent_material = true
@@ -351,7 +352,6 @@ text = "122"
 label_settings = SubResource("LabelSettings_4mqxo")
 
 [node name="MouseZone" type="Area2D" parent="."]
-scale = Vector2(1, 1)
 collision_layer = 2
 collision_mask = 0
 metadata/_edit_lock_ = true
@@ -405,6 +405,7 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Blurb/BuyButton"]
 material = SubResource("ShaderMaterial_bhrgk")
+layout_mode = 0
 offset_left = 22.8571
 offset_top = 32.8571
 offset_right = 62.8571
@@ -435,6 +436,7 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Blurb/UpgradeButton"]
 material = SubResource("ShaderMaterial_bhrgk")
+layout_mode = 0
 offset_left = 1.35714
 offset_top = 3.71429
 offset_right = 41.3571

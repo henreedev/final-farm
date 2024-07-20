@@ -13,7 +13,7 @@ var thrown = false
 var arrived = false
 
 
-var plant_scene : PackedScene = preload("res://scenes/plants/plant.tscn")
+var plant_scene : PackedScene = load("res://scenes/plants/plant.tscn")
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 var shop : Shop
 @onready var main : Main = get_tree().get_first_node_in_group("main")

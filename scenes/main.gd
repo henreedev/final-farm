@@ -89,7 +89,11 @@ var upgrade_menu_tween : Tween
 
 func _ready() -> void:
 	_calculate_thresholds()
+	_initial_setup()
 	begin_prewave()
+
+func _initial_setup():
+	player.adjust_bug_kills(0) 
 
 func begin_prewave():
 	if state == State.GAME_OVER: return

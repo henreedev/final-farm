@@ -58,3 +58,5 @@ visible = false
 [node name="pause_menu" parent="CanvasLayer" instance=ExtResource("5_3rix5")]
 
 [node name="FoodHolder" type="CanvasGroup" parent="."]
+
+[connection signal="unpausing_with_esc" from="CanvasLayer/pause_menu" to="." method="_on_pause_menu_unpausing_with_esc"]
