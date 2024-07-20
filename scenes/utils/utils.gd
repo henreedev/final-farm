@@ -31,6 +31,8 @@ static func get_plant_damage(type : Plant.Type):
 					return 3
 				Plant.Level.Level3: 
 					return 4
+		_: 
+			return -1
 
 static func get_plant_health(type : Plant.Type):
 	match type:
@@ -58,7 +60,7 @@ static func get_plant_health(type : Plant.Type):
 					return 200
 	return -1
 
-static func get_plant_range(type):
+static func get_plant_range(type : Plant.Type):
 	match type:
 		Plant.Type.EGGPLANT:
 			return 0
@@ -72,29 +74,40 @@ static func get_plant_range(type):
 					return 4
 				Plant.Level.Level3: 
 					return 4
-					
-static func get_plant_attack_cooldown(type):
+	return -1
+
+static func get_plant_attack_cooldown(type : Plant.Type):
 	match type:
 		Plant.Type.EGGPLANT:
 			match eggplant_level: # TODO
 				Plant.Level.Level0:
-					return 10
+					return 10.0
 				Plant.Level.Level1:
-					return 10
+					return 10.0
 				Plant.Level.Level2: 
-					return 10
+					return 10.0
 				Plant.Level.Level3: 
-					return 10
+					return 10.0
 		Plant.Type.BROCCOLI:
 			match broccoli_level: # TODO
 				Plant.Level.Level0:
-					return 1
+					return 1.0
 				Plant.Level.Level1:
-					return 1
+					return 1.0
 				Plant.Level.Level2: 
-					return .9
+					return 0.9
 				Plant.Level.Level3: 
-					return .8
+					return 0.8
+	return -1.0
+
+static func get_plant_spawn_duration(type : Plant.Type):
+	match type:
+		Plant.Type.EGGPLANT:
+			return 10
+		Plant.Type.BROCCOLI:
+			return 1
+		_:
+			return -1
 
 static func get_next_upgrade_cost(type : Plant.Type):
 	match type:
@@ -122,6 +135,59 @@ static func get_plant_cost(type : Plant.Type): # TODO add all plants
 			return 5
 		Plant.Type.BROCCOLI:
 			return 1
+	return -1
+
+static func get_plant_blurb(type : Plant.Type):
+	match type:
+		Plant.Type.EGGPLANT:
+			return "BLURB NOT ADDED YET"
+		Plant.Type.BROCCOLI:
+			return "BLURB NOT ADDED YET"
+		_:
+			return "-1"
+
+static func get_plant_upgrade_blurb(type : Plant.Type, level : Plant.Level):
+	match type: 
+		Plant.Type.EGGPLANT:
+			match level: # TODO
+				Plant.Level.Level1:
+					return "Level 1 upgrade blurb not added yet"
+				Plant.Level.Level2: 
+					return "Level 1 upgrade blurb not added yet"
+				Plant.Level.Level3: 
+					return "Level 3 upgrade blurb not added yet"
+		Plant.Type.BROCCOLI:
+			match level: # TODO
+				Plant.Level.Level1:
+					return "Level 1 upgrade blurb not added yet"
+				Plant.Level.Level2: 
+					return "Level 1 upgrade blurb not added yet"
+				Plant.Level.Level3: 
+					return "Level 3 upgrade blurb not added yet"
+		_:
+			return "-1"
+static func get_plant_special_blurb(type : Plant.Type):
+	match type: 
+		Plant.Type.EGGPLANT, Plant.Type.BROCCOLI:
+			return "Special Stat: N/A"
+		_:
+			return "-1"
+
+static func get_plant_special_value(type : Plant.Type):
+	match type: 
+		Plant.Type.EGGPLANT, Plant.Type.BROCCOLI:
+			return ""
+		_:
+			return "-1"
+
+static func get_plant_level(type : Plant.Type):
+	match type:
+		Plant.Type.EGGPLANT:
+			return eggplant_level
+		Plant.Type.BROCCOLI:
+			return broccoli_level
+		_: 
+			return -1
 
 static func give_zoom_shader(node_with_mat : Node2D):
 	node_with_mat.material = ShaderMaterial.new()
@@ -165,13 +231,3 @@ static func tween_arc_between(parent : Node2D, p1 : Vector2, p2 : Vector2, durat
 		
 	
 	return hoz_tween
-	
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass

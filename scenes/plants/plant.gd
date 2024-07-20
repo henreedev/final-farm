@@ -62,6 +62,7 @@ func pick_stats():
 	damage = Utils.get_plant_damage(type)
 	health = Utils.get_plant_health(type)
 	attack_range = Utils.get_plant_range(type)
+	attack_cooldown = Utils.get_plant_attack_cooldown(type)
 	match type:
 		Type.FOOD_SUPPLY:
 			health = 100

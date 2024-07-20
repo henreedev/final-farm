@@ -71,6 +71,7 @@ mouse_filter = 2
 [node name="ShopInventory" parent="MarginContainer/TextureRect/InventoryRoot" instance=ExtResource("4_nogqa")]
 
 [node name="Broccoli" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(0, 0)
 type = 1
 
 [node name="Eggplant" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]

@@ -286,7 +286,7 @@ grow_vertical = 0
 
 [node name="StartButton" type="Sprite2D" parent="Control2"]
 material = SubResource("ShaderMaterial_d7dii")
-scale = Vector2(1.5, 1.5)
+scale = Vector2(3, 3)
 texture = ExtResource("9_kdgt3")
 
 [node name="StartButtonLabel" type="Label" parent="Control2"]

@@ -42,11 +42,12 @@ y_sort_enabled = true
 script = ExtResource("1_n7gso")
 quarter_1_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_vwnyj")])
 fly_sightings_until_mutation = 5
+passive_seed_income_per_wave = 0
 
 [node name="Map" parent="." instance=ExtResource("2_nevbb")]
 
 [node name="Player" parent="." instance=ExtResource("2_1vtnu")]
-position = Vector2(13, -16)
+position = Vector2(9.53674e-07, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

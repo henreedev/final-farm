@@ -47,7 +47,7 @@ const MAX_FOOD_HEIGHT = Vector2(0, -24)
 @export var fly_sightings_until_mutation := 1
 @export_group("Gameplay Values")
 @export var WINNING_FOOD_AMOUNT = 1000
-@export var passive_seed_income_per_wave := 5
+@export_range(0, 20, 1) var passive_seed_income_per_wave := 5
 
 var bugs_killed = 0
 var food_amount := 0
@@ -87,6 +87,7 @@ var upgrade_menu_tween : Tween
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 
 func _ready() -> void:
+	get_tree().paused = false
 	_calculate_thresholds()
 	_initial_setup()
 	begin_prewave()
@@ -101,7 +102,7 @@ func begin_prewave():
 	if not waves_set_up:
 		_setup_waves()
 	_select_wave()
-	player.adjust_total_seeds(5)
+	player.adjust_total_seeds(passive_seed_income_per_wave)
 	_pause_plants(true)
 	_create_spawners()
 	_toggle_dir_indicator(true)
@@ -123,13 +124,14 @@ func begin_wave():
 	begin_prewave()
 
 func _toggle_shop_open(open : bool):
-	await get_tree().create_timer(0.05).timeout
+	await get_tree().create_timer(0.15).timeout
+	
 	if not shop:
 		shop = get_tree().get_first_node_in_group("shop")
 	if open:
-		shop.open()
+		if shop: shop.open()
 	else:
-		shop.close()
+		if shop: shop.close()
 
 func _toggle_start_button(on : bool):
 	if on:
@@ -138,6 +140,7 @@ func _toggle_start_button(on : bool):
 		player_ui.tween_start_button_down()
 
 func trigger_wave_begun():
+	upgrade_menu.close()
 	wave_begun.emit()
 
 func _toggle_dir_indicator(on : bool):

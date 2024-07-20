@@ -16,7 +16,6 @@ func _input(event):
 		close()
 
 func open():
-	await get_tree().create_timer(0.1)
 	if not is_open:
 		is_open = true
 		set_process(true)
@@ -28,6 +27,7 @@ func open():
 		main.upgrade_menu_tween.tween_property(player, "target_zoom_override", Vector2(10,10), 0.0)
 
 func close():
+	await get_tree().create_timer(0.05).timeout
 	if is_open:
 		is_open = false
 		set_process(false)
@@ -37,8 +37,3 @@ func close():
 		main.upgrade_menu_tween.tween_property(self, "modulate", Color(1,1,1,0), 0.25)
 		main.upgrade_menu_tween.tween_property(player, "target_zoom_override", Vector2(0,0), 0)
 		main.upgrade_menu_tween.tween_callback(hide).set_delay(0.25)
-
-
-
-func _on_color_rect_focus_entered():
-	close()

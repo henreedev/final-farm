@@ -14,7 +14,7 @@ var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 @onready var upgrade_menu : UpgradeMenu = get_tree().get_first_node_in_group("upgrade_menu")
 
 func _input(event: InputEvent) -> void:
-	if player_in_range and is_open and event.is_action_pressed("interact"):
+	if ((player_in_range and is_open) or upgrade_menu.is_open) and event.is_action_pressed("interact"):
 		player_interact()
 
 func player_interact():

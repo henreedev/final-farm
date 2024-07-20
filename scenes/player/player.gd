@@ -41,9 +41,9 @@ var seed_counts = { # TODO add all plants
 	Plant.Type.BROCCOLI : 0,
 	}
 
-var total_seeds := 5
+var total_seeds := 0
 var bug_kills := 0
-var equipped_seed_type : Plant.Type = Plant.Type.BROCCOLI
+var equipped_seed_type : Plant.Type = Plant.Type.EGGPLANT
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
 var seed_bag : SeedBag
 # Swing vars
@@ -195,17 +195,9 @@ func _act_on_input():
 		shop.queue_throw(inventory.selected_type)
 
 func attempt_purchase():
-	var cost : int
-	match inventory.selected_type: # TODO add all plants
-		Plant.Type.EGGPLANT:
-			cost = Plant.EGGPLANT_COST
-		Plant.Type.BROCCOLI:
-			cost = Plant.BROCCOLI_COST
-		_:
-			print("ERROR in player.attempt_purchase plant not defined here")
+	var cost = Utils.get_plant_cost(inventory.selected_type)
 	if total_seeds - cost >= 0:
-		total_seeds -= cost
-		# TODO update seed count ui
+		adjust_total_seeds(-cost)
 	
 
 func start_throw():

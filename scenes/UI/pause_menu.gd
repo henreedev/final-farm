@@ -4,7 +4,9 @@ signal unpausing_with_esc
 @onready var options_menu: Control = $MarginContainer/options_menu
 @onready var main_options: VBoxContainer = $MarginContainer/VBoxContainer
 @onready var upgrade_menu : UpgradeMenu = get_tree().get_first_node_in_group("upgrade_menu")
-
+@onready var continue_button = $MarginContainer/VBoxContainer/Continue
+@onready var restart_button = $MarginContainer/VBoxContainer/Restart
+@onready var exit_button = $MarginContainer/VBoxContainer/Exit
 
 
 func _input(event: InputEvent):	
@@ -30,3 +32,11 @@ func _on_main_toggle_game_paused(is_paused: bool):
 func _on_options_menu_exit_options() -> void:
 	options_menu.visible = false
 	main_options.visible = true
+
+
+func _on_restart_pressed():
+	continue_button.text = ""
+	$MarginContainer/VBoxContainer/Restart.text = "Restarting..."
+	$MarginContainer/VBoxContainer/Exit.text = ""
+	await get_tree().create_timer(0.5).timeout
+	get_tree().reload_current_scene()

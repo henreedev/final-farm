@@ -42,6 +42,8 @@ func _add_icon(type : Plant.Type):
 		bag_icon.position = next_icon_pos
 		next_icon_pos += Vector2(ICON_HOZ_OFFSET, 0)
 		add_child(bag_icon)
+		selected_icon_index = len(icons) - 1
+		_update_icons()
 
 func _input(event):
 	var scroll_dir = 0

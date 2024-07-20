@@ -14,7 +14,7 @@ var tint := Color(1,1,1)
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 @onready var inventory : Inventory = get_parent()
 @onready var label : Label = $Label
-
+@onready var main : Main = get_tree().get_first_node_in_group("main")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Utils.give_zoom_shader(self)
@@ -37,6 +37,9 @@ func update():
 	else:
 		tint = Color(1, 1, 1, 1)
 		label.label_settings.font_color = tint
+		if not inventory.seen_types[type]:
+			main.shop_inventory.types_to_bags[type].discover()
+			 
 	selected = self == inventory.selected_icon
 	material.set_shader_parameter("outline_1_active", selected)
 

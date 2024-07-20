@@ -55,7 +55,16 @@ use_parent_material = true
 custom_minimum_size = Vector2(245.44, 0)
 layout_mode = 2
 theme = ExtResource("3_pnmeu")
+keep_pressed_outside = true
 text = "Continue"
+
+[node name="Restart" type="Button" parent="MarginContainer/VBoxContainer"]
+use_parent_material = true
+custom_minimum_size = Vector2(245.44, 0)
+layout_mode = 2
+theme = ExtResource("3_pnmeu")
+keep_pressed_outside = true
+text = "Restart"
 
 [node name="Options" type="Button" parent="MarginContainer/VBoxContainer"]
 visible = false
@@ -68,12 +77,14 @@ text = "Options"
 use_parent_material = true
 layout_mode = 2
 theme = ExtResource("3_pnmeu")
+keep_pressed_outside = true
 text = "Exit"
 
 [node name="options_menu" parent="MarginContainer" instance=ExtResource("2_n4544")]
 layout_mode = 2
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
 [connection signal="exit_options" from="MarginContainer/options_menu" to="." method="_on_options_menu_exit_options"]
