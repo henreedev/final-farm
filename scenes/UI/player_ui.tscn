@@ -291,6 +291,7 @@ texture = ExtResource("9_kdgt3")
 
 [node name="StartButtonLabel" type="Label" parent="Control2"]
 material = SubResource("ShaderMaterial_fdl7g")
+layout_mode = 0
 offset_left = -11.735
 offset_top = -78.0
 offset_right = 48.265

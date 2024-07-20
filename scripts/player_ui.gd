@@ -1,4 +1,6 @@
 extends Control
+class_name PlayerUI
+
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var player:Player = get_tree().get_first_node_in_group("player")
 @onready var total_seeds_label : Label = $SeedBagIcon/TotalSeedsLabel

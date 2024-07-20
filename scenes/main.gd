@@ -79,10 +79,9 @@ var spawners : Array[Spawner] = []
 var shop : Shop
 
 var upgrade_menu_tween : Tween
-#var has_init_shop = false
 
 @onready var food_holder = $FoodHolder
-@onready var player_ui: Control = $CanvasLayer/Player_UI
+@onready var player_ui: PlayerUI = $CanvasLayer/Player_UI
 @onready var upgrade_menu: UpgradeMenu = $CanvasLayer/Upgrade_Menu
 @onready var pause_menu: Control = $CanvasLayer/pause_menu
 @onready var player : Player = get_tree().get_first_node_in_group("player")
