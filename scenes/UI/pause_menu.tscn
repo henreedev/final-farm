@@ -1,11 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://fxv5hgqgs5ds"]
+[gd_scene load_steps=6 format=3 uid="uid://fxv5hgqgs5ds"]
 
 [ext_resource type="Script" path="res://scenes/UI/pause_menu.gd" id="1_o6534"]
 [ext_resource type="PackedScene" uid="uid://dnsp4xgc387vm" path="res://scenes/UI/options_menu.tscn" id="2_n4544"]
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="2_ps323"]
+[ext_resource type="Theme" uid="uid://1brel1qvmfio" path="res://assets/themes/new_theme.tres" id="3_pnmeu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xmii4"]
+shader = ExtResource("2_ps323")
+shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
+shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
+shader_parameter/outline_1_active = false
+shader_parameter/outline_2_active = false
 
 [node name="pause_menu" type="Control"]
 process_mode = 2
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +29,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.556863)
+color = Color(0.203922, 0.223529, 0, 0.568627)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -36,21 +44,28 @@ theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+material = SubResource("ShaderMaterial_xmii4")
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 50
 
 [node name="Continue" type="Button" parent="MarginContainer/VBoxContainer"]
+use_parent_material = true
 layout_mode = 2
+theme = ExtResource("3_pnmeu")
 text = "Continue"
 
 [node name="Options" type="Button" parent="MarginContainer/VBoxContainer"]
+use_parent_material = true
 layout_mode = 2
+theme = ExtResource("3_pnmeu")
 text = "Options"
 
 [node name="Exit" type="Button" parent="MarginContainer/VBoxContainer"]
+use_parent_material = true
 layout_mode = 2
+theme = ExtResource("3_pnmeu")
 text = "Exit"
 
 [node name="options_menu" parent="MarginContainer" instance=ExtResource("2_n4544")]

@@ -39,9 +39,13 @@ func update():
 	else: 
 		hidden_label.text = str(cost)
 		buy_button.disabled = true
+		if buy_button.has_focus(): buy_button.release_focus()
 	
 	if player.bug_kills >= upgrade_cost:
 		upgrade_button.disabled = false
+	else:
+		upgrade_button.disabled = true
+		if upgrade_button.has_focus(): upgrade_button.elease_focus()
 
 func discover():
 	discovered_first_time = true
@@ -56,7 +60,6 @@ func pick_animation():
 			animation = "broccoli"
 
 func _on_mouse_zone_mouse_entered():
-	print("inside of type ", type)
 	is_selected = true
 	shop_inventory._update_selection(type)
 	play()
@@ -66,7 +69,6 @@ func _on_mouse_zone_mouse_entered():
 	bag_tween.tween_property(self, "scale", initial_scale * 3, 1.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
 func _on_mouse_zone_mouse_exited():
-	print("outside of type ", type)
 	is_selected = false
 	if bag_tween:
 		bag_tween.kill()
@@ -86,18 +88,13 @@ func _on_animation_finished():
 		blurb_tween = create_tween()
 		blurb_tween.tween_callback(blurb.show)
 		blurb_tween.tween_property(blurb, "modulate", Color(1,1,1,1), 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	
-
-
-func _on_mouse_zone_input_event(viewport, event, shape_idx):
-	print(viewport, event, shape_idx)
 
 
 func _on_buy_button_pressed():
-	player.adjust_total_seeds(Utils.get_cost_of_type(type))
+	player.adjust_total_seeds(-Utils.get_cost_of_type(type))
 	player.receive_seed(type)
 
 
 func _on_upgrade_button_pressed():
-	player.adjust_bug_kills(Utils.get_cost_of_next_upgrade(type))
+	player.adjust_bug_kills(-Utils.get_cost_of_next_upgrade(type))
 	Utils.upgrade(type)

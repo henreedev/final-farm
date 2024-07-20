@@ -15,8 +15,13 @@ var bag_icon_scene : PackedScene = preload("res://scenes/UI/bag_icon.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_initialize_seen_types()
 	player.seed_count_changed.connect(on_player_seed_counts_change)
 	_add_icon(Plant.Type.EGGPLANT)
+
+func _initialize_seen_types():
+	for type_option in Plant.Type.values():
+		seen_types[type_option] = false
 
 func on_player_seed_counts_change(type : Plant.Type):
 	_add_icon(type)

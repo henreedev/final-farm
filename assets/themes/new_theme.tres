@@ -1,10 +1,23 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://1brel1qvmfio"]
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://1brel1qvmfio"]
 
 [ext_resource type="FontFile" uid="uid://mpjdnkqeym20" path="res://resources/fonts/Pxlvetica-XymZ.ttf" id="1_brcuo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tvo05"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b3mgd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gg1dn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vbx3n"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nbjxp"]
 
 [resource]
+Button/fonts/font = ExtResource("1_brcuo")
+Button/styles/focus = SubResource("StyleBoxEmpty_tvo05")
+Button/styles/hover = SubResource("StyleBoxEmpty_b3mgd")
+Button/styles/normal = SubResource("StyleBoxEmpty_gg1dn")
+Button/styles/pressed = SubResource("StyleBoxEmpty_vbx3n")
 ItemList/colors/font_color = Color(0.65, 0.65, 0.65, 1)
 ItemList/colors/font_hovered_color = Color(0.65098, 0.65098, 0.65098, 1)
 ItemList/colors/font_outline_color = Color(0.65098, 0.65098, 0.65098, 1)

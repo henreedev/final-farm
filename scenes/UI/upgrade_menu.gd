@@ -9,6 +9,7 @@ var is_open := false
 
 func _ready():
 	set_process(false)
+	modulate = Color(1,1,1,0)
 
 func _input(event):
 	if event.is_action_pressed("escape_menu"):
@@ -16,7 +17,6 @@ func _input(event):
 
 func open():
 	if not is_open:
-		print("opened")
 		is_open = true
 		set_process(true)
 		show()
@@ -28,7 +28,6 @@ func open():
 
 func close():
 	if is_open:
-		print("closed")
 		is_open = false
 		set_process(false)
 		if main.upgrade_menu_tween:

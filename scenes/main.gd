@@ -117,6 +117,7 @@ func begin_wave():
 	_begin_spawners()
 	_pause_plants(false)
 	_toggle_dir_indicator(false)
+	_toggle_shop_open(false)
 	await wave_ended
 	begin_prewave()
 
@@ -135,8 +136,12 @@ func trigger_wave_begun():
 func _toggle_dir_indicator(on : bool):
 	if on:
 		player.wave_indicator.set_spawners(spawners)
+		var tween : Tween = create_tween()
+		tween.tween_property(player.wave_indicator, "modulate", Color(1, 1, 1, 1), 3.0).set_trans(Tween.TRANS_CUBIC)
 	else:
-		player.wave_indicator.set_spawners()
+		var tween : Tween = create_tween()
+		tween.tween_property(player.wave_indicator, "modulate", Color(1, 1, 1, 0), 3.0).set_trans(Tween.TRANS_CUBIC)
+		tween.tween_callback(player.wave_indicator.set_spawners)
 
 func _begin_spawners():
 	for spawner : Spawner in spawners:
@@ -421,8 +426,6 @@ func _on_test_open_shop_pressed() -> void:
 	else: 
 		shop.open()
 	
-func _toggle_shop():
-	upgrade_menu.close
 
 func _on_pause_menu_unpausing_with_esc() -> void:
 	get_tree().paused = false

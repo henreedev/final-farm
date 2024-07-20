@@ -14,7 +14,6 @@ shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
 
 [node name="Upgrade_Menu" type="Control" groups=["upgrade_menu"]]
-modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,10 +70,10 @@ mouse_filter = 2
 
 [node name="ShopInventory" parent="MarginContainer/TextureRect/InventoryRoot" instance=ExtResource("4_nogqa")]
 
-[node name="Broc" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+[node name="Eggplant" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
 position = Vector2(576, 0)
-type = 1
 
-[node name="Egg" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+[node name="Broccoli" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+type = 1
 
 [connection signal="focus_entered" from="ColorRect" to="." method="_on_color_rect_focus_entered"]
