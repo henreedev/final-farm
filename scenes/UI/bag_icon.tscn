@@ -134,7 +134,7 @@ shadow_color = Color(0, 0, 0, 1)
 [node name="BagIcon" type="AnimatedSprite2D"]
 modulate = Color(1, 1, 1, 0)
 material = SubResource("ShaderMaterial_csxw2")
-scale = Vector2(8, 8)
+scale = Vector2(7, 7)
 sprite_frames = SubResource("SpriteFrames_beheq")
 animation = &"eggplant"
 script = ExtResource("2_jafi8")

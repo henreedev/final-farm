@@ -5,9 +5,6 @@ class_name Plant
 enum Type {EGGPLANT, BROCCOLI, FOOD_SUPPLY}
 enum Level {Level0, Level1, Level2, Level3}
 
-const EGGPLANT_COST := 5
-const BROCCOLI_COST := 1
-
 
 const PROJECTILE_OFFSET = Vector2(-4, 2)
 
@@ -15,7 +12,6 @@ signal died
 
 var type : Type = Type.EGGPLANT
 
-var cost : int
 var health : int
 var health_drain_percent : float
 var time_to_grow : int
@@ -30,23 +26,15 @@ var upgrade_fire_rate_mod := 1.0
 var hoe_fire_rate_mod := 1.0
 var is_sleeping := false
 var is_dead := false
-
-
-
-
 #endregion: Global vars
 
 #region: Eggplant vars
 signal eggplant_arrived
-static var eggplant_level : Level = Level.Level0
 var eggplant_scene : PackedScene = preload("res://scenes/plants/eggplant.tscn")
 var eggplant_spawn_pos = Vector2(12, -13)
 var eggplant_spawn_angle = -PI / 4.0
 #endregion: Eggplant vars
 
-#region: Broccoli vars
-static var broccoli_level : Level = Level.Level0
-#endregion: Broccoli vars
 
 #region: Other vars
 var projectile_scene : PackedScene = preload("res://scenes/plants/projectile.tscn")
@@ -71,49 +59,19 @@ func _ready() -> void:
 	pick_stats()
 
 func pick_stats():
+	damage = Utils.get_plant_damage(type)
+	health = Utils.get_plant_health(type)
+	attack_range = Utils.get_plant_range(type)
 	match type:
 		Type.FOOD_SUPPLY:
 			health = 100
 			attack_range = 0
 		Type.EGGPLANT:
-			cost = 5
-			health = 100
-			attack_range = 0
 			flip_h = facing_right
 		Type.BROCCOLI:
-			match broccoli_level:
-				Level.Level0:
-					health = 100
-					damage = 1
-					attack_range = 3
-					attack_cooldown = 1.0
-					projectile_lifespan = 0.7
-					projectile_radius = 3
-					projectile_speed = 90.0
-				Level.Level1:
-					health = 125
-					damage = 2
-					attack_range = 3
-					attack_cooldown = 1.0
-					projectile_lifespan = 0.7
-					projectile_radius = 3
-					projectile_speed = 90.0
-				Level.Level2:
-					health = 150
-					damage = 3
-					attack_range = 4
-					attack_cooldown = .9
-					projectile_lifespan = 0.7
-					projectile_radius = 3
-					projectile_speed = 90.0
-				Level.Level3:
-					health = 200
-					damage = 4
-					attack_range = 4
-					attack_cooldown = .8
-					projectile_lifespan = 0.7
-					projectile_radius = 3
-					projectile_speed = 90.0
+			projectile_lifespan = 0.7
+			projectile_radius = 3
+			projectile_speed = 90.0
 					
 	Utils.set_range_area_radii($AttackArea/CollisionShape2D, attack_range)
 

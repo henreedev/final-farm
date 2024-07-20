@@ -5,17 +5,101 @@ static var num_points = 50
 static var arc_height = 50
 static var better_zoom_shader = preload("res://scenes/map/better-zoom.gdshader")
 
+
+static var eggplant_level : Plant.Level = Plant.Level.Level0
+static var broccoli_level : Plant.Level = Plant.Level.Level0
+
+
 static func upgrade(type : Plant.Type):
 	match type:
 		Plant.Type.EGGPLANT:
-			Plant.eggplant_level += 1 as Plant.Level
+			eggplant_level += 1 as Plant.Level
 		Plant.Type.BROCCOLI:
-			Plant.broccoli_level += 1 as Plant.Level			
+			broccoli_level += 1 as Plant.Level			
 
-static func get_cost_of_next_upgrade(type : Plant.Type):
+static func get_plant_damage(type : Plant.Type):
 	match type:
 		Plant.Type.EGGPLANT:
-			match Plant.eggplant_level: # TODO
+			return 0
+		Plant.Type.BROCCOLI:
+			match broccoli_level: # TODO
+				Plant.Level.Level0:
+					return 1
+				Plant.Level.Level1:
+					return 2
+				Plant.Level.Level2: 
+					return 3
+				Plant.Level.Level3: 
+					return 4
+
+static func get_plant_health(type : Plant.Type):
+	match type:
+		Plant.Type.FOOD_SUPPLY:
+			return 1000
+		Plant.Type.EGGPLANT:
+			match eggplant_level: # TODO
+				Plant.Level.Level0:
+					return 100
+				Plant.Level.Level1:
+					return 200
+				Plant.Level.Level2: 
+					return 300
+				Plant.Level.Level3: 
+					return 500
+		Plant.Type.BROCCOLI:
+			match broccoli_level: # TODO
+				Plant.Level.Level0:
+					return 100
+				Plant.Level.Level1:
+					return 125
+				Plant.Level.Level2: 
+					return 150
+				Plant.Level.Level3: 
+					return 200
+	return -1
+
+static func get_plant_range(type):
+	match type:
+		Plant.Type.EGGPLANT:
+			return 0
+		Plant.Type.BROCCOLI:
+			match broccoli_level: # TODO
+				Plant.Level.Level0:
+					return 3
+				Plant.Level.Level1:
+					return 3
+				Plant.Level.Level2: 
+					return 4
+				Plant.Level.Level3: 
+					return 4
+					
+static func get_plant_attack_cooldown(type):
+	match type:
+		Plant.Type.EGGPLANT:
+			match eggplant_level: # TODO
+				Plant.Level.Level0:
+					return 10
+				Plant.Level.Level1:
+					return 10
+				Plant.Level.Level2: 
+					return 10
+				Plant.Level.Level3: 
+					return 10
+		Plant.Type.BROCCOLI:
+			match broccoli_level: # TODO
+				Plant.Level.Level0:
+					return 1
+				Plant.Level.Level1:
+					return 1
+				Plant.Level.Level2: 
+					return .9
+				Plant.Level.Level3: 
+					return .8
+
+static func get_next_upgrade_cost(type : Plant.Type):
+	match type:
+		Plant.Type.EGGPLANT:
+			match eggplant_level: # TODO
 				Plant.Level.Level0:
 					return 69
 				Plant.Level.Level1:
@@ -23,7 +107,7 @@ static func get_cost_of_next_upgrade(type : Plant.Type):
 				Plant.Level.Level2: 
 					return 69 * 3
 		Plant.Type.BROCCOLI:
-			match Plant.broccoli_level: # TODO
+			match broccoli_level: # TODO
 				Plant.Level.Level0:
 					return 10
 				Plant.Level.Level1:
@@ -32,7 +116,7 @@ static func get_cost_of_next_upgrade(type : Plant.Type):
 					return 69 * 3
 	return -1
 
-static func get_cost_of_type(type : Plant.Type): # TODO add all plants
+static func get_plant_cost(type : Plant.Type): # TODO add all plants
 	match type:
 		Plant.Type.EGGPLANT:
 			return 5

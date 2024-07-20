@@ -105,6 +105,7 @@ func begin_prewave():
 	_pause_plants(true)
 	_create_spawners()
 	_toggle_dir_indicator(true)
+	_toggle_start_button(true)
 	_toggle_shop_open(true)
 	# TODO show wave info
 	await wave_begun
@@ -116,6 +117,7 @@ func begin_wave():
 	_begin_spawners()
 	_pause_plants(false)
 	_toggle_dir_indicator(false)
+	_toggle_start_button(false)
 	_toggle_shop_open(false)
 	await wave_ended
 	begin_prewave()
@@ -128,6 +130,12 @@ func _toggle_shop_open(open : bool):
 		shop.open()
 	else:
 		shop.close()
+
+func _toggle_start_button(on : bool):
+	if on:
+		player_ui.tween_start_button_up()
+	else:
+		player_ui.tween_start_button_down()
 
 func trigger_wave_begun():
 	wave_begun.emit()
@@ -404,10 +412,10 @@ func lose():
 
 func _input(_event: InputEvent):
 	if not get_tree().paused:
-		if Input.is_action_just_pressed("ui_cancel"):
-			print("pausing game")
-			get_tree().paused = true
-			pause_menu.visible = true
+		if Input.is_action_just_pressed("escape_menu"):
+			if not upgrade_menu.is_open:
+				get_tree().paused = true
+				pause_menu.visible = true
 
 func on_insect_died():
 	await get_tree().create_timer(0.1).timeout

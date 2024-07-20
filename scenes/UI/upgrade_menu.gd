@@ -16,6 +16,7 @@ func _input(event):
 		close()
 
 func open():
+	await get_tree().create_timer(0.1)
 	if not is_open:
 		is_open = true
 		set_process(true)

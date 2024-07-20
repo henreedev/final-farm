@@ -49,5 +49,5 @@ func _process(delta):
 	else:
 		show()
 		dist_to_center_ratio = 1 - clampf(dist_to_center / FADE_CUTOFF, 0.0, 1.0)
-		modulate = Color(tint.r,tint.g,tint.b,dist_to_center_ratio)
+		modulate = Color(tint.r,tint.g,tint.b,dist_to_center_ratio * 0.8)
 		scale = initial_scale * Vector2(dist_to_center_ratio, dist_to_center_ratio)

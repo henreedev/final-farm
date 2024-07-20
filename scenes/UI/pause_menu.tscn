@@ -58,6 +58,7 @@ theme = ExtResource("3_pnmeu")
 text = "Continue"
 
 [node name="Options" type="Button" parent="MarginContainer/VBoxContainer"]
+visible = false
 use_parent_material = true
 layout_mode = 2
 theme = ExtResource("3_pnmeu")
