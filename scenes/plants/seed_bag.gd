@@ -85,13 +85,7 @@ func _spawn_plant():
 	main.add_child(plant)
 
 func pick_animation():
-	match type:
-		Plant.Type.EGGPLANT:
-			animation = "eggplant_tear"
-		Plant.Type.BROCCOLI:
-			animation = "broccoli_tear"
-		_:
-			print("SEED TYPE ANIMATION NOT DEFINED (seed_bag.gd)")
+	animation = Utils.get_plant_string(type) + "_tear"
 
 func _on_frame_changed():
 	if frame == 5:

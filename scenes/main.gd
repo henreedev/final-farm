@@ -208,10 +208,10 @@ func _delete_spawners():
 func _increment_mutation(type : Insect.Type):
 	match type:
 		Insect.Type.FLY:
-			if not Insect.fly_mutated:
+			if not Utils.fly_mutated:
 				fly_sightings_until_mutation -= 1
 				if fly_sightings_until_mutation < 0:
-					Insect.fly_mutated = true
+					Utils.fly_mutated = true
 
 
 func _pick_random_spawner_pos(index : int, total : int):

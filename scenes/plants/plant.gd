@@ -2,7 +2,8 @@ extends AnimatedSprite2D
 class_name Plant
 
 #region: Global vars
-enum Type {EGGPLANT, BROCCOLI, FOOD_SUPPLY}
+enum Type {EGGPLANT, BROCCOLI, TOMATO, POTATO, CELERY, \
+		   CORN, WATERMELON, PEPPER, BANANA, LEMONLIME, FOOD_SUPPLY}
 enum Level {Level0, Level1, Level2, Level3}
 
 
@@ -10,7 +11,7 @@ const PROJECTILE_OFFSET = Vector2(-4, 2)
 
 signal died
 
-var type : Type = Type.EGGPLANT
+var type : Type 
 
 var health : int
 var health_drain_percent : float
@@ -45,6 +46,7 @@ var attack_dir : Vector2
 var attacking := false
 var growing := true
 var paused := false
+var cant_attack_during_animation := false
 var facing_right := randf() > 0.5
 var facing_down := true
 #endregion: Other vars
@@ -63,16 +65,18 @@ func pick_stats():
 	health = Utils.get_plant_health(type)
 	attack_range = Utils.get_plant_range(type)
 	attack_cooldown = Utils.get_plant_attack_cooldown(type)
+	
 	match type:
 		Type.FOOD_SUPPLY:
 			health = 100
-			attack_range = 0
 		Type.EGGPLANT:
 			flip_h = facing_right
 		Type.BROCCOLI:
 			projectile_lifespan = 0.7
 			projectile_radius = 3
 			projectile_speed = 90.0
+		Type.BANANA:
+			c
 					
 	Utils.set_range_area_radii($AttackArea/CollisionShape2D, attack_range)
 

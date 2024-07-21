@@ -39,7 +39,7 @@ var holding_throw = false
 var seed_counts = { # TODO add all plants
 	Plant.Type.EGGPLANT : 1,
 	Plant.Type.BROCCOLI : 0,
-	}
+}
 
 var total_seeds := 0
 var bug_kills := 0
@@ -54,8 +54,8 @@ var hoe_scene : PackedScene = preload("res://scenes/player/hoe.tscn")
 var hoe_angle_cone = 180.0
 var hoe_duration = 1.0
 var hoe_buff_duration = 3.0
-var hoe_buff_start_strength = 3.0
-var hoe_buff_end_strength = 1.5
+var hoe_buff_start_strength = 1.5
+var hoe_buff_end_strength = 1.25
 var hoe_scale = 1.0
 
 

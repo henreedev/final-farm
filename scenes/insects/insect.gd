@@ -2,7 +2,7 @@ extends CharacterBody2D
 class_name Insect
 
 #region: Globals
-enum Type {FLY}
+enum Type {FLY, GRUB, MOTH, SNAIL, BEE}
 
 signal died 
 
@@ -10,10 +10,6 @@ const MOVEMENT_REFRESH_DUR_MIN = 0.5
 const MOVEMENT_REFRESH_DUR_MAX = 1.2
 const MOVEMENT_DEVIATION_MAX = 25.0 # degrees
 const SPEED_DEVIATION = 0.05
-const BASE_SPEED = 20.0
-
-# Mutation tracking
-static var fly_mutated := false 
 
 var type : Type = Type.FLY
 var health : int
@@ -21,7 +17,7 @@ var damage : int
 var attack_cooldown : float # aka fire rate
 var attack_range : int
 var detection_range : int
-var speed_mod : float
+var base_speed : float
 
 var target_dir : Vector2
 var movement_dir : Vector2
@@ -35,6 +31,7 @@ var marked_by_player = false # TODO add red outline and target reticle when true
 var is_dead = false
 var speed_scale := 1.0
 var paused := false
+var moves_straight := false
 
 
 @onready var movement_timer : ScalableTimer = $MovementTimer
@@ -56,12 +53,13 @@ func _ready():
 	movement_timer.start(1.0)
 
 func pick_values_on_type():
+	health = Utils.get_insect_health(type)
+	damage = Utils.get_insect_damage(type)
+	attack_cooldown = Utils.get_insect_attack_cooldown(type)
+	base_speed = Utils.get_insect_speed(type)
 	match type:
 		Type.FLY:
 			asprite.animation = "fly_front"
-			health = 3
-			damage = 25
-			attack_cooldown = 1.0
 			attack_range = 0
 			detection_range = 8
 			_set_range_area_radii()
@@ -151,10 +149,11 @@ func recalc_movement_vars():
 		else:
 			target_dir = -position.normalized() # go towards center map
 		var deviation = deg_to_rad(randf_range(-MOVEMENT_DEVIATION_MAX, MOVEMENT_DEVIATION_MAX))
+		if moves_straight: deviation = 0
 		movement_dir = Vector2.from_angle(target_dir.angle() + deviation)
 		var speed_deviation = randf_range(1 - SPEED_DEVIATION, 1 + SPEED_DEVIATION)
 		var speed_isometric_factor = lerpf(1, 0.5, abs(movement_dir.y))
-		movement_speed = BASE_SPEED * speed_isometric_factor * speed_deviation
+		movement_speed = base_speed * speed_isometric_factor * speed_deviation
 	
 	# Calculate variables to choose animations with
 	going_right = movement_dir.x >= 0 
@@ -186,7 +185,7 @@ func take_damage(amount : int):
 
 func die():
 	is_dead = true
-	player.adjust_bug_kills(1)
+	player.adjust_bug_kills(Utils.get_insect_kill_reward(type))
 	died.emit()
 	queue_free()
 
