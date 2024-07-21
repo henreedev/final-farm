@@ -12,6 +12,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [node name="Upgrade_Menu" type="Control" groups=["upgrade_menu"]]
 layout_mode = 3

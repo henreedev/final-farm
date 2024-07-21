@@ -11,6 +11,7 @@ const PROJECTILE_OFFSET = Vector2(-4, 2)
 
 signal fire_condition_met
 signal died
+signal fired(projectile : Projectile)
 
 var type : Type 
 
@@ -37,6 +38,10 @@ var eggplant_spawn_pos = Vector2(12, -13)
 var eggplant_spawn_angle = -PI / 4.0
 #endregion: Eggplant vars
 
+#region: Pepper vars
+var fired_projectile : Projectile
+#endregion: Pepper vars
+
 
 #region: Other vars
 var projectile_scene : PackedScene = preload("res://scenes/plants/projectile.tscn")
@@ -52,6 +57,7 @@ var anims_bidir := true
 var can_attack := true
 var fires_projectile := true
 var fires_after_condition := false
+var deletes_after_firing := false
 var facing_right := randf() > 0.5
 var facing_down := true
 var anim_str : String
@@ -60,9 +66,12 @@ var anim_str : String
 @onready var attack_timer : ScalableTimer = $AttackTimer
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
+@onready var health_bar = $HealthBar
+@onready var health_bar_label = $HealthBar/Label
 #region: Universal functions
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	main.info_toggled.connect(update_health_bar)
 	pick_stats()
 	pick_starting_animation()
 
@@ -74,6 +83,10 @@ func pick_stats():
 	upgrade_fire_rate_mod = Utils.get_plant_attack_cooldown(type, Level.Level0) / Utils.get_plant_attack_cooldown(type)
 	anim_str = Utils.get_plant_string(type) + "_"
 	match type:
+		Type.FOOD_SUPPLY:
+			can_attack = false
+			health_bar.scale = Vector2(2, 2)
+			health_bar.position = Vector2(0, 8)
 		Type.EGGPLANT:
 			flip_h = facing_right
 			anims_bidir = false
@@ -84,12 +97,32 @@ func pick_stats():
 			projectile_speed = 90.0
 		Type.CORN:
 			anims_bidir = false
-			projectile_lifespan = 0.7
+			projectile_lifespan = 0.5
 			projectile_radius = 3
-			projectile_speed = 150.0
+			projectile_speed = 200.0
+		Type.LEMONLIME:
+			projectile_lifespan = 1.5
+			projectile_radius = 6
+			projectile_speed = 180.0
 		Type.BANANA:
 			can_cancel_atk_anim = false
+			projectile_lifespan = 10
+			projectile_radius = 9
+			projectile_speed = 500.0
+		Type.POTATO:
+			offset = Vector2(0, -8)
+			anims_bidir = false
+			deletes_after_firing = true
+			fires_after_condition = true
+		Type.PEPPER:
+			anims_bidir = false
+			can_cancel_atk_anim = false
+		Type.CELERY:
+			fires_projectile = false
+		Type.WATERMELON:
+			can_cancel_atk_anim = false
 	Utils.set_range_area_radii($AttackArea/CollisionShape2D, attack_range)
+	update_health_bar()
 
 func _do_attack_cooldown():
 	attack_timer.start(attack_cooldown)
@@ -136,24 +169,25 @@ func _attack(bypass : bool):
 		if not can_cancel_atk_anim:
 				if (animation == anim_str + "shoot_front" or \
 					animation == anim_str + "shoot_back" or \
-					animation == "shoot"):
+					animation == anim_str + "shoot"):
 					await animation_finished
 		calc_facing_vars()
 		var current_target = target
-		if fires_projectile:
-			if fires_after_condition:
-				await fire_condition_met
-			fire_projectile()
-		else:
-			target.take_damage(damage)
 		if anims_bidir:
 			animation = anim_str + "shoot_front" if facing_down else anim_str + "shoot_back"
 		else:
 			animation = anim_str + "shoot"
 		set_frame_and_progress(0, 0) 
 		play()
+		if fires_projectile:
+			if fires_after_condition:
+				await fire_condition_met
+			fire_projectile()
+		else:
+			target.take_damage(damage)
 		await _do_attack_cooldown()
 		if attacking and target:
+			print("reattacking with target: ", target)
 			_attack(true)
 
 func retarget():
@@ -171,7 +205,7 @@ func retarget():
 		target = null
 		attacking = false
 	
-	if target:
+	if target and is_instance_valid(target):
 		var current_target = target
 		await target.died
 		if current_target == target:
@@ -182,27 +216,28 @@ func retarget():
 		attacking = false
 
 func fire_projectile():
-	match type:
-		Type.BROCCOLI:
-			var projectile : Projectile = projectile_scene.instantiate()
-			projectile.type = type
-			projectile.allied = true
-			projectile.damage = damage
-			projectile.radius = projectile_radius
-			projectile.speed = projectile_speed
-			projectile.dir = attack_dir
-			projectile.rotation = attack_dir.angle()
-			var projectile_offset = Vector2(PROJECTILE_OFFSET.x * -1 if facing_right else 1.0,\
-						PROJECTILE_OFFSET.y * -1 if facing_down else 1.0) 
-			projectile.position = position + projectile_offset
-			projectile.lifespan = projectile_lifespan
-			projectile.should_fire = true
-			
-			main.add_child.call_deferred(projectile)
+	var projectile : Projectile = projectile_scene.instantiate()
+	projectile.type = type
+	projectile.allied = true
+	projectile.damage = damage
+	projectile.radius = projectile_radius
+	projectile.speed = projectile_speed
+	projectile.dir = attack_dir
+	projectile.rotation = attack_dir.angle()
+	var projectile_offset = Vector2(PROJECTILE_OFFSET.x * -1 if facing_right else 1.0,\
+				PROJECTILE_OFFSET.y * -1 if facing_down else 1.0) 
+	projectile.position = position + projectile_offset
+	projectile.lifespan = projectile_lifespan
+	projectile.should_fire = true
+	projectile.target = target
+	main.add_child.call_deferred(projectile)
+	fired_projectile = projectile
+	if deletes_after_firing:
+		queue_free()
 
 
 func pick_animation():
-	flip_h = facing_right
+	flip_h = facing_right if anims_bidir else false
 	if not (attacking or growing):
 		if anims_bidir:
 			if not (animation == anim_str + "shoot_front" or animation == anim_str + "shoot_back"):
@@ -221,11 +256,18 @@ func calc_facing_vars():
 
 func take_damage(amount : int):
 	health -= amount
+	update_health_bar()
 	if health <= 0:
 		die()
 
+func update_health_bar():
+	health_bar_label.text = str(health)
+	if main.show_info:
+		health_bar.show()
+	else:
+		health_bar.hide()
+
 func die():
-	
 	is_dead = true
 	died.emit()
 	if hoe_tween:
@@ -278,11 +320,22 @@ func eggplant_arrive(eggplant):
 
 func _on_animation_finished():
 	var grow_str = anim_str + "grow"
+	var attack_str = anim_str + "shoot" 
+	var attack_str_front = attack_str + "_front"
+	var attack_str_back = attack_str + "_back"
 	match animation:
 		grow_str:
 			growing = false
 			retarget()
 			if target: _attack(false)
+		attack_str:
+			animation = anim_str + "idle"
+			if type == Type.POTATO:
+				fire_condition_met.emit()
+		attack_str_front:
+			animation = anim_str + "idle_front"
+		attack_str_back:
+			animation = anim_str + "idle_back"
 
 
 func _on_animation_looped():
@@ -308,3 +361,13 @@ func _on_attack_area_area_exited(area):
 		if target and parent == target:
 			target = null
 			retarget()
+
+
+func _on_frame_changed():
+	match type:
+		Type.PEPPER:
+			if animation == anim_str + "shoot" and frame == 4:
+				pause()
+				if fired_projectile and is_instance_valid(fired_projectile):
+					await fired_projectile.chase_complete
+				play()

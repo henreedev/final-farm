@@ -10,6 +10,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6cm4m"]
 texture = ExtResource("1_n6buw")

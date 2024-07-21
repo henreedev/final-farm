@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bxqqm0fji2wwm"]
+[gd_scene load_steps=16 format=3 uid="uid://bxqqm0fji2wwm"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_n7gso"]
 [ext_resource type="Script" path="res://scenes/map/wave.gd" id="2_1hows"]
@@ -8,34 +8,45 @@
 [ext_resource type="PackedScene" uid="uid://cqu2nhyajf5dp" path="res://scenes/UI/player_ui.tscn" id="3_pq8xe"]
 [ext_resource type="PackedScene" uid="uid://bkcmq0oly4j8w" path="res://scenes/UI/upgrade_menu.tscn" id="4_1qibe"]
 [ext_resource type="PackedScene" uid="uid://fxv5hgqgs5ds" path="res://scenes/UI/pause_menu.tscn" id="5_3rix5"]
+[ext_resource type="AudioStream" uid="uid://bkso71txrw12q" path="res://assets/audio/Quadrant 4.mp3" id="9_qtrh0"]
+[ext_resource type="AudioStream" uid="uid://0lvffh3wxq7h" path="res://assets/audio/Prewave.mp3" id="10_4wsqy"]
 
 [sub_resource type="Resource" id="Resource_mwtrt"]
 script = ExtResource("3_nwf1e")
 type = 0
-count = 30
+count = 10
+spawn_time = 19.4
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_eiiuf"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 5
+spawn_time = 10.2
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_tch1m"]
+script = ExtResource("3_nwf1e")
+type = 2
+count = 5
 spawn_time = 0.0
 streams = false
 stream_duration = 0.0
 
-[sub_resource type="Resource" id="Resource_5ygsf"]
+[sub_resource type="Resource" id="Resource_qkl8a"]
 script = ExtResource("3_nwf1e")
-type = 0
-count = 45
-spawn_time = 5.0
-streams = false
-stream_duration = 0.0
-
-[sub_resource type="Resource" id="Resource_oh76m"]
-script = ExtResource("3_nwf1e")
-type = 0
-count = 50
-spawn_time = 10.0
+type = 3
+count = 56
+spawn_time = 0.0
 streams = true
-stream_duration = 10.0
+stream_duration = 10.3
 
 [sub_resource type="Resource" id="Resource_vwnyj"]
 script = ExtResource("2_1hows")
-wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_mwtrt"), SubResource("Resource_5ygsf"), SubResource("Resource_oh76m")])
+duration = 20.5
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_mwtrt"), SubResource("Resource_eiiuf"), SubResource("Resource_tch1m"), SubResource("Resource_qkl8a")])
 
 [node name="Main" type="Node2D" groups=["main"]]
 y_sort_enabled = true
@@ -61,4 +72,17 @@ visible = false
 
 [node name="FoodHolder" type="CanvasGroup" parent="."]
 
+[node name="WaveTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="WaveMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_qtrh0")
+volume_db = -17.0
+
+[node name="PreWaveMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_4wsqy")
+volume_db = -17.0
+autoplay = true
+
 [connection signal="unpausing_with_esc" from="CanvasLayer/pause_menu" to="." method="_on_pause_menu_unpausing_with_esc"]
+[connection signal="timeout" from="WaveTimer" to="." method="_on_wave_timer_timeout"]

@@ -16,6 +16,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(0.431373, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = true
+shader_parameter/ignore_modulate = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fdl7g"]
 shader = ExtResource("3_01w31")
@@ -23,6 +24,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = true
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [sub_resource type="Image" id="Image_kbssk"]
 data = {
@@ -141,6 +143,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = true
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d7dii"]
 shader = ExtResource("3_01w31")
@@ -148,6 +151,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [node name="Player_UI" type="Control"]
 layout_mode = 3
@@ -299,5 +303,20 @@ offset_bottom = -55.0
 scale = Vector2(2, 2)
 text = "F"
 label_settings = SubResource("LabelSettings_2v2xe")
+
+[node name="WinLoseLabel" type="Label" parent="."]
+material = SubResource("ShaderMaterial_fdl7g")
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -64.0
+offset_top = 6.0
+offset_right = -4.0
+offset_bottom = 29.0
+grow_horizontal = 2
+scale = Vector2(2, 2)
+label_settings = SubResource("LabelSettings_2v2xe")
+horizontal_alignment = 1
 
 [connection signal="pressed" from="TEST kill increase" to="." method="_on_test_kill_increase_pressed"]

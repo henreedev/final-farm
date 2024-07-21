@@ -54,7 +54,7 @@ var hoe_scene : PackedScene = preload("res://scenes/player/hoe.tscn")
 var hoe_angle_cone = 180.0
 var hoe_duration = 1.0
 var hoe_buff_duration = 3.0
-var hoe_buff_start_strength = 1.5
+var hoe_buff_start_strength = 10.0
 var hoe_buff_end_strength = 1.25
 var hoe_scale = 1.0
 
@@ -110,7 +110,7 @@ func _init_vars() -> void:
 		else:
 			seed_counts[type] = 0
 	
-	await get_tree().create_timer(0.01).timeout
+	await get_tree().create_timer(0.2).timeout
 	shop = get_tree().get_first_node_in_group("shop")
 	
 
@@ -205,10 +205,11 @@ func _act_on_input():
 		attempt_purchase()
 
 func attempt_purchase():
-	var cost = Utils.get_plant_cost(inventory.selected_type)
-	if total_seeds - cost >= 0:
-		adjust_total_seeds(-cost)
-		shop.queue_throw(inventory.selected_type)
+	if shop:
+		var cost = Utils.get_plant_cost(inventory.selected_type)
+		if total_seeds - cost >= 0:
+			adjust_total_seeds(-cost)
+			shop.queue_throw(inventory.selected_type)
 	
 
 func start_throw():

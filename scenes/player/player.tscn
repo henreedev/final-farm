@@ -19,6 +19,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2fus1"]
 atlas = ExtResource("2_v527p")
@@ -114,6 +115,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c6gb1"]
 atlas = ExtResource("3_rm0ig")
@@ -327,6 +329,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [sub_resource type="GDScript" id="GDScript_vy72f"]
 script/source = "extends Sprite2D

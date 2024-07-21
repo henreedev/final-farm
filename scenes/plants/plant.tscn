@@ -1,4 +1,4 @@
-[gd_scene load_steps=259 format=3 uid="uid://qmlvoryj0irv"]
+[gd_scene load_steps=261 format=3 uid="uid://qmlvoryj0irv"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_7oxxv"]
 [ext_resource type="Script" path="res://scenes/plants/plant.gd" id="1_7ry7i"]
@@ -13,6 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://vhgnrqjh2smf" path="res://assets/image/seeds/pepper/pepper-spritesheet.png" id="7_unygh"]
 [ext_resource type="Texture2D" uid="uid://e3xfpxdledxa" path="res://assets/image/seeds/potato/potato-spritesheet.png" id="8_ylwju"]
 [ext_resource type="Texture2D" uid="uid://bvvgss5ynipog" path="res://assets/image/seeds/watermelon/watermelon-spritesheet.png" id="10_6caqi"]
+[ext_resource type="Texture2D" uid="uid://cai60lrtkj03b" path="res://assets/ui/buttons/icon-hp.png" id="14_iqgia"]
+[ext_resource type="LabelSettings" uid="uid://dg2icno1lnx05" path="res://scenes/UI/bag_icon.tres" id="15_tfeep"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lxin"]
 shader = ExtResource("1_7oxxv")
@@ -20,6 +22,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m1v3w"]
 atlas = ExtResource("2_o1brq")
@@ -1318,7 +1321,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_rkb8m")
 }],
-"loop": true,
+"loop": false,
 "name": &"corn_grow",
 "speed": 0.5
 }, {
@@ -1352,7 +1355,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_l0rue")
 }],
-"loop": true,
+"loop": false,
 "name": &"corn_shoot",
 "speed": 20.0
 }, {
@@ -1641,7 +1644,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vvraa")
 }],
-"loop": true,
+"loop": false,
 "name": &"potato_shoot",
 "speed": 10.0
 }, {
@@ -1950,9 +1953,7 @@ z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_8lxin")
 sprite_frames = SubResource("SpriteFrames_rowdm")
-animation = &"lemonlime_shoot_front"
-frame = 1
-frame_progress = 1.0
+animation = &"potato_shoot"
 script = ExtResource("1_7ry7i")
 
 [node name="Hurtbox" type="Area2D" parent="."]
@@ -1979,7 +1980,27 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 [node name="AttackTimer" type="Node" parent="."]
 script = ExtResource("5_sqecx")
 
+[node name="HealthBar" type="Node2D" parent="."]
+visible = false
+use_parent_material = true
+
+[node name="Sprite2D" type="Sprite2D" parent="HealthBar"]
+use_parent_material = true
+position = Vector2(0, 3)
+scale = Vector2(0.32, 0.32)
+texture = ExtResource("14_iqgia")
+
+[node name="Label" type="Label" parent="HealthBar"]
+use_parent_material = true
+offset_right = 40.0
+offset_bottom = 23.0
+scale = Vector2(0.19, 0.19)
+text = "123"
+label_settings = ExtResource("15_tfeep")
+horizontal_alignment = 1
+
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
 [connection signal="animation_looped" from="." to="." method="_on_animation_looped"]
+[connection signal="frame_changed" from="." to="." method="_on_frame_changed"]
 [connection signal="area_entered" from="AttackArea" to="." method="_on_attack_area_area_entered"]
 [connection signal="area_exited" from="AttackArea" to="." method="_on_attack_area_area_exited"]

@@ -7,7 +7,7 @@ uniform vec4 outline_color_1 : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform vec4 outline_color_2 : source_color = vec4(1.0, 0.0, 0.0, 1.0);
 uniform bool outline_1_active = false;
 uniform bool outline_2_active = false;
-
+uniform bool ignore_modulate = false;
 
 varying vec4 modulate;
 
@@ -57,5 +57,7 @@ void fragment() {
 	}
 	vec4 final_color = mix(sprite_color, outline_color, clamp(alpha, 0.0, 1.0));
 	COLOR = vec4(final_color.rgb, clamp(abs(alpha) + sprite_color.a, 0.0, 1.0));
-	COLOR = COLOR * modulate;
+	if (!ignore_modulate){
+		COLOR = COLOR * modulate;
+	}
 }

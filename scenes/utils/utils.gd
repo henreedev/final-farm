@@ -8,7 +8,7 @@ static var better_zoom_shader = preload("res://scenes/map/better-zoom.gdshader")
 static var very_slow = 6.0
 static var slow = 10.0
 static var normal = 16.0
-static var fast = 20.0
+static var fast = 30.0
 static var very_fast = 48.0
 
 static var fly_mutated := false
@@ -57,7 +57,7 @@ static func get_insect_damage(type : Insect.Type):
 		Insect.Type.SNAIL:
 			return 54
 		Insect.Type.MOTH:
-			return 40
+			return 20
 		Insect.Type.BEE:
 			return 16
 
@@ -83,7 +83,7 @@ static func get_insect_kill_reward(type : Insect.Type):
 		Insect.Type.SNAIL:
 			return 10
 		Insect.Type.MOTH:
-			return 1
+			return 2
 		Insect.Type.BEE:
 			return 5
 
@@ -358,7 +358,7 @@ static func get_plant_health(type : Plant.Type):
 
 static func get_plant_range(type : Plant.Type):
 	match type:
-		Plant.Type.EGGPLANT:
+		Plant.Type.EGGPLANT, Plant.Type.FOOD_SUPPLY:
 			return 0
 		Plant.Type.BROCCOLI:
 			match broccoli_level: 
@@ -454,7 +454,7 @@ static func get_plant_range(type : Plant.Type):
 static func get_plant_attack_cooldown(type : Plant.Type, level : Plant.Level = -1):
 	if level >= 0:
 		match type:
-			Plant.Type.EGGPLANT:
+			Plant.Type.EGGPLANT, Plant.Type.FOOD_SUPPLY:
 				match level:
 					Plant.Level.Level0:
 						return 10.0
@@ -540,7 +540,7 @@ static func get_plant_attack_cooldown(type : Plant.Type, level : Plant.Level = -
 						return 0.3
 	else:
 		match type:
-			Plant.Type.EGGPLANT:
+			Plant.Type.EGGPLANT, Plant.Type.FOOD_SUPPLY:
 				match eggplant_level:
 					Plant.Level.Level0:
 						return 10.0
@@ -627,6 +627,8 @@ static func get_plant_attack_cooldown(type : Plant.Type, level : Plant.Level = -
 
 static func get_plant_spawn_duration(type : Plant.Type):
 	match type:
+		Plant.Type.FOOD_SUPPLY:
+			return 1.0
 		Plant.Type.EGGPLANT:
 			return 5.0
 		Plant.Type.BROCCOLI:
@@ -882,6 +884,7 @@ static func give_zoom_shader(node_with_mat : Node2D):
 	node_with_mat.material.shader = better_zoom_shader
 
 static func set_range_area_radii(shape : CollisionShape2D, tile_radius : int):
+	shape.shape = CircleShape2D.new()
 	shape.shape.radius = 8 + 16 * tile_radius
 
 static func calc_arc_between(p1 : Vector2, p2 : Vector2):

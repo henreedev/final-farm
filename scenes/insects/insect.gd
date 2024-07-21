@@ -11,7 +11,7 @@ const MOVEMENT_REFRESH_DUR_MAX = 1.2
 const MOVEMENT_DEVIATION_MAX = 25.0 # degrees
 const SPEED_DEVIATION = 0.05
 
-var type : Type = Type.FLY
+var type : Type 
 var health : int
 var damage : int
 var attack_cooldown : float # aka fire rate
@@ -35,6 +35,12 @@ var moves_straight := false
 var fires_projectile := false
 var anim_str : String
 
+var projectile_scene : PackedScene = preload("res://scenes/plants/projectile.tscn")
+var projectile_radius : int
+var projectile_speed : float
+var projectile_lifespan : float
+
+var label_setting : LabelSettings = preload("res://scenes/UI/bag_icon.tres")
 @onready var movement_timer : ScalableTimer = $MovementTimer
 @onready var attack_timer : ScalableTimer = $AttackTimer
 @onready var detection_area : Area2D = $DetectionArea
@@ -43,23 +49,46 @@ var anim_str : String
 @onready var attack_shape : CollisionShape2D = $AttackArea/CollisionShape2D
 @onready var asprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var player : Player = get_tree().get_first_node_in_group("player")
+@onready var main : Main = get_tree().get_first_node_in_group("main")
+@onready var health_bar_label : Label = $HealthBar/Label
+@onready var health_bar = $HealthBar
 #endregion: Globals
 
 #region: Universal functions
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	main.info_toggled.connect(update_health_bar)
 	Utils.give_zoom_shader(self)
 	pick_values_on_type()
 	retarget()
 	movement_timer.start(1.0)
+	setup_health_bar()
+
+func setup_health_bar():
+	health_bar_label.label_settings = LabelSettings.new()
+	health_bar_label.label_settings.font = label_setting.font
+	health_bar_label.label_settings.font_color = Color(1, 0.2, 0.2, 1)
+	health_bar_label.label_settings.font_size = label_setting.font_size
+	health_bar_label.label_settings.shadow_color = label_setting.shadow_color
+	health_bar_label.label_settings.shadow_size = label_setting.shadow_size
+	update_health_bar()
 
 func pick_values_on_type():
 	health = Utils.get_insect_health(type)
 	damage = Utils.get_insect_damage(type)
 	attack_cooldown = Utils.get_insect_attack_cooldown(type)
+	attack_range = Utils.get_insect_range(type)
 	base_speed = Utils.get_insect_speed(type)
 	anim_str = Utils.get_insect_string(type) + "_"
+	asprite.animation = anim_str + "front"
 	detection_range = Utils.get_insect_detection_range(type)
+	match type:
+		Type.MOTH:
+			projectile_radius = 3
+			projectile_lifespan = 1.0
+			projectile_speed = 60.0
+		Type.GRUB, Type.SNAIL:
+			asprite.offset = Vector2(0, 0)
 	
 	_set_range_area_radii()
 	asprite.play()
@@ -90,14 +119,17 @@ func retarget():
 
 	# Below defines type-specific targeting behavior
 	match type:
-		Type.FLY:
+		Type.FLY, Type.GRUB, Type.MOTH:
 			var all_plants = food_supply.merged(production_plants.merged(other_plants))
 			if len(all_plants) > 0:
 				var distances := all_plants.keys()
 				distances.sort()
 				target = all_plants[distances[0]]
+		Type.SNAIL:
+			if len(food_supply) > 0:
+				target = food_supply.values()[0]
 
-	if target:
+	if target and is_instance_valid(target):
 		if not _target_in_range():
 			attacking = false
 		recalc_movement_vars()
@@ -117,6 +149,14 @@ func _target_in_range():
 		if parent == target:
 			return true
 	return false
+
+func update_health_bar():
+	health_bar_label.text = str(health)
+	if main.show_info:
+		health_bar.show()
+	else:
+		health_bar.hide()
+
 
 func get_new_target_options():
 	target_options.clear()
@@ -140,15 +180,15 @@ func _physics_process(delta):
 
 func pick_animation():
 	asprite.flip_h = going_right
-	if not attacking and not (asprite.animation == "fly_attack_front" or asprite.animation == "fly_attack_back"):
-				asprite.animation = "fly_front" if going_down else "fly_back"
-	
-	asprite.play()
+	if not (attacking):
+		if not (asprite.animation == anim_str + "attack_front" or asprite.animation == anim_str + "attack_back"):
+			asprite.animation = anim_str + "front" if going_down else anim_str + "back"
+		asprite.play()
 
 func recalc_movement_vars():
 	if attacking: movement_speed = 0.0
 	else:
-		if target:
+		if target and is_instance_valid(target):
 			target_dir = position.direction_to(target.position)
 		else:
 			target_dir = -position.normalized() # go towards center map
@@ -168,15 +208,29 @@ func _attack(bypass : bool):
 		attacking = true
 		recalc_movement_vars()
 		var current_target = target
-		match type:
-			Type.FLY:
-				target.take_damage(damage)
-				asprite.animation = "fly_attack_front" if going_down else "fly_attack_back"
-				asprite.frame = 0
-				asprite.play()
+		if fires_projectile:
+			_fire_projectile()
+		else:
+			target.take_damage(damage)
+		asprite.animation = anim_str + "attack_front" if going_down else anim_str + "attack_back"
+		asprite.frame = 0
+		asprite.play()
 		await _do_attack_cooldown()
 		if attacking and target:
 			_attack(true)
+
+func _fire_projectile():
+	var projectile : Projectile = projectile_scene.instantiate()
+	projectile.insect_type = type
+	projectile.allied = false
+	projectile.damage = damage
+	projectile.radius = projectile_radius
+	projectile.speed = projectile_speed
+	projectile.dir = target_dir
+	projectile.rotation = target_dir.angle()
+	projectile.position = position 
+	projectile.should_fire = true
+	main.add_child.call_deferred(projectile)
 
 func _do_attack_cooldown():
 	attack_timer.start(attack_cooldown)
@@ -184,12 +238,14 @@ func _do_attack_cooldown():
 
 func take_damage(amount : int):
 	health -= amount
+	update_health_bar()
 	if health <= 0:
 		die()
 
 func die():
 	is_dead = true
 	player.adjust_bug_kills(Utils.get_insect_kill_reward(type))
+	main.on_insect_died()
 	died.emit()
 	queue_free()
 
@@ -218,7 +274,7 @@ func _on_attack_area_area_entered(area):
 	if area.get_parent() == target:
 		if not attack_timer.is_stopped():
 			await attack_timer.timeout
-		if target:
+		if target and is_instance_valid(target):
 			_attack(false)
 
 

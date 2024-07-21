@@ -11,6 +11,7 @@ var dist_to_center_ratio : float
 const FADE_CUTOFF := 300
 var initial_scale : Vector2
 var tint := Color(1,1,1)
+var label_setting : LabelSettings = preload("res://scenes/UI/bag_icon.tres")
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 @onready var inventory : Inventory = get_parent()
 @onready var label : Label = $Label
@@ -18,6 +19,12 @@ var tint := Color(1,1,1)
 @onready var buy_icon : Sprite2D = $BuyIcon
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	label.label_settings = LabelSettings.new()
+	label.label_settings.font = label_setting.font
+	label.label_settings.font_color = label_setting.font_color
+	label.label_settings.font_size = label_setting.font_size
+	label.label_settings.shadow_color = label_setting.shadow_color
+	label.label_settings.shadow_size = label_setting.shadow_size
 	buy_icon.hide()
 	Utils.give_zoom_shader(self)
 	initial_scale = scale
@@ -40,6 +47,8 @@ func update():
 		buy_icon.hide()
 	else:
 		buy_icon.show()
+		if empty: buy_icon.modulate = Color(1.5,2,2,1)
+		else: buy_icon.modulate = Color(1,1,1,1)
 	material.set_shader_parameter("outline_1_active", selected)
 
 

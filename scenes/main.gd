@@ -3,6 +3,7 @@ class_name Main
 signal upgrade_purchased
 signal wave_ended
 signal wave_begun
+signal info_toggled
 
 enum State {PREWAVE, WAVE, GAME_OVER}
 
@@ -46,12 +47,14 @@ const MAX_FOOD_HEIGHT = Vector2(0, -24)
 @export_group("Mutation Rates")
 @export var fly_sightings_until_mutation := 1
 @export_group("Gameplay Values")
-@export var WINNING_FOOD_AMOUNT = 1000
+@export var WINNING_FOOD_AMOUNT = 4
 @export_range(0, 20, 1) var passive_seed_income_per_wave := 5
 
 var bugs_killed = 0
 var food_amount := 0
 
+var show_info := false
+var can_end_wave := false
 var waves_set_up := false
 var cur_wave : Wave
 var cur_wave_table : Array[Wave]
@@ -78,6 +81,7 @@ var spawner_scene : PackedScene = preload("res://assets/image/map/spawner.tscn")
 var spawners : Array[Spawner] = []
 var shop : Shop
 
+var music_tween : Tween
 var upgrade_menu_tween : Tween
 
 @onready var food_holder = $FoodHolder
@@ -85,6 +89,9 @@ var upgrade_menu_tween : Tween
 @onready var upgrade_menu: UpgradeMenu = $CanvasLayer/Upgrade_Menu
 @onready var pause_menu: Control = $CanvasLayer/pause_menu
 @onready var player : Player = get_tree().get_first_node_in_group("player")
+@onready var wave_timer : Timer = $WaveTimer
+@onready var wave_music : AudioStreamPlayer = $WaveMusic
+@onready var prewave_music : AudioStreamPlayer = $PreWaveMusic
 
 func _ready() -> void:
 	get_tree().paused = false
@@ -98,6 +105,8 @@ func _initial_setup():
 func begin_prewave():
 	if state == State.GAME_OVER: return
 	state = State.PREWAVE
+	can_end_wave = false
+	_switch_music(false)
 	_delete_spawners()
 	if not waves_set_up:
 		_setup_waves()
@@ -115,6 +124,8 @@ func begin_prewave():
 func begin_wave():
 	if state == State.GAME_OVER: return
 	state = State.WAVE
+	_switch_music(true)
+	_start_wave_timer(cur_wave.duration)
 	_begin_spawners()
 	_pause_plants(false)
 	_toggle_dir_indicator(false)
@@ -122,6 +133,21 @@ func begin_wave():
 	_toggle_shop_open(false)
 	await wave_ended
 	begin_prewave()
+
+func _switch_music(is_wave : bool):
+	if music_tween:
+		music_tween.kill()
+	music_tween = create_tween().set_parallel()
+	if is_wave:
+		wave_music.play()
+		music_tween.tween_property(wave_music, "volume_db", -17.0, 1.0)
+		music_tween.tween_property(prewave_music, "volume_db", -60.0, 1.0)
+		music_tween.tween_callback(prewave_music.stop).set_delay(1.0)
+	else:
+		prewave_music.play()
+		music_tween.tween_property(prewave_music, "volume_db", -18.0, 1.0)
+		music_tween.tween_property(wave_music, "volume_db", -60.0, 1.0)
+		music_tween.tween_callback(wave_music.stop).set_delay(1.0)
 
 func _toggle_shop_open(open : bool):
 	await get_tree().create_timer(0.15).timeout
@@ -138,6 +164,9 @@ func _toggle_start_button(on : bool):
 		player_ui.tween_start_button_up()
 	else:
 		player_ui.tween_start_button_down()
+
+func _start_wave_timer(duration : float):
+	wave_timer.start(duration)
 
 func trigger_wave_begun():
 	upgrade_menu.close()
@@ -163,6 +192,8 @@ func _create_spawners():
 	var wave_delegation : Array[WaveGroup] = []
 	var wave_delegation_with_leftover : Array[WaveGroup] = [] # make one with the leftover from int-division
 	var seen_types := {}
+	for type : Insect.Type in Insect.Type.values():
+		seen_types[type] = false
 	for wave_group : WaveGroup in cur_wave.wave_groups:
 		var split_wave_group = WaveGroup.new()
 		split_wave_group.type = wave_group.type
@@ -405,12 +436,19 @@ func create_food_supply_plant():
 
 
 func win():
-	state = State.GAME_OVER
-	print("dubski")
+	if state != State.GAME_OVER:
+		state = State.GAME_OVER
+		player.target_zoom_override = Vector2(4.0, 4.0)
+		player_ui.winlose_label.text = "You won!!!"
+		create_tween().tween_property(food_holder, "modulate", Color(2,2,2,1), 1.0).set_trans(Tween.TRANS_CUBIC)
+		create_tween().tween_property(food_holder, "position", Vector2(0, -600), 3.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
 func lose():
-	state = State.GAME_OVER
-	print("L ski")
+	if state != State.GAME_OVER:
+		state = State.GAME_OVER
+		player.target_zoom_override = Vector2(4.0, 4.0)
+		create_tween().tween_property(food_holder, "modulate", Color(.5,.5,.5,0), 5.0).set_trans(Tween.TRANS_CUBIC)
+		player_ui.winlose_label.text = "You lost..."
 
 
 func _input(_event: InputEvent):
@@ -419,11 +457,18 @@ func _input(_event: InputEvent):
 			if not upgrade_menu.is_open:
 				get_tree().paused = true
 				pause_menu.visible = true
+		if _event.is_action_pressed("show_info"):
+			show_info = true
+			info_toggled.emit()
+		if _event.is_action_released("show_info"):
+			show_info = false
+			info_toggled.emit()
 
 func on_insect_died():
 	await get_tree().create_timer(0.1).timeout
-	if get_tree().get_node_count_in_group("insect") == 0:
+	if can_end_wave and get_tree().get_node_count_in_group("insect") == 0:
 		wave_ended.emit()
+		print("Ended wave")
 
 
 func _on_player_ui_bug_killed() -> void:
@@ -440,3 +485,7 @@ func _on_test_open_shop_pressed() -> void:
 func _on_pause_menu_unpausing_with_esc() -> void:
 	get_tree().paused = false
 	pause_menu.visible = false
+
+
+func _on_wave_timer_timeout():
+	can_end_wave = true

@@ -1,15 +1,19 @@
-[gd_scene load_steps=34 format=3 uid="uid://bc2thpswuubp"]
+[gd_scene load_steps=46 format=3 uid="uid://bc2thpswuubp"]
 
 [ext_resource type="Texture2D" uid="uid://dfj4ofuulehi" path="res://assets/image/seeds/broccoli/floret-projectile.png" id="1_ay28c"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_cetc4"]
 [ext_resource type="Script" path="res://scenes/plants/projectile.gd" id="2_s1110"]
 [ext_resource type="PackedScene" uid="uid://brdpee5pykcx5" path="res://scenes/utils/shadow.tscn" id="3_o6g11"]
-[ext_resource type="Texture2D" uid="uid://d187x4mxrbqpf" path="res://assets/image/seeds/corn/corn-kernel.png" id="4_gpnvh"]
+[ext_resource type="Texture2D" uid="uid://vqh60kryruho" path="res://assets/image/seeds/banana/banana-projectile.png" id="3_yptbl"]
+[ext_resource type="Texture2D" uid="uid://d2qbof6epfjnp" path="res://assets/image/seeds/corn/corn-projectile.png" id="4_qkflf"]
 [ext_resource type="Texture2D" uid="uid://cqxaoapkgdoj3" path="res://assets/image/seeds/lemonlime/lemonlime-projectile.png" id="4_u2nmf"]
 [ext_resource type="Texture2D" uid="uid://bvqca85jkooct" path="res://assets/image/seeds/potato/potato-explosion-spritesheet.png" id="5_mueuj"]
 [ext_resource type="Texture2D" uid="uid://bhk7485up74ku" path="res://assets/image/seeds/tomato/tomato-fire-spritesheet.png" id="6_hfgem"]
 [ext_resource type="Texture2D" uid="uid://cbe57ltf22yd2" path="res://assets/image/seeds/pepper/pepper-projectile.png" id="6_jk277"]
 [ext_resource type="Texture2D" uid="uid://mlgjejebohdo" path="res://assets/image/seeds/pepper/pepper-effect.png" id="7_asgou"]
+[ext_resource type="Texture2D" uid="uid://cyaxfoh5voyxf" path="res://assets/image/insects/moth-projectile.png" id="7_xumwq"]
+[ext_resource type="Texture2D" uid="uid://cxxlneyo38vtk" path="res://assets/image/seeds/watermelon/watermelon-projectile.png" id="10_nsi2i"]
+[ext_resource type="Texture2D" uid="uid://bhlmxknivkg48" path="res://assets/image/seeds/watermelon/watermelon-explosion-spritesheet.png" id="11_qqhra"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u1v7a"]
 shader = ExtResource("1_cetc4")
@@ -17,6 +21,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3hlgb"]
 shader = ExtResource("1_cetc4")
@@ -24,6 +29,7 @@ shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
 shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
+shader_parameter/ignore_modulate = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qvn1y"]
 atlas = ExtResource("7_asgou")
@@ -101,8 +107,48 @@ region = Rect2(400, 0, 80, 80)
 atlas = ExtResource("6_hfgem")
 region = Rect2(480, 0, 80, 80)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_lvcmo"]
+atlas = ExtResource("11_qqhra")
+region = Rect2(0, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ie2su"]
+atlas = ExtResource("11_qqhra")
+region = Rect2(80, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cue2m"]
+atlas = ExtResource("11_qqhra")
+region = Rect2(160, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v5e5t"]
+atlas = ExtResource("11_qqhra")
+region = Rect2(240, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_86fjs"]
+atlas = ExtResource("11_qqhra")
+region = Rect2(320, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i1eyb"]
+atlas = ExtResource("11_qqhra")
+region = Rect2(400, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_06hdd"]
+atlas = ExtResource("11_qqhra")
+region = Rect2(480, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0mluo"]
+atlas = ExtResource("11_qqhra")
+region = Rect2(560, 0, 80, 80)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_ncj44"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_yptbl")
+}],
+"loop": false,
+"name": &"banana",
+"speed": 0.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_ay28c")
@@ -113,7 +159,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_gpnvh")
+"texture": ExtResource("4_qkflf")
 }],
 "loop": false,
 "name": &"corn",
@@ -125,6 +171,14 @@ animations = [{
 }],
 "loop": false,
 "name": &"lemonlime",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_xumwq")
+}],
+"loop": false,
+"name": &"moth",
 "speed": 0.0
 }, {
 "frames": [{
@@ -206,12 +260,50 @@ animations = [{
 "loop": false,
 "name": &"tomato",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_nsi2i")
+}],
+"loop": false,
+"name": &"watermelon",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lvcmo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ie2su")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cue2m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v5e5t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_86fjs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i1eyb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_06hdd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0mluo")
+}],
+"loop": false,
+"name": &"watermelon_explosion",
+"speed": 8.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cje0s"]
 radius = 3.0
 
 [node name="Projectile" type="Area2D"]
+physics_interpolation_mode = 1
 z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_u1v7a")
@@ -224,8 +316,7 @@ script = ExtResource("2_s1110")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Holder"]
 material = SubResource("ShaderMaterial_3hlgb")
 sprite_frames = SubResource("SpriteFrames_ncj44")
-animation = &"pepper_effect"
-frame_progress = 0.896283
+animation = &"potato"
 
 [node name="Shadow" parent="." instance=ExtResource("3_o6g11")]
 
@@ -241,6 +332,10 @@ disabled = true
 
 [node name="PotatoExplosionHitbox" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(-26, 0, 0, 14, 30, 0, 0, -16)
+disabled = true
+
+[node name="WatermelonExplosionHitbox" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-38, -1, 0, -24, 40, 0, 0, 27)
 disabled = true
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
