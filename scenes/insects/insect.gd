@@ -52,6 +52,8 @@ var label_setting : LabelSettings = preload("res://scenes/UI/bag_icon.tres")
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var health_bar_label : Label = $HealthBar/Label
 @onready var health_bar = $HealthBar
+@onready var bug_hit_sound : AudioStreamPlayer2D = $BugHit
+@onready var flying_sound : AudioStreamPlayer2D = $FlyingSound
 #endregion: Globals
 
 #region: Universal functions
@@ -83,7 +85,8 @@ func pick_values_on_type():
 	asprite.animation = anim_str + "front"
 	detection_range = Utils.get_insect_detection_range(type)
 	match type:
-		Type.MOTH:
+		Type.MOTH, Type.FLY:
+			flying_sound.play()
 			projectile_radius = 3
 			projectile_lifespan = 1.0
 			projectile_speed = 60.0
@@ -212,6 +215,7 @@ func _attack(bypass : bool):
 			_fire_projectile()
 		else:
 			target.take_damage(damage)
+			bug_hit_sound.play()
 		asprite.animation = anim_str + "attack_front" if going_down else anim_str + "attack_back"
 		asprite.frame = 0
 		asprite.play()

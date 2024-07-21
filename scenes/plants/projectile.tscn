@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://bc2thpswuubp"]
+[gd_scene load_steps=47 format=3 uid="uid://bc2thpswuubp"]
 
 [ext_resource type="Texture2D" uid="uid://dfj4ofuulehi" path="res://assets/image/seeds/broccoli/floret-projectile.png" id="1_ay28c"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_cetc4"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://cyaxfoh5voyxf" path="res://assets/image/insects/moth-projectile.png" id="7_xumwq"]
 [ext_resource type="Texture2D" uid="uid://cxxlneyo38vtk" path="res://assets/image/seeds/watermelon/watermelon-projectile.png" id="10_nsi2i"]
 [ext_resource type="Texture2D" uid="uid://bhlmxknivkg48" path="res://assets/image/seeds/watermelon/watermelon-explosion-spritesheet.png" id="11_qqhra"]
+[ext_resource type="AudioStream" uid="uid://duwao8jltlced" path="res://assets/audio/explosion.mp3" id="15_2aotb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u1v7a"]
 shader = ExtResource("1_cetc4")
@@ -337,6 +338,11 @@ disabled = true
 [node name="WatermelonExplosionHitbox" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(-38, -1, 0, -24, 40, 0, 0, 27)
 disabled = true
+
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_2aotb")
+volume_db = -17.0
+max_distance = 100.0
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="animation_finished" from="Holder/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

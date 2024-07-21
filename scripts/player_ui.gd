@@ -12,7 +12,7 @@ var down_dist = 200
 @onready var bug_kills_label : Label = $BugIcon/BugKillsLabel
 @onready var start_button : Control = $Control2
 @onready var winlose_label : Label = $WinLoseLabel
-
+@onready var food_bar : TextureProgressBar = $WinLoseLabel/TextureProgressBar
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_init_vars()

@@ -80,6 +80,7 @@ func pick_values_on_type():
 			should_fire = false
 			has_shadow = false
 			offset = Vector2(0, 0)
+			$ExplosionSound.play()
 			rotation = 0
 		Plant.Type.PEPPER:
 			chase_duration = 0.75
@@ -115,6 +116,7 @@ func _chase_complete():
 		Plant.Type.WATERMELON:
 			asprite.animation = "watermelon_explosion"
 			asprite.play()
+			$ExplosionSound.play()
 			watermelon_hitbox.disabled = false
 			rotation = 0
 

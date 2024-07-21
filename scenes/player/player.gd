@@ -38,10 +38,9 @@ var holding_throw = false
 # Tracks how many of each seed you have
 var seed_counts = { # TODO add all plants
 	Plant.Type.EGGPLANT : 1,
-	Plant.Type.BROCCOLI : 0,
 }
 
-var total_seeds := 1000
+var total_seeds := 0
 var bug_kills := 0
 var equipped_seed_type : Plant.Type = Plant.Type.EGGPLANT
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
@@ -54,7 +53,7 @@ var hoe_scene : PackedScene = preload("res://scenes/player/hoe.tscn")
 var hoe_angle_cone = 180.0
 var hoe_duration = 1.0
 var hoe_buff_duration = 3.0
-var hoe_buff_start_strength = 10.0
+var hoe_buff_start_strength = 1.5
 var hoe_buff_end_strength = 1.25
 var hoe_scale = 1.0
 

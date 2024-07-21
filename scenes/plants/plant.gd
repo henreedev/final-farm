@@ -51,6 +51,7 @@ var target_options : Array[Insect] = []
 var attack_dir : Vector2
 var attacking := false
 var growing := true
+var sleeping := false
 var paused := false
 var can_cancel_atk_anim := true
 var anims_bidir := true
@@ -61,6 +62,8 @@ var deletes_after_firing := false
 var facing_right := randf() > 0.5
 var facing_down := true
 var anim_str : String
+var health_to_decay : float = 0
+var health_decay_mod : float = 1.0
 #endregion: Other vars
 
 @onready var attack_timer : ScalableTimer = $AttackTimer
@@ -68,6 +71,13 @@ var anim_str : String
 @onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
 @onready var health_bar = $HealthBar
 @onready var health_bar_label = $HealthBar/Label
+@onready var sleep_timer : ScalableTimer = $SleepTimer
+@onready var sleep_effect : AnimatedSprite2D = $SleepEffect
+@onready var normal_hit : AudioStreamPlayer2D = $normal
+@onready var small_hit : AudioStreamPlayer2D = $small
+@onready var tomato_hit : AudioStreamPlayer2D = $tomato
+@onready var celery_hit : AudioStreamPlayer2D = $celery
+var sleep_time = 15.0
 #region: Universal functions
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -80,6 +90,7 @@ func pick_stats():
 	health = Utils.get_plant_health(type)
 	attack_range = Utils.get_plant_range(type)
 	attack_cooldown = Utils.get_plant_attack_cooldown(type)
+	health_decay = Utils.get_plant_health_decay(type) * 0.01 * health
 	upgrade_fire_rate_mod = Utils.get_plant_attack_cooldown(type, Level.Level0) / Utils.get_plant_attack_cooldown(type)
 	anim_str = Utils.get_plant_string(type) + "_"
 	match type:
@@ -135,8 +146,12 @@ func pick_starting_animation():
 
 func on_hit_by_hoe(duration, start_strength, end_strength):
 	# TODO wakeup if sleeping, display such
+	sleeping = false
+	sleep_effect.hide()
+	sleep_timer.start(sleep_time)
 	var start_modulate = Color(start_strength, start_strength, start_strength, 1)
 	var end_modulate = Color(end_strength, end_strength, end_strength, 1)
+	health_decay_mod = 0.0
 	if hoe_tween:
 		hoe_tween.kill()
 	hoe_tween = create_tween()
@@ -147,48 +162,61 @@ func on_hit_by_hoe(duration, start_strength, end_strength):
 		.from(start_modulate)\
 		.set_trans(Tween.TRANS_LINEAR)
 	hoe_tween.tween_property(self, "hoe_fire_rate_mod", 1.0, 0)
+	hoe_tween.tween_property(self, "health_decay_mod", 1.0, 0)
 	hoe_tween.tween_property(self, "modulate", Color(1,1,1,1), 0.5).set_trans(Tween.TRANS_CUBIC)
-	
+	retarget()
 
 func _physics_process(delta) -> void:
-	if paused:
+	if paused or sleeping:
 		speed_scale = 0
 	elif is_dead:
 		speed_scale = 1
 	else:
 		speed_scale = hoe_fire_rate_mod * (upgrade_fire_rate_mod if not growing else 1.0) 
+	sleep_timer.speed_scale = speed_scale  * health_decay_mod
 	attack_timer.speed_scale = speed_scale
 	calc_facing_vars()
 	pick_animation()
+	_decay_health(delta)
+
+func _decay_health(delta : float):
+	health_to_decay += delta * health_decay * speed_scale * health_decay_mod
+	if growing: health_to_decay = 0.0
+	var int_health_to_decay = int(health_to_decay)
+	if int_health_to_decay > 0:
+		health_to_decay -= int_health_to_decay
+		take_damage(int_health_to_decay)
+	
 
 func _attack(bypass : bool):
-	if not can_attack:
+	if not can_attack or sleeping:
 		pick_animation()
-	if (not attacking) or bypass:
-		attacking = true
-		if not can_cancel_atk_anim:
-				if (animation == anim_str + "shoot_front" or \
-					animation == anim_str + "shoot_back" or \
-					animation == anim_str + "shoot"):
-					await animation_finished
-		calc_facing_vars()
-		var current_target = target
-		if anims_bidir:
-			animation = anim_str + "shoot_front" if facing_down else anim_str + "shoot_back"
-		else:
-			animation = anim_str + "shoot"
-		set_frame_and_progress(0, 0) 
-		play()
-		if fires_projectile:
-			if fires_after_condition:
-				await fire_condition_met
-			fire_projectile()
-		else:
-			target.take_damage(damage)
-		await _do_attack_cooldown()
-		if attacking and target:
-			print("reattacking with target: ", target)
-			_attack(true)
+	else:
+		if (not attacking) or bypass:
+			attacking = true
+			if not can_cancel_atk_anim:
+					if (animation == anim_str + "shoot_front" or \
+						animation == anim_str + "shoot_back" or \
+						animation == anim_str + "shoot"):
+						await animation_finished
+			calc_facing_vars()
+			var current_target = target
+			if anims_bidir:
+				animation = anim_str + "shoot_front" if facing_down else anim_str + "shoot_back"
+			else:
+				animation = anim_str + "shoot"
+			set_frame_and_progress(0, 0) 
+			play()
+			if fires_projectile:
+				if fires_after_condition:
+					await fire_condition_met
+				fire_projectile()
+			else:
+				celery_hit.play()
+				target.take_damage(damage)
+			await _do_attack_cooldown()
+			if attacking and target:
+				_attack(true)
 
 func retarget():
 	var target_dists := {}
@@ -216,6 +244,14 @@ func retarget():
 		attacking = false
 
 func fire_projectile():
+	match type:
+		Type.CORN:
+			small_hit.play()
+		
+		Type.TOMATO:
+			tomato_hit.play()
+		_:
+			normal_hit.play()
 	var projectile : Projectile = projectile_scene.instantiate()
 	projectile.type = type
 	projectile.allied = true
@@ -371,3 +407,8 @@ func _on_frame_changed():
 				if fired_projectile and is_instance_valid(fired_projectile):
 					await fired_projectile.chase_complete
 				play()
+
+
+func _on_sleep_timer_timeout():
+	sleeping = true
+	sleep_effect.show()

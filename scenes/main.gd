@@ -101,6 +101,8 @@ func _ready() -> void:
 
 func _initial_setup():
 	player.adjust_bug_kills(0) 
+	player_ui.food_bar.create_tween().tween_property(player_ui.food_bar, "position", Vector2(0, -3), 1.5).from(Vector2(0,-100)).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	player_ui.food_bar.max_value = WINNING_FOOD_AMOUNT
 
 func begin_prewave():
 	if state == State.GAME_OVER: return
@@ -371,7 +373,10 @@ func _calculate_thresholds():
 func receive_food():
 	food_amount += 1
 	player.adjust_total_seeds(1)
+	player_ui.food_bar.value = food_amount
 	_check_food_thresholds()
+	if food_holder.get_child_count() > 20:
+		food_holder.get_child(0).queue_free()
 	var ratio = float(food_amount) / float(WINNING_FOOD_AMOUNT)
 	food_supply_height = lerp(Vector2(0,0), MAX_FOOD_HEIGHT, ratio)
 	food_supply_height.x = int(food_supply_height.x)

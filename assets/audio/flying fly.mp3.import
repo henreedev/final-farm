@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://djmnsdys0bpxs"
+path="res://.godot/imported/flying fly.mp3-52f9f486ac073d142bb1aa3bd2344a07.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/flying fly.mp3"
+dest_files=["res://.godot/imported/flying fly.mp3-52f9f486ac073d142bb1aa3bd2344a07.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

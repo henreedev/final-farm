@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bxqqm0fji2wwm"]
+[gd_scene load_steps=71 format=3 uid="uid://bxqqm0fji2wwm"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_n7gso"]
 [ext_resource type="Script" path="res://scenes/map/wave.gd" id="2_1hows"]
@@ -11,49 +11,446 @@
 [ext_resource type="AudioStream" uid="uid://bkso71txrw12q" path="res://assets/audio/Quadrant 4.mp3" id="9_qtrh0"]
 [ext_resource type="AudioStream" uid="uid://0lvffh3wxq7h" path="res://assets/audio/Prewave.mp3" id="10_4wsqy"]
 
-[sub_resource type="Resource" id="Resource_mwtrt"]
+[sub_resource type="Resource" id="Resource_7vwte"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 6
+spawn_time = 0.0
+streams = true
+stream_duration = 0.5
+
+[sub_resource type="Resource" id="Resource_b0u56"]
+script = ExtResource("2_1hows")
+duration = 1.1
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_7vwte")])
+
+[sub_resource type="Resource" id="Resource_r8n0q"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 8
+spawn_time = 0.0
+streams = true
+stream_duration = 0.5
+
+[sub_resource type="Resource" id="Resource_fvwto"]
+script = ExtResource("2_1hows")
+duration = 2.3
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_r8n0q")])
+
+[sub_resource type="Resource" id="Resource_fxj2w"]
 script = ExtResource("3_nwf1e")
 type = 0
 count = 10
-spawn_time = 19.4
-streams = false
-stream_duration = 0.0
-
-[sub_resource type="Resource" id="Resource_eiiuf"]
-script = ExtResource("3_nwf1e")
-type = 1
-count = 5
-spawn_time = 10.2
-streams = false
-stream_duration = 0.0
-
-[sub_resource type="Resource" id="Resource_tch1m"]
-script = ExtResource("3_nwf1e")
-type = 2
-count = 5
-spawn_time = 0.0
-streams = false
-stream_duration = 0.0
-
-[sub_resource type="Resource" id="Resource_qkl8a"]
-script = ExtResource("3_nwf1e")
-type = 3
-count = 56
 spawn_time = 0.0
 streams = true
-stream_duration = 10.3
+stream_duration = 0.5
 
-[sub_resource type="Resource" id="Resource_vwnyj"]
+[sub_resource type="Resource" id="Resource_uhtp1"]
 script = ExtResource("2_1hows")
-duration = 20.5
-wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_mwtrt"), SubResource("Resource_eiiuf"), SubResource("Resource_tch1m"), SubResource("Resource_qkl8a")])
+duration = 10.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_fxj2w")])
+
+[sub_resource type="Resource" id="Resource_luyui"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 10
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_l67q4"]
+script = ExtResource("2_1hows")
+duration = 2.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_luyui")])
+
+[sub_resource type="Resource" id="Resource_wb4mh"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 6
+spawn_time = 0.0
+streams = true
+stream_duration = 0.6
+
+[sub_resource type="Resource" id="Resource_dynea"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 6
+spawn_time = 4.9
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_eir6q"]
+script = ExtResource("2_1hows")
+duration = 6.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_wb4mh"), SubResource("Resource_dynea")])
+
+[sub_resource type="Resource" id="Resource_c5huq"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 10
+spawn_time = 0.0
+streams = false
+stream_duration = 0.8
+
+[sub_resource type="Resource" id="Resource_ob17x"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 10
+spawn_time = 5.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_xcjlv"]
+script = ExtResource("2_1hows")
+duration = 5.1
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_c5huq"), SubResource("Resource_ob17x")])
+
+[sub_resource type="Resource" id="Resource_qdkgl"]
+script = ExtResource("3_nwf1e")
+type = 3
+count = 2
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_qhdjf"]
+script = ExtResource("2_1hows")
+duration = 11.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_qdkgl")])
+
+[sub_resource type="Resource" id="Resource_aofkv"]
+script = ExtResource("3_nwf1e")
+type = 3
+count = 2
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_vl24v"]
+script = ExtResource("3_nwf1e")
+type = 2
+count = 4
+spawn_time = 10.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_0a2vg"]
+script = ExtResource("2_1hows")
+duration = 15.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_aofkv"), SubResource("Resource_vl24v")])
+
+[sub_resource type="Resource" id="Resource_wdnh1"]
+script = ExtResource("3_nwf1e")
+type = 3
+count = 0
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_xhbmc"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 6
+spawn_time = 10.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_8nvem"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 6
+spawn_time = 10.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_p11yo"]
+script = ExtResource("3_nwf1e")
+type = 2
+count = 4
+spawn_time = 15.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_ftjwp"]
+script = ExtResource("2_1hows")
+duration = 15.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_wdnh1"), SubResource("Resource_xhbmc"), SubResource("Resource_8nvem"), SubResource("Resource_p11yo")])
+
+[sub_resource type="Resource" id="Resource_sxydu"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 20
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_ffhn2"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 20
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_4u622"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 20
+spawn_time = 10.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_b4fit"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 20
+spawn_time = 10.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_tx74o"]
+script = ExtResource("2_1hows")
+duration = 10.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_sxydu"), SubResource("Resource_ffhn2"), SubResource("Resource_4u622"), SubResource("Resource_b4fit")])
+
+[sub_resource type="Resource" id="Resource_cj28k"]
+script = ExtResource("3_nwf1e")
+type = 3
+count = 4
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_41pgd"]
+script = ExtResource("3_nwf1e")
+type = 2
+count = 8
+spawn_time = 10.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_htv5n"]
+script = ExtResource("2_1hows")
+duration = 10.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_cj28k"), SubResource("Resource_41pgd")])
+
+[sub_resource type="Resource" id="Resource_nb0cq"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 20
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_m6jal"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 20
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_bjr27"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 20
+spawn_time = 10.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_ah67w"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 20
+spawn_time = 10.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_x78ct"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 20
+spawn_time = 20.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_14w23"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 20
+spawn_time = 20.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_hwou5"]
+script = ExtResource("2_1hows")
+duration = 20.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_nb0cq"), SubResource("Resource_m6jal"), SubResource("Resource_bjr27"), SubResource("Resource_ah67w"), SubResource("Resource_x78ct"), SubResource("Resource_14w23")])
+
+[sub_resource type="Resource" id="Resource_xnwtv"]
+script = ExtResource("3_nwf1e")
+type = 3
+count = 3
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_g8loc"]
+script = ExtResource("3_nwf1e")
+type = 2
+count = 6
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_0t5c3"]
+script = ExtResource("3_nwf1e")
+type = 3
+count = 4
+spawn_time = 30.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_pokpn"]
+script = ExtResource("3_nwf1e")
+type = 2
+count = 8
+spawn_time = 40.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_8tpwl"]
+script = ExtResource("2_1hows")
+duration = 40.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_xnwtv"), SubResource("Resource_g8loc"), SubResource("Resource_0t5c3"), SubResource("Resource_pokpn")])
+
+[sub_resource type="Resource" id="Resource_4ehey"]
+script = ExtResource("3_nwf1e")
+type = 4
+count = 10
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_4th6d"]
+script = ExtResource("2_1hows")
+duration = 10.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_4ehey")])
+
+[sub_resource type="Resource" id="Resource_kga7w"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 40
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_fgoi2"]
+script = ExtResource("3_nwf1e")
+type = 4
+count = 10
+spawn_time = 20.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_u0ulq"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 40
+spawn_time = 40.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_gy78y"]
+script = ExtResource("3_nwf1e")
+type = 4
+count = 10
+spawn_time = 60.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_hsu7w"]
+script = ExtResource("2_1hows")
+duration = 60.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_kga7w"), SubResource("Resource_fgoi2"), SubResource("Resource_u0ulq"), SubResource("Resource_gy78y")])
+
+[sub_resource type="Resource" id="Resource_amrk1"]
+script = ExtResource("3_nwf1e")
+type = 3
+count = 20
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_sjeo6"]
+script = ExtResource("3_nwf1e")
+type = 0
+count = 50
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_t4875"]
+script = ExtResource("2_1hows")
+duration = 10.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_amrk1"), SubResource("Resource_sjeo6")])
+
+[sub_resource type="Resource" id="Resource_gjcfp"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 75
+spawn_time = 5.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_t60a8"]
+script = ExtResource("2_1hows")
+duration = 10.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_gjcfp")])
+
+[sub_resource type="Resource" id="Resource_lmxv1"]
+script = ExtResource("3_nwf1e")
+type = 2
+count = 45
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_fusav"]
+script = ExtResource("2_1hows")
+duration = 10.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_lmxv1")])
+
+[sub_resource type="Resource" id="Resource_65gpc"]
+script = ExtResource("3_nwf1e")
+type = 2
+count = 55
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_yy3g6"]
+script = ExtResource("2_1hows")
+duration = 10.0
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_65gpc")])
 
 [node name="Main" type="Node2D" groups=["main"]]
 y_sort_enabled = true
 script = ExtResource("1_n7gso")
-quarter_1_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_vwnyj")])
+quarter_1_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_b0u56"), SubResource("Resource_fvwto"), SubResource("Resource_uhtp1")])
+quarter_1_wave_table_2 = Array[ExtResource("2_1hows")]([SubResource("Resource_l67q4"), SubResource("Resource_eir6q"), SubResource("Resource_xcjlv")])
+quarter_1_wave_table_3 = Array[ExtResource("2_1hows")]([SubResource("Resource_qhdjf"), SubResource("Resource_0a2vg"), SubResource("Resource_ftjwp")])
+quarter_2_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_tx74o"), SubResource("Resource_htv5n"), SubResource("Resource_hwou5"), SubResource("Resource_8tpwl")])
+quarter_2_wave_table_2 = Array[ExtResource("2_1hows")]([SubResource("Resource_4th6d")])
+quarter_2_wave_table_3 = Array[ExtResource("2_1hows")]([SubResource("Resource_hsu7w")])
+quarter_3_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_t4875")])
+quarter_3_wave_table_2 = Array[ExtResource("2_1hows")]([SubResource("Resource_t60a8"), SubResource("Resource_fusav")])
+quarter_3_wave_table_3 = Array[ExtResource("2_1hows")]([SubResource("Resource_yy3g6")])
+quarter_4_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_yy3g6")])
+quarter_4_wave_table_2 = Array[ExtResource("2_1hows")]([SubResource("Resource_yy3g6")])
+quarter_4_wave_table_3 = Array[ExtResource("2_1hows")]([SubResource("Resource_yy3g6")])
 fly_sightings_until_mutation = 5
-passive_seed_income_per_wave = 0
+WINNING_FOOD_AMOUNT = 1000
 
 [node name="Map" parent="." instance=ExtResource("2_nevbb")]
 
@@ -81,8 +478,7 @@ volume_db = -17.0
 
 [node name="PreWaveMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_4wsqy")
-volume_db = -17.0
-autoplay = true
+volume_db = -19.0
 
 [connection signal="unpausing_with_esc" from="CanvasLayer/pause_menu" to="." method="_on_pause_menu_unpausing_with_esc"]
 [connection signal="timeout" from="WaveTimer" to="." method="_on_wave_timer_timeout"]

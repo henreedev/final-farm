@@ -24,6 +24,16 @@ static var pepper_level : Plant.Level = Plant.Level.Level0
 static var banana_level : Plant.Level = Plant.Level.Level0
 static var lemonlime_level : Plant.Level = Plant.Level.Level0
 
+static func restart():
+	eggplant_level = Plant.Level.Level0
+	broccoli_level = Plant.Level.Level0
+	tomato_level = Plant.Level.Level0
+	celery_level = Plant.Level.Level0
+	corn_level = Plant.Level.Level0
+	potato_level = Plant.Level.Level0
+	banana_level = Plant.Level.Level0
+	pepper_level = Plant.Level.Level0
+	lemonlime_level = Plant.Level.Level0
 
 static func upgrade(type : Plant.Type):
 	match type:
@@ -649,6 +659,31 @@ static func get_plant_spawn_duration(type : Plant.Type):
 			return 60.0
 		Plant.Type.LEMONLIME:
 			return 150.0
+
+static func get_plant_health_decay(type : Plant.Type):
+	match type:
+		Plant.Type.FOOD_SUPPLY:
+			return -1.0
+		Plant.Type.EGGPLANT:
+			return 1.66
+		Plant.Type.BROCCOLI:
+			return 5.0
+		Plant.Type.TOMATO:
+			return 3.0
+		Plant.Type.POTATO:
+			return 10.0
+		Plant.Type.CELERY:
+			return 2.0
+		Plant.Type.CORN:
+			return 3.5
+		Plant.Type.WATERMELON:
+			return 2.0
+		Plant.Type.PEPPER:
+			return 2.0
+		Plant.Type.BANANA:
+			return 1.0
+		Plant.Type.LEMONLIME:
+			return 0.5
 
 static func get_next_upgrade_cost(type : Plant.Type):
 	match type:

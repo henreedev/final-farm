@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://beu7j1nuwh6xw"
+path="res://.godot/imported/small shot.mp3-6f470094caeb897c1971d01b9edd8bc4.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/small shot.mp3"
+dest_files=["res://.godot/imported/small shot.mp3-6f470094caeb897c1971d01b9edd8bc4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

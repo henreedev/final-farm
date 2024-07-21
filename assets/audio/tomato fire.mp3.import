@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://djtt00dufxobp"
+path="res://.godot/imported/tomato fire.mp3-b39b4f9a669e549001b573822b18979a.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/tomato fire.mp3"
+dest_files=["res://.godot/imported/tomato fire.mp3-b39b4f9a669e549001b573822b18979a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

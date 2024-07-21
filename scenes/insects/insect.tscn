@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://c8uklt2csnoh6"]
+[gd_scene load_steps=61 format=3 uid="uid://c8uklt2csnoh6"]
 
 [ext_resource type="Texture2D" uid="uid://drxj5jytj73fa" path="res://assets/image/insects/fly-spritesheet.png" id="1_ijdku"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_uluky"]
@@ -11,6 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://w2u54m2epg7g" path="res://assets/image/insects/snail-spritesheet.png" id="7_dl33p"]
 [ext_resource type="Texture2D" uid="uid://cai60lrtkj03b" path="res://assets/ui/buttons/icon-hp.png" id="10_dhmuj"]
 [ext_resource type="LabelSettings" uid="uid://dg2icno1lnx05" path="res://scenes/UI/bag_icon.tres" id="11_w784r"]
+[ext_resource type="AudioStream" uid="uid://cy63kacth8jff" path="res://assets/audio/bug hit.mp3" id="12_j1cui"]
+[ext_resource type="AudioStream" uid="uid://djmnsdys0bpxs" path="res://assets/audio/flying fly.mp3" id="13_yns3p"]
+[ext_resource type="AudioStream" uid="uid://c24vobndscvg1" path="res://assets/audio/enemy death.mp3" id="14_dye52"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4jhf0"]
 shader = ExtResource("1_uluky")
@@ -487,6 +490,21 @@ scale = Vector2(0.19, 0.19)
 text = "123"
 label_settings = ExtResource("11_w784r")
 horizontal_alignment = 1
+
+[node name="BugHit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_j1cui")
+volume_db = -11.47
+max_distance = 200.0
+
+[node name="FlyingSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_yns3p")
+volume_db = -15.895
+max_distance = 200.0
+
+[node name="EnemyDeath" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_dye52")
+volume_db = -8.085
+max_distance = 200.0
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="DetectionArea" to="." method="_on_detection_area_area_entered"]
