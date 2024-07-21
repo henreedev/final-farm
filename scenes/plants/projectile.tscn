@@ -1,9 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://bc2thpswuubp"]
+[gd_scene load_steps=34 format=3 uid="uid://bc2thpswuubp"]
 
 [ext_resource type="Texture2D" uid="uid://dfj4ofuulehi" path="res://assets/image/seeds/broccoli/floret-projectile.png" id="1_ay28c"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_cetc4"]
 [ext_resource type="Script" path="res://scenes/plants/projectile.gd" id="2_s1110"]
 [ext_resource type="PackedScene" uid="uid://brdpee5pykcx5" path="res://scenes/utils/shadow.tscn" id="3_o6g11"]
+[ext_resource type="Texture2D" uid="uid://d187x4mxrbqpf" path="res://assets/image/seeds/corn/corn-kernel.png" id="4_gpnvh"]
+[ext_resource type="Texture2D" uid="uid://cqxaoapkgdoj3" path="res://assets/image/seeds/lemonlime/lemonlime-projectile.png" id="4_u2nmf"]
+[ext_resource type="Texture2D" uid="uid://bvqca85jkooct" path="res://assets/image/seeds/potato/potato-explosion-spritesheet.png" id="5_mueuj"]
+[ext_resource type="Texture2D" uid="uid://bhk7485up74ku" path="res://assets/image/seeds/tomato/tomato-fire-spritesheet.png" id="6_hfgem"]
+[ext_resource type="Texture2D" uid="uid://cbe57ltf22yd2" path="res://assets/image/seeds/pepper/pepper-projectile.png" id="6_jk277"]
+[ext_resource type="Texture2D" uid="uid://mlgjejebohdo" path="res://assets/image/seeds/pepper/pepper-effect.png" id="7_asgou"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u1v7a"]
 shader = ExtResource("1_cetc4")
@@ -19,6 +25,82 @@ shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
 shader_parameter/outline_1_active = false
 shader_parameter/outline_2_active = false
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_qvn1y"]
+atlas = ExtResource("7_asgou")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5q3is"]
+atlas = ExtResource("7_asgou")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_utfp4"]
+atlas = ExtResource("7_asgou")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_avbj0"]
+atlas = ExtResource("7_asgou")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wsc68"]
+atlas = ExtResource("5_mueuj")
+region = Rect2(0, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2buiy"]
+atlas = ExtResource("5_mueuj")
+region = Rect2(80, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0jjij"]
+atlas = ExtResource("5_mueuj")
+region = Rect2(160, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c4145"]
+atlas = ExtResource("5_mueuj")
+region = Rect2(240, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2knx"]
+atlas = ExtResource("5_mueuj")
+region = Rect2(320, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ucsp7"]
+atlas = ExtResource("5_mueuj")
+region = Rect2(400, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gnm0r"]
+atlas = ExtResource("5_mueuj")
+region = Rect2(480, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6upnd"]
+atlas = ExtResource("5_mueuj")
+region = Rect2(560, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e5mvc"]
+atlas = ExtResource("6_hfgem")
+region = Rect2(0, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gh57h"]
+atlas = ExtResource("6_hfgem")
+region = Rect2(80, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0odnl"]
+atlas = ExtResource("6_hfgem")
+region = Rect2(160, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dq1fa"]
+atlas = ExtResource("6_hfgem")
+region = Rect2(240, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ur5ge"]
+atlas = ExtResource("6_hfgem")
+region = Rect2(320, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_51m6m"]
+atlas = ExtResource("6_hfgem")
+region = Rect2(400, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d5u47"]
+atlas = ExtResource("6_hfgem")
+region = Rect2(480, 0, 80, 80)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_ncj44"]
 animations = [{
 "frames": [{
@@ -26,8 +108,104 @@ animations = [{
 "texture": ExtResource("1_ay28c")
 }],
 "loop": false,
-"name": &"floret",
+"name": &"broccoli",
 "speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_gpnvh")
+}],
+"loop": false,
+"name": &"corn",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_u2nmf")
+}],
+"loop": false,
+"name": &"lemonlime",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_jk277")
+}],
+"loop": false,
+"name": &"pepper",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qvn1y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5q3is")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_utfp4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_avbj0")
+}],
+"loop": true,
+"name": &"pepper_effect",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wsc68")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2buiy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0jjij")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c4145")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2knx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ucsp7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gnm0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6upnd")
+}],
+"loop": false,
+"name": &"potato",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e5mvc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gh57h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0odnl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dq1fa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ur5ge")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_51m6m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d5u47")
+}],
+"loop": false,
+"name": &"tomato",
+"speed": 8.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cje0s"]
@@ -38,6 +216,7 @@ z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_u1v7a")
 collision_layer = 2
+collision_mask = 33
 script = ExtResource("2_s1110")
 
 [node name="Holder" type="Node" parent="."]
@@ -45,7 +224,8 @@ script = ExtResource("2_s1110")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Holder"]
 material = SubResource("ShaderMaterial_3hlgb")
 sprite_frames = SubResource("SpriteFrames_ncj44")
-animation = &"floret"
+animation = &"pepper_effect"
+frame_progress = 0.896283
 
 [node name="Shadow" parent="." instance=ExtResource("3_o6g11")]
 
@@ -55,4 +235,14 @@ shape = SubResource("CircleShape2D_cje0s")
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(10, 10)
 
+[node name="TomatoFireHitbox" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-5, 0, 38, -25, 41, 0, 40, 23)
+disabled = true
+
+[node name="PotatoExplosionHitbox" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-26, 0, 0, 14, 30, 0, 0, -16)
+disabled = true
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="animation_finished" from="Holder/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="frame_changed" from="Holder/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]
