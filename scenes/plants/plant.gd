@@ -9,6 +9,7 @@ enum Level {Level0, Level1, Level2, Level3}
 
 const PROJECTILE_OFFSET = Vector2(-4, 2)
 
+signal fire_condition_met
 signal died
 
 var type : Type 
@@ -46,9 +47,14 @@ var attack_dir : Vector2
 var attacking := false
 var growing := true
 var paused := false
-var cant_attack_during_animation := false
+var can_cancel_atk_anim := true
+var anims_bidir := true
+var can_attack := true
+var fires_projectile := true
+var fires_after_condition := false
 var facing_right := randf() > 0.5
 var facing_down := true
+var anim_str : String
 #endregion: Other vars
 
 @onready var attack_timer : ScalableTimer = $AttackTimer
@@ -57,27 +63,32 @@ var facing_down := true
 #region: Universal functions
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pick_starting_animation()
 	pick_stats()
+	pick_starting_animation()
 
 func pick_stats():
 	damage = Utils.get_plant_damage(type)
 	health = Utils.get_plant_health(type)
 	attack_range = Utils.get_plant_range(type)
 	attack_cooldown = Utils.get_plant_attack_cooldown(type)
-	
+	upgrade_fire_rate_mod = Utils.get_plant_attack_cooldown(type, Level.Level0) / Utils.get_plant_attack_cooldown(type)
+	anim_str = Utils.get_plant_string(type) + "_"
 	match type:
-		Type.FOOD_SUPPLY:
-			health = 100
 		Type.EGGPLANT:
 			flip_h = facing_right
+			anims_bidir = false
+			can_attack = false
 		Type.BROCCOLI:
 			projectile_lifespan = 0.7
 			projectile_radius = 3
 			projectile_speed = 90.0
+		Type.CORN:
+			anims_bidir = false
+			projectile_lifespan = 0.7
+			projectile_radius = 3
+			projectile_speed = 150.0
 		Type.BANANA:
-			c
-					
+			can_cancel_atk_anim = false
 	Utils.set_range_area_radii($AttackArea/CollisionShape2D, attack_range)
 
 func _do_attack_cooldown():
@@ -85,13 +96,8 @@ func _do_attack_cooldown():
 	await attack_timer.timeout
 
 func pick_starting_animation():
-	match type:
-		Type.EGGPLANT:
-			animation = "eggplant_grow"
-		Type.BROCCOLI:
-			animation = "broccoli_grow"
-		Type.FOOD_SUPPLY:
-			animation = "none"
+	animation = anim_str + "grow"
+	sprite_frames.set_animation_speed(animation, sprite_frames.get_frame_count(animation) / float(Utils.get_plant_spawn_duration(type)))
 	play()
 
 func on_hit_by_hoe(duration, start_strength, end_strength):
@@ -117,22 +123,35 @@ func _physics_process(delta) -> void:
 	elif is_dead:
 		speed_scale = 1
 	else:
-		speed_scale = upgrade_fire_rate_mod * hoe_fire_rate_mod
+		speed_scale = hoe_fire_rate_mod * (upgrade_fire_rate_mod if not growing else 1.0) 
 	attack_timer.speed_scale = speed_scale
 	calc_facing_vars()
 	pick_animation()
 
 func _attack(bypass : bool):
+	if not can_attack:
+		pick_animation()
 	if (not attacking) or bypass:
 		attacking = true
+		if not can_cancel_atk_anim:
+				if (animation == anim_str + "shoot_front" or \
+					animation == anim_str + "shoot_back" or \
+					animation == "shoot"):
+					await animation_finished
 		calc_facing_vars()
 		var current_target = target
-		match type:
-			Type.BROCCOLI:
-				fire_projectile()
-				animation = "broccoli_shoot_front" if facing_down else "broccoli_shoot_back"
-				frame = 0
-				play()
+		if fires_projectile:
+			if fires_after_condition:
+				await fire_condition_met
+			fire_projectile()
+		else:
+			target.take_damage(damage)
+		if anims_bidir:
+			animation = anim_str + "shoot_front" if facing_down else anim_str + "shoot_back"
+		else:
+			animation = anim_str + "shoot"
+		set_frame_and_progress(0, 0) 
+		play()
 		await _do_attack_cooldown()
 		if attacking and target:
 			_attack(true)
@@ -184,11 +203,13 @@ func fire_projectile():
 
 func pick_animation():
 	flip_h = facing_right
-	if not growing:
-		match type:
-			Type.BROCCOLI:
-				if not attacking and not (animation == "broccoli_shoot_front" or animation == "broccoli_shoot_back"):
-					animation = "broccoli_idle_front" if facing_down else "broccoli_idle_back"
+	if not (attacking or growing):
+		if anims_bidir:
+			if not (animation == anim_str + "shoot_front" or animation == anim_str + "shoot_back"):
+				animation = anim_str + "idle_front" if facing_down else anim_str + "idle_back"
+		else:
+			if not (animation == anim_str + "shoot"):
+				animation = anim_str + "idle"
 		play()
 
 func calc_facing_vars():
@@ -256,35 +277,28 @@ func eggplant_arrive(eggplant):
 
 
 func _on_animation_finished():
+	var grow_str = anim_str + "grow"
 	match animation:
-		"eggplant_grow":
-			animation = "eggplant_shoot"
-			play()
-		"broccoli_grow":
+		grow_str:
 			growing = false
 			retarget()
 			if target: _attack(false)
-		"broccoli_shoot_front":
-			animation = "broccoli_idle_front"
-			play()
-		"broccoli_shoot_back":
-			animation = "broccoli_idle_back"
-			play()
 
 
 func _on_animation_looped():
 	match animation: 
-		"eggplant_shoot":
+		"eggplant_idle":
 			fire_eggplant()
 
 
 func _on_attack_area_area_entered(area):
-	var parent = area.get_parent()
-	if parent is Insect:
-		target_options.append(parent)
-		if not (attacking or growing):
-			retarget()
-			_attack(false)
+	if can_attack:
+		var parent = area.get_parent()
+		if parent is Insect:
+			target_options.append(parent)
+			if not (attacking or growing):
+				retarget()
+				_attack(false)
 
 
 func _on_attack_area_area_exited(area):

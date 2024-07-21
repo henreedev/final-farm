@@ -1,16 +1,23 @@
-[gd_scene load_steps=79 format=3 uid="uid://c62n5plben7pl"]
+[gd_scene load_steps=86 format=3 uid="uid://c62n5plben7pl"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_kg3cv"]
 [ext_resource type="Texture2D" uid="uid://cgcjf6nxv7e76" path="res://assets/image/seeds/broccoli/broccoli-seed-spritesheet.png" id="2_61d4n"]
 [ext_resource type="Texture2D" uid="uid://b5rdt6pe7iysk" path="res://assets/image/seeds/banana/banana-seed-tear-spritesheet.png" id="2_mpxvg"]
+[ext_resource type="Texture2D" uid="uid://c44sgf3nnjjfy" path="res://assets/image/seeds/banana/banana-seeds.png" id="2_ogfj3"]
 [ext_resource type="Texture2D" uid="uid://br8xou81u3ime" path="res://assets/image/seeds/eggplant/seed-spritesheet.png" id="2_xy16i"]
 [ext_resource type="Script" path="res://scenes/plants/seed_bag.gd" id="3_q1lih"]
 [ext_resource type="Texture2D" uid="uid://co6tkwmb7aakh" path="res://assets/image/seeds/corn/corn-seed-tear-spritesheet.png" id="4_q33cn"]
+[ext_resource type="Texture2D" uid="uid://csrpi2d55tlbf" path="res://assets/image/seeds/corn/corn-seeds.png" id="5_aw5sl"]
 [ext_resource type="Texture2D" uid="uid://c8e3pnr6c1mn5" path="res://assets/image/seeds/lemonlime/lemonlime-seed-tear-spritesheet.png" id="6_dtmlk"]
 [ext_resource type="Texture2D" uid="uid://ug2le687pt23" path="res://assets/image/seeds/pepper/pepper-seed-tear-spritesheet.png" id="7_xmlx8"]
+[ext_resource type="Texture2D" uid="uid://cafkrlt57072c" path="res://assets/image/seeds/lemonlime/lemonlime-seeds.png" id="8_80qoe"]
 [ext_resource type="Texture2D" uid="uid://fedjb48405la" path="res://assets/image/seeds/potato/potato-seed-tear-spritesheet.png" id="8_uop65"]
 [ext_resource type="Texture2D" uid="uid://dhwtad2dryvyw" path="res://assets/image/seeds/tomato/tomato-seed-tear-spritesheet.png" id="9_fog6d"]
+[ext_resource type="Texture2D" uid="uid://l44hollxrgrp" path="res://assets/image/seeds/pepper/pepper-seeds.png" id="10_atuwq"]
 [ext_resource type="Texture2D" uid="uid://31j4oht58maq" path="res://assets/image/seeds/watermelon/watermelon-seed-tear-spritesheet.png" id="10_g187u"]
+[ext_resource type="Texture2D" uid="uid://be2wh07240oag" path="res://assets/image/seeds/potato/potato-seeds.png" id="12_ye2ag"]
+[ext_resource type="Texture2D" uid="uid://dd4cnn5yhdw7n" path="res://assets/image/seeds/tomato/tomato-seeds.png" id="14_38ym0"]
+[ext_resource type="Texture2D" uid="uid://cmqqym8d23ij3" path="res://assets/image/seeds/watermelon/watermelon-seeds.png" id="16_k1coj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gae3b"]
 shader = ExtResource("1_kg3cv")
@@ -283,6 +290,9 @@ region = Rect2(96, 0, 16, 16)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("2_ogfj3")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_iuhoh")
 }, {
 "duration": 1.0,
@@ -337,6 +347,9 @@ animations = [{
 "speed": 7.0
 }, {
 "frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_aw5sl")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pvqjh")
 }, {
@@ -393,6 +406,9 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("8_80qoe")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_l33nq")
 }, {
 "duration": 1.0,
@@ -418,6 +434,9 @@ animations = [{
 "speed": 7.0
 }, {
 "frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_atuwq")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tldaa")
 }, {
@@ -445,6 +464,9 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("12_ye2ag")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_6cxg1")
 }, {
 "duration": 1.0,
@@ -471,6 +493,9 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("14_38ym0")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_aesvt")
 }, {
 "duration": 1.0,
@@ -496,6 +521,9 @@ animations = [{
 "speed": 7.0
 }, {
 "frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_k1coj")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_4ddtt")
 }, {
@@ -529,7 +557,7 @@ y_sort_enabled = true
 material = SubResource("ShaderMaterial_gae3b")
 scale = Vector2(1e-05, 1e-05)
 sprite_frames = SubResource("SpriteFrames_3irme")
-animation = &"tomato_tear"
+animation = &"watermelon_tear"
 offset = Vector2(0, -6)
 script = ExtResource("3_q1lih")
 

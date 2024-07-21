@@ -7,7 +7,14 @@ var discovered_first_time := false
 @export var type : Plant.Type
 var blurb_tween : Tween
 var bag_tween : Tween
+var name_tween : Tween
+const name_zoomed_scale = Vector2(0.035, .035)
+const name_big_scale = Vector2(0.125, .125)
+const name_big_pos = Vector2(-105, -13)
+const name_zoomed_pos = Vector2(-105, -6)
+@onready var name_label : Label = $NameLabel
 var initial_scale : Vector2
+@onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var shop_inventory  = get_parent()
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 @onready var hidden_stuff = $Hidden
@@ -42,6 +49,8 @@ func _ready():
 	upgrade_2_label.hide()
 	upgrade_3_label.hide()
 	blurb.modulate = Color(1,1,1,0)
+	name_label.scale = name_big_scale
+	name_label.position = name_big_pos
 	initial_scale = scale
 	pick_animation()
 	_update_bag_values(true)
@@ -69,14 +78,11 @@ func update():
 func discover():
 	discovered_first_time = true
 	hidden_stuff.hide()
+	_update_bag_values(true)
 	# TODO Play a noise, make the shop indicate something  
 
 func pick_animation():
-	match type: # TODO add all plants
-		Plant.Type.EGGPLANT:
-			animation = "eggplant"
-		Plant.Type.BROCCOLI:
-			animation = "broccoli"
+	animation = Utils.get_plant_string(type)
 
 func _update_bag_values(is_first_time : bool):
 	const prefix = ": "
@@ -87,7 +93,10 @@ func _update_bag_values(is_first_time : bool):
 	spawn_duration_label.text = prefix + str(Utils.get_plant_spawn_duration(type)) + " sec"
 	special_label.text = prefix + str(Utils.get_plant_special_value(type))
 	special_blurb.text = Utils.get_plant_special_blurb(type)
-	
+	if discovered_first_time:
+		name_label.text = Utils.get_plant_display_string(type)
+	else:
+		name_label.text = "???"
 	if is_first_time:
 		upgrade_1_label.text = Utils.get_plant_upgrade_blurb(type, Plant.Level.Level1)
 		upgrade_2_label.text = Utils.get_plant_upgrade_blurb(type, Plant.Level.Level2)
@@ -112,6 +121,12 @@ func _on_mouse_zone_mouse_entered():
 	bag_tween = create_tween().set_parallel()
 	var scale_factor = 1.2 if not discovered_first_time else 3.0
 	bag_tween.tween_property(self, "scale", initial_scale * scale_factor, 1.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	if discovered_first_time:
+		if name_tween:
+			name_tween.kill()
+		name_tween = create_tween().set_parallel()
+		name_tween.tween_property(name_label, "position", name_zoomed_pos, 1.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		name_tween.tween_property(name_label, "scale", name_zoomed_scale, 1.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func _on_mouse_zone_mouse_exited():
 	is_selected = false
@@ -119,6 +134,12 @@ func _on_mouse_zone_mouse_exited():
 		bag_tween.kill()
 	bag_tween = create_tween().set_parallel()
 	bag_tween.tween_property(self, "scale", initial_scale, 1.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	if discovered_first_time:
+		if name_tween:
+			name_tween.kill()
+		name_tween = create_tween().set_parallel()
+		name_tween.tween_property(name_label, "position", name_big_pos, 1.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		name_tween.tween_property(name_label, "scale", name_big_scale, 1.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	if blurb_tween:
 		blurb_tween.kill()
 	blurb_tween = create_tween()
@@ -146,6 +167,7 @@ func _on_upgrade_button_pressed():
 	var cost = Utils.get_next_upgrade_cost(type)
 	if cost > 0 and player.bug_kills - cost >= 0:
 		player.adjust_bug_kills(-cost)
+		main.food_supply_plant.health = Utils.get_plant_health(Plant.Type.FOOD_SUPPLY)
 		Utils.upgrade(type)
 		_update_bag_values(false)
 

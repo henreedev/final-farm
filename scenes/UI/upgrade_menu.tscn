@@ -70,11 +70,42 @@ mouse_filter = 2
 
 [node name="ShopInventory" parent="MarginContainer/TextureRect/InventoryRoot" instance=ExtResource("4_nogqa")]
 
+[node name="Eggplant" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+
 [node name="Broccoli" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
-position = Vector2(0, 0)
+position = Vector2(576, 0)
 type = 1
 
-[node name="Eggplant" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
-position = Vector2(576, 0)
+[node name="Tomato" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(1152, 0)
+type = 2
+
+[node name="Potato" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(1728, 0)
+type = 3
+
+[node name="Celery" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(2304, 0)
+type = 4
+
+[node name="Corn" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(2880, 0)
+type = 5
+
+[node name="Watermelon" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(3456, 0)
+type = 6
+
+[node name="Pepper" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(4032, 0)
+type = 7
+
+[node name="Banana" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(4608, 0)
+type = 8
+
+[node name="Lemonlime" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(5184, 0)
+type = 9
 
 [connection signal="focus_entered" from="ColorRect" to="." method="_on_color_rect_focus_entered"]

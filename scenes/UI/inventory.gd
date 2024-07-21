@@ -8,7 +8,7 @@ const ICON_HOZ_OFFSET = 150.0
 var target_pos
 var selected_icon_index := 0
 var selected_icon : BagIcon
-var selected_type : Plant.Type
+var selected_type : Plant.Type = Plant.Type.EGGPLANT
 var bag_icon_scene : PackedScene = preload("res://scenes/UI/bag_icon.tscn")
 
 @onready var player : Player = get_tree().get_first_node_in_group("player")

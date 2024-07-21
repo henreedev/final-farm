@@ -221,7 +221,7 @@ func _pick_random_spawner_pos(index : int, total : int):
 	var rand_angle = randf_range(start, end)
 	
 	const ISOMETRIC_ADJUST = 0.5
-	const SPAWNER_DIST_RADIUS = 16 * 30
+	const SPAWNER_DIST_RADIUS = 16 * 25
 	var spawner_pos = Vector2.from_angle(rand_angle) * SPAWNER_DIST_RADIUS
 	spawner_pos.y *= ISOMETRIC_ADJUST
 	return spawner_pos

@@ -1,9 +1,19 @@
-[gd_scene load_steps=13 format=4 uid="uid://00grn7q4tv8k"]
+[gd_scene load_steps=25 format=4 uid="uid://00grn7q4tv8k"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_titqg"]
+[ext_resource type="Texture2D" uid="uid://c44sgf3nnjjfy" path="res://assets/image/seeds/banana/banana-seeds.png" id="2_3kxv7"]
 [ext_resource type="Script" path="res://scenes/UI/bag_icon.gd" id="2_jafi8"]
 [ext_resource type="Texture2D" uid="uid://dwo4hyjd578mr" path="res://assets/image/seeds/broccoli/broccoli-seeds.png" id="2_wgni2"]
 [ext_resource type="Texture2D" uid="uid://bec8ggnr76ri7" path="res://assets/image/seeds/eggplant/eggplant-seeds.png" id="3_y5epv"]
+[ext_resource type="Texture2D" uid="uid://w5a5f1t8vv3k" path="res://assets/image/seeds/celery/celery-seeds.png" id="4_v0csu"]
+[ext_resource type="Texture2D" uid="uid://csrpi2d55tlbf" path="res://assets/image/seeds/corn/corn-seeds.png" id="5_bher8"]
+[ext_resource type="Texture2D" uid="uid://dxfoeoxbtpvcv" path="res://assets/ui/buttons/buy-button.png" id="5_ksq53"]
+[ext_resource type="LabelSettings" uid="uid://gdl6k06ptbep" path="res://scenes/UI/label_settings.tres" id="6_rnfhq"]
+[ext_resource type="Texture2D" uid="uid://cafkrlt57072c" path="res://assets/image/seeds/lemonlime/lemonlime-seeds.png" id="7_ebo14"]
+[ext_resource type="Texture2D" uid="uid://l44hollxrgrp" path="res://assets/image/seeds/pepper/pepper-seeds.png" id="8_5ivh1"]
+[ext_resource type="Texture2D" uid="uid://be2wh07240oag" path="res://assets/image/seeds/potato/potato-seeds.png" id="9_oolfn"]
+[ext_resource type="Texture2D" uid="uid://dd4cnn5yhdw7n" path="res://assets/image/seeds/tomato/tomato-seeds.png" id="10_xy72f"]
+[ext_resource type="Texture2D" uid="uid://cmqqym8d23ij3" path="res://assets/image/seeds/watermelon/watermelon-seeds.png" id="11_iownx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_csxw2"]
 shader = ExtResource("1_titqg")
@@ -16,6 +26,14 @@ shader_parameter/outline_2_active = false
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("2_3kxv7")
+}],
+"loop": false,
+"name": &"banana",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("2_wgni2")
 }],
 "loop": false,
@@ -24,10 +42,66 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("4_v0csu")
+}],
+"loop": false,
+"name": &"celery",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_bher8")
+}],
+"loop": false,
+"name": &"corn",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("3_y5epv")
 }],
 "loop": false,
 "name": &"eggplant",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_ebo14")
+}],
+"loop": false,
+"name": &"lemonlime",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_5ivh1")
+}],
+"loop": false,
+"name": &"pepper",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_oolfn")
+}],
+"loop": false,
+"name": &"potato",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_xy72f")
+}],
+"loop": false,
+"name": &"tomato",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_iownx")
+}],
+"loop": false,
+"name": &"watermelon",
 "speed": 0.0
 }]
 
@@ -131,12 +205,25 @@ font_size = 26
 shadow_size = 3
 shadow_color = Color(0, 0, 0, 1)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6giut"]
+shader = ExtResource("1_titqg")
+shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
+shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
+shader_parameter/outline_1_active = false
+shader_parameter/outline_2_active = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_36elg"]
+shader = ExtResource("1_titqg")
+shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
+shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
+shader_parameter/outline_1_active = true
+shader_parameter/outline_2_active = false
+
 [node name="BagIcon" type="AnimatedSprite2D"]
-modulate = Color(1, 1, 1, 0)
 material = SubResource("ShaderMaterial_csxw2")
 scale = Vector2(7, 7)
 sprite_frames = SubResource("SpriteFrames_beheq")
-animation = &"eggplant"
+animation = &"lemonlime"
 script = ExtResource("2_jafi8")
 
 [node name="Label" type="Label" parent="."]
@@ -148,3 +235,19 @@ offset_bottom = 23.5
 scale = Vector2(0.305, 0.305)
 text = "1"
 label_settings = SubResource("LabelSettings_4t5x8")
+
+[node name="BuyIcon" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_6giut")
+position = Vector2(-10.8571, 2.28571)
+scale = Vector2(0.485, 0.485)
+texture = ExtResource("5_ksq53")
+
+[node name="Label" type="Label" parent="BuyIcon"]
+material = SubResource("ShaderMaterial_36elg")
+offset_left = -3.82653
+offset_top = -18.1122
+offset_right = 36.1735
+offset_bottom = 9.88775
+scale = Vector2(0.395, 0.395)
+text = "Q"
+label_settings = ExtResource("6_rnfhq")

@@ -15,17 +15,13 @@ var tint := Color(1,1,1)
 @onready var inventory : Inventory = get_parent()
 @onready var label : Label = $Label
 @onready var main : Main = get_tree().get_first_node_in_group("main")
+@onready var buy_icon : Sprite2D = $BuyIcon
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	buy_icon.hide()
 	Utils.give_zoom_shader(self)
 	initial_scale = scale
-	match type:
-		Plant.Type.EGGPLANT:
-			animation = "eggplant"
-		Plant.Type.BROCCOLI:
-			animation = "broccoli"
-		_:
-			print("SEED TYPE ANIMATION NOT DEFINED (bag_icon.gd)")
+	animation = Utils.get_plant_string(type)
 
 func update():
 	amount = player.seed_counts[type]
@@ -39,8 +35,11 @@ func update():
 		label.label_settings.font_color = tint
 		if not inventory.seen_types[type]:
 			main.shop_inventory.types_to_bags[type].discover()
-			 
 	selected = self == inventory.selected_icon
+	if not selected or player.total_seeds < Utils.get_plant_cost(type): 
+		buy_icon.hide()
+	else:
+		buy_icon.show()
 	material.set_shader_parameter("outline_1_active", selected)
 
 

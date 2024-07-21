@@ -41,24 +41,7 @@ wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_mwtrt"), SubR
 y_sort_enabled = true
 script = ExtResource("1_n7gso")
 quarter_1_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_vwnyj")])
-quarter_1_wave_table_2 = null
-quarter_1_wave_table_3 = null
-quarter_2_wave_table_1 = null
-quarter_2_wave_table_2 = null
-quarter_2_wave_table_3 = null
-quarter_3_wave_table_1 = null
-quarter_3_wave_table_2 = null
-quarter_3_wave_table_3 = null
-quarter_4_wave_table_1 = null
-quarter_4_wave_table_2 = null
-quarter_4_wave_table_3 = null
-quarter_1_weight = null
-quarter_2_weight = null
-quarter_3_weight = null
-quarter_4_weight = null
-third_length_shift_ratio = null
 fly_sightings_until_mutation = 5
-WINNING_FOOD_AMOUNT = null
 passive_seed_income_per_wave = 0
 
 [node name="Map" parent="." instance=ExtResource("2_nevbb")]

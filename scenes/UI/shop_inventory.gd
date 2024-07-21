@@ -16,9 +16,9 @@ func _input(event):
 	if event.is_action_released("scroll_up") or event.is_action_released("scroll_down"):
 		var scroll_dir = 0
 		if event.is_action_released("scroll_up"):
-			scroll_dir += 1
-		elif event.is_action_released("scroll_down"):
 			scroll_dir -= 1
+		elif event.is_action_released("scroll_down"):
+			scroll_dir += 1
 		_update_selection(clampi(selected_type + scroll_dir, 0, plant_types_len - 2))
 
 func _update_selection(new_selected_type):

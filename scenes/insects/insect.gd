@@ -32,7 +32,8 @@ var is_dead = false
 var speed_scale := 1.0
 var paused := false
 var moves_straight := false
-
+var fires_projectile := false
+var anim_str : String
 
 @onready var movement_timer : ScalableTimer = $MovementTimer
 @onready var attack_timer : ScalableTimer = $AttackTimer
@@ -57,13 +58,17 @@ func pick_values_on_type():
 	damage = Utils.get_insect_damage(type)
 	attack_cooldown = Utils.get_insect_attack_cooldown(type)
 	base_speed = Utils.get_insect_speed(type)
-	match type:
-		Type.FLY:
-			asprite.animation = "fly_front"
-			attack_range = 0
-			detection_range = 8
-			_set_range_area_radii()
+	anim_str = Utils.get_insect_string(type) + "_"
+	detection_range = Utils.get_insect_detection_range(type)
+	
+	_set_range_area_radii()
 	asprite.play()
+	# custom values
+	match type:
+		Insect.Type.SNAIL:
+			moves_straight = true
+		Insect.Type.MOTH:
+			fires_projectile = true
 
 func _set_range_area_radii():
 	Utils.set_range_area_radii(detection_shape, detection_range)
@@ -135,10 +140,9 @@ func _physics_process(delta):
 
 func pick_animation():
 	asprite.flip_h = going_right
-	match type:
-		Type.FLY:
-			if not attacking and not (asprite.animation == "fly_attack_front" or asprite.animation == "fly_attack_back"):
+	if not attacking and not (asprite.animation == "fly_attack_front" or asprite.animation == "fly_attack_back"):
 				asprite.animation = "fly_front" if going_down else "fly_back"
+	
 	asprite.play()
 
 func recalc_movement_vars():

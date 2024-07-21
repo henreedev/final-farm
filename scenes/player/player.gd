@@ -41,7 +41,7 @@ var seed_counts = { # TODO add all plants
 	Plant.Type.BROCCOLI : 0,
 }
 
-var total_seeds := 0
+var total_seeds := 1000
 var bug_kills := 0
 var equipped_seed_type : Plant.Type = Plant.Type.EGGPLANT
 var seed_bag_scene : PackedScene = preload("res://scenes/plants/seed_bag.tscn")
@@ -101,8 +101,18 @@ func _init_vars() -> void:
 	initial_zoom = cam.zoom
 	initial_offset = cam.offset
 	target_zoom = initial_zoom
+	
+	for type : Plant.Type in Plant.Type.values():
+		if type == Plant.Type.FOOD_SUPPLY:
+			continue
+		if type == Plant.Type.EGGPLANT:
+			seed_counts[type] = 1
+		else:
+			seed_counts[type] = 0
+	
 	await get_tree().create_timer(0.01).timeout
 	shop = get_tree().get_first_node_in_group("shop")
+	
 
 func _physics_process(_delta: float) -> void:
 	var input_direction := Input.get_vector("Left","Right","Up","Down")
@@ -192,12 +202,13 @@ func _act_on_input():
 	if Input.is_action_just_pressed("start_wave"):
 		main.trigger_wave_begun()
 	if Input.is_action_just_pressed("purchase_seed"):
-		shop.queue_throw(inventory.selected_type)
+		attempt_purchase()
 
 func attempt_purchase():
 	var cost = Utils.get_plant_cost(inventory.selected_type)
 	if total_seeds - cost >= 0:
 		adjust_total_seeds(-cost)
+		shop.queue_throw(inventory.selected_type)
 	
 
 func start_throw():

@@ -139,9 +139,22 @@ static func get_insect_speed(type : Insect.Type):
 		Insect.Type.BEE:
 			return fast
 
+static func get_insect_detection_range(type : Insect.Type):
+	match type:
+		Insect.Type.FLY:
+			return 8
+		Insect.Type.GRUB:
+			return 8
+		Insect.Type.SNAIL:
+			return 80
+		Insect.Type.MOTH:
+			return 8
+		Insect.Type.BEE:
+			return 8
+
 static func get_plant_damage(type : Plant.Type):
 	match type:
-		Plant.Type.EGGPLANT:
+		Plant.Type.EGGPLANT, Plant.Type.FOOD_SUPPLY:
 			return 0
 		Plant.Type.BROCCOLI:
 			match broccoli_level: 
@@ -438,92 +451,179 @@ static func get_plant_range(type : Plant.Type):
 				Plant.Level.Level3: 
 					return 8
 
-static func get_plant_attack_cooldown(type : Plant.Type):
-	match type:
-		Plant.Type.EGGPLANT:
-			match eggplant_level:
-				Plant.Level.Level0:
-					return 10.0
-				Plant.Level.Level1:
-					return 9.0
-				Plant.Level.Level2: 
-					return 7.0
-				Plant.Level.Level3: 
-					return 4.0
-		Plant.Type.BROCCOLI:
-			match broccoli_level: 
-				Plant.Level.Level0:
-					return 1.0
-				Plant.Level.Level1:
-					return 1.0
-				Plant.Level.Level2: 
-					return 0.9
-				Plant.Level.Level3: 
-					return 0.8
-		Plant.Type.TOMATO:
-			match tomato_level: 
-				Plant.Level.Level0:
-					return 3.0
-				Plant.Level.Level1:
-					return 2.70
-				Plant.Level.Level2: 
-					return 2.50
-				Plant.Level.Level3: 
-					return 2.20
-		Plant.Type.POTATO:
-			return 1.0
-		Plant.Type.CELERY:
-			match celery_level: 
-				Plant.Level.Level0:
-					return 1.5
-				Plant.Level.Level1:
-					return 1.4
-				Plant.Level.Level2: 
-					return 1.25
-				Plant.Level.Level3: 
-					return 1.0
-		Plant.Type.CORN:
-			match corn_level:
-				Plant.Level.Level0:
-					return 0.2
-				Plant.Level.Level1:
-					return 0.2
-				Plant.Level.Level2: 
-					return 0.15
-				Plant.Level.Level3: 
-					return 0.1
-		Plant.Type.WATERMELON:
-			match watermelon_level: 
-				Plant.Level.Level0:
-					return 7.00
-				Plant.Level.Level1:
-					return 6.70
-				Plant.Level.Level2: 
-					return 6.20
-				Plant.Level.Level3: 
-					return 5.5
-		Plant.Type.PEPPER:
-			return 0.5
-		Plant.Type.BANANA:
-			match banana_level:
-				Plant.Level.Level0:
-					return 5.0
-				Plant.Level.Level1:
-					return 4.80
-				Plant.Level.Level2: 
-					return 4.5
-				Plant.Level.Level3: 
-					return 4.0
-		Plant.Type.LEMONLIME:
-			match lemonlime_level: 
-				Plant.Level.Level0:
-					return 0.5
-				Plant.Level.Level1:
-					return 0.45
-				Plant.Level.Level2: 
-					return 0.4
-				Plant.Level.Level3: 
-					return 0.3
+static func get_plant_attack_cooldown(type : Plant.Type, level : Plant.Level = -1):
+	if level >= 0:
+		match type:
+			Plant.Type.EGGPLANT:
+				match level:
+					Plant.Level.Level0:
+						return 10.0
+					Plant.Level.Level1:
+						return 9.0
+					Plant.Level.Level2: 
+						return 7.0
+					Plant.Level.Level3: 
+						return 4.0
+			Plant.Type.BROCCOLI:
+				match level: 
+					Plant.Level.Level0:
+						return 1.0
+					Plant.Level.Level1:
+						return 1.0
+					Plant.Level.Level2: 
+						return 0.9
+					Plant.Level.Level3: 
+						return 0.8
+			Plant.Type.TOMATO:
+				match level: 
+					Plant.Level.Level0:
+						return 3.0
+					Plant.Level.Level1:
+						return 2.70
+					Plant.Level.Level2: 
+						return 2.50
+					Plant.Level.Level3: 
+						return 2.20
+			Plant.Type.POTATO:
+				return 1.0
+			Plant.Type.CELERY:
+				match level: 
+					Plant.Level.Level0:
+						return 1.5
+					Plant.Level.Level1:
+						return 1.4
+					Plant.Level.Level2: 
+						return 1.25
+					Plant.Level.Level3: 
+						return 1.0
+			Plant.Type.CORN:
+				match level:
+					Plant.Level.Level0:
+						return 0.2
+					Plant.Level.Level1:
+						return 0.2
+					Plant.Level.Level2: 
+						return 0.15
+					Plant.Level.Level3: 
+						return 0.1
+			Plant.Type.WATERMELON:
+				match level: 
+					Plant.Level.Level0:
+						return 7.00
+					Plant.Level.Level1:
+						return 6.70
+					Plant.Level.Level2: 
+						return 6.20
+					Plant.Level.Level3: 
+						return 5.5
+			Plant.Type.PEPPER:
+				return 0.5
+			Plant.Type.BANANA:
+				match level:
+					Plant.Level.Level0:
+						return 5.0
+					Plant.Level.Level1:
+						return 4.80
+					Plant.Level.Level2: 
+						return 4.5
+					Plant.Level.Level3: 
+						return 4.0
+			Plant.Type.LEMONLIME:
+				match level: 
+					Plant.Level.Level0:
+						return 0.5
+					Plant.Level.Level1:
+						return 0.45
+					Plant.Level.Level2: 
+						return 0.4
+					Plant.Level.Level3: 
+						return 0.3
+	else:
+		match type:
+			Plant.Type.EGGPLANT:
+				match eggplant_level:
+					Plant.Level.Level0:
+						return 10.0
+					Plant.Level.Level1:
+						return 9.0
+					Plant.Level.Level2: 
+						return 7.0
+					Plant.Level.Level3: 
+						return 4.0
+			Plant.Type.BROCCOLI:
+				match broccoli_level: 
+					Plant.Level.Level0:
+						return 1.0
+					Plant.Level.Level1:
+						return 1.0
+					Plant.Level.Level2: 
+						return 0.9
+					Plant.Level.Level3: 
+						return 0.8
+			Plant.Type.TOMATO:
+				match tomato_level: 
+					Plant.Level.Level0:
+						return 3.0
+					Plant.Level.Level1:
+						return 2.70
+					Plant.Level.Level2: 
+						return 2.50
+					Plant.Level.Level3: 
+						return 2.20
+			Plant.Type.POTATO:
+				return 1.0
+			Plant.Type.CELERY:
+				match celery_level: 
+					Plant.Level.Level0:
+						return 1.5
+					Plant.Level.Level1:
+						return 1.4
+					Plant.Level.Level2: 
+						return 1.25
+					Plant.Level.Level3: 
+						return 1.0
+			Plant.Type.CORN:
+				match corn_level:
+					Plant.Level.Level0:
+						return 0.2
+					Plant.Level.Level1:
+						return 0.2
+					Plant.Level.Level2: 
+						return 0.15
+					Plant.Level.Level3: 
+						return 0.1
+			Plant.Type.WATERMELON:
+				match watermelon_level: 
+					Plant.Level.Level0:
+						return 7.00
+					Plant.Level.Level1:
+						return 6.70
+					Plant.Level.Level2: 
+						return 6.20
+					Plant.Level.Level3: 
+						return 5.5
+			Plant.Type.PEPPER:
+				return 0.5
+			Plant.Type.BANANA:
+				match banana_level:
+					Plant.Level.Level0:
+						return 5.0
+					Plant.Level.Level1:
+						return 4.80
+					Plant.Level.Level2: 
+						return 4.5
+					Plant.Level.Level3: 
+						return 4.0
+			Plant.Type.LEMONLIME:
+				match lemonlime_level: 
+					Plant.Level.Level0:
+						return 0.5
+					Plant.Level.Level1:
+						return 0.45
+					Plant.Level.Level2: 
+						return 0.4
+					Plant.Level.Level3: 
+						return 0.3
 
 static func get_plant_spawn_duration(type : Plant.Type):
 	match type:
@@ -729,6 +829,8 @@ static func get_plant_level(type : Plant.Type):
 
 static func get_plant_string(type):
 	match type:
+		Plant.Type.FOOD_SUPPLY:
+			return "food_supply"
 		Plant.Type.EGGPLANT:
 			return "eggplant"
 		Plant.Type.BROCCOLI:
@@ -750,6 +852,30 @@ static func get_plant_string(type):
 		Plant.Type.LEMONLIME:
 			return "lemonlime"
 
+static func get_plant_display_string(type):
+	match type:
+		Plant.Type.FOOD_SUPPLY:
+			return "food_supply"
+		Plant.Type.EGGPLANT:
+			return "Eggplant"
+		Plant.Type.BROCCOLI:
+			return "Broccoli"
+		Plant.Type.TOMATO:
+			return "Tomato"
+		Plant.Type.POTATO:
+			return "Potato"
+		Plant.Type.CELERY:
+			return "Celery"
+		Plant.Type.CORN:
+			return "Corn"
+		Plant.Type.WATERMELON:
+			return "Watermelon"
+		Plant.Type.PEPPER:
+			return "Pepper"
+		Plant.Type.BANANA:
+			return "Banana"
+		Plant.Type.LEMONLIME:
+			return "Lemon and Lime"
 
 static func give_zoom_shader(node_with_mat : Node2D):
 	node_with_mat.material = ShaderMaterial.new()
