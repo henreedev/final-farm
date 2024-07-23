@@ -3,7 +3,7 @@ class_name Plant
 
 #region: Global vars
 enum Type {EGGPLANT, BROCCOLI, TOMATO, POTATO, CELERY, \
-		   CORN, WATERMELON, PEPPER, BANANA, LEMONLIME, FOOD_SUPPLY}
+		   CORN, WATERMELON, PEPPER, BANANA, LEMONLIME, WILLOW, WILLOW_ARM, FOOD_SUPPLY}
 enum Level {Level0, Level1, Level2, Level3}
 
 
@@ -28,6 +28,7 @@ var attack_cooldown : float
 var upgrade_fire_rate_mod := 1.0
 var hoe_fire_rate_mod := 1.0
 var is_sleeping := false
+var cant_sleep := false
 var is_dead := false
 #endregion: Global vars
 
@@ -44,6 +45,7 @@ var fired_projectile : Projectile
 
 
 #region: Other vars
+var plant_scene : PackedScene = preload("res://scenes/plants/plant.tscn")
 var projectile_scene : PackedScene = preload("res://scenes/plants/projectile.tscn")
 var hoe_tween : Tween
 var target : Insect
@@ -64,7 +66,15 @@ var facing_down := true
 var anim_str : String
 var health_to_decay : float = 0
 var health_decay_mod : float = 1.0
+var display_health := true
 #endregion: Other vars
+
+#region: Willow vars
+var willow_num_arms : int
+var willow_arm_root_index : int
+var willow_arm_index : int
+const willow_outline_color := Color(0.2, 0.4, 0.2, 1.0) 
+#endregion: Willow vars
 
 @onready var attack_timer : ScalableTimer = $AttackTimer
 @onready var main : Main = get_tree().get_first_node_in_group("main")
@@ -77,22 +87,26 @@ var health_decay_mod : float = 1.0
 @onready var small_hit : AudioStreamPlayer2D = $small
 @onready var tomato_hit : AudioStreamPlayer2D = $tomato
 @onready var celery_hit : AudioStreamPlayer2D = $celery
+@onready var attack_area : Area2D = $AttackArea
+@onready var hurtbox : Area2D = $Hurtbox
 var sleep_time = 15.0
 #region: Universal functions
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	main.info_toggled.connect(update_health_bar)
+	Utils.give_zoom_shader(self)
 	pick_stats()
 	pick_starting_animation()
 
 func pick_stats():
-	damage = Utils.get_plant_damage(type)
-	health = Utils.get_plant_health(type)
-	attack_range = Utils.get_plant_range(type)
-	attack_cooldown = Utils.get_plant_attack_cooldown(type)
-	health_decay = Utils.get_plant_health_decay(type) * 0.01 * health
-	upgrade_fire_rate_mod = Utils.get_plant_attack_cooldown(type, Level.Level0) / Utils.get_plant_attack_cooldown(type)
-	anim_str = Utils.get_plant_string(type) + "_"
+	var _type = type if not type == Type.WILLOW_ARM else Type.WILLOW
+	damage = Utils.get_plant_damage(_type)
+	health = Utils.get_plant_health(_type)
+	attack_range = Utils.get_plant_range(_type)
+	attack_cooldown = Utils.get_plant_attack_cooldown(_type)
+	health_decay = Utils.get_plant_health_decay(_type) * 0.01 * health
+	upgrade_fire_rate_mod = Utils.get_plant_attack_cooldown(_type, Level.Level0) / Utils.get_plant_attack_cooldown(_type)
+	anim_str = Utils.get_plant_string(_type) + "_"
 	match type:
 		Type.FOOD_SUPPLY:
 			can_attack = false
@@ -105,7 +119,7 @@ func pick_stats():
 		Type.BROCCOLI:
 			projectile_lifespan = 0.7
 			projectile_radius = 3
-			projectile_speed = 90.0
+			projectile_speed = 120.0
 		Type.CORN:
 			anims_bidir = false
 			projectile_lifespan = 0.5
@@ -132,6 +146,23 @@ func pick_stats():
 			fires_projectile = false
 		Type.WATERMELON:
 			can_cancel_atk_anim = false
+		Type.WILLOW:
+			anims_bidir = false
+			scale = Utils.get_plant_scale(_type)
+			attack_area.process_mode = Node.PROCESS_MODE_DISABLED
+			willow_num_arms = Utils.get_plant_special_value(_type)
+		Type.WILLOW_ARM:
+			z_index = 0
+			willow_arm_index = willow_arm_root_index
+			growing = false
+			anims_bidir = false
+			hurtbox.process_mode = Node.PROCESS_MODE_DISABLED
+			display_health = false
+			fires_projectile = false
+			sleep_timer.disabled = true
+			material.set_shader_parameter("outline_active", true)
+			material.set_shader_parameter("outline_color", willow_outline_color)
+			
 	Utils.set_range_area_radii($AttackArea/CollisionShape2D, attack_range)
 	update_health_bar()
 
@@ -140,12 +171,18 @@ func _do_attack_cooldown():
 	await attack_timer.timeout
 
 func pick_starting_animation():
-	animation = anim_str + "grow"
-	sprite_frames.set_animation_speed(animation, sprite_frames.get_frame_count(animation) / float(Utils.get_plant_spawn_duration(type)))
+	if type == Type.WILLOW_ARM: 
+		pick_animation()
+	else:
+		animation = anim_str + "grow"
+		sprite_frames.set_animation_speed(animation, sprite_frames.get_frame_count(animation) / float(Utils.get_plant_spawn_duration(type)))
 	play()
 
 func on_hit_by_hoe(duration, start_strength, end_strength):
-	# TODO wakeup if sleeping, display such
+	if type == Type.WILLOW:
+		for child in get_children():
+			if child is Plant:
+				child.on_hit_by_hoe(duration, start_strength, end_strength)
 	sleeping = false
 	sleep_effect.hide()
 	sleep_timer.start(sleep_time)
@@ -192,7 +229,7 @@ func _attack(bypass : bool):
 	if not can_attack or sleeping:
 		pick_animation()
 	else:
-		if (not attacking) or bypass:
+		if target and ((not attacking) or bypass):
 			attacking = true
 			if not can_cancel_atk_anim:
 					if (animation == anim_str + "shoot_front" or \
@@ -204,7 +241,8 @@ func _attack(bypass : bool):
 			if anims_bidir:
 				animation = anim_str + "shoot_front" if facing_down else anim_str + "shoot_back"
 			else:
-				animation = anim_str + "shoot"
+				willow_arm_index = _angle_to_index(attack_dir.angle())
+				animation = anim_str + "shoot" + _get_willow_arm_string()
 			set_frame_and_progress(0, 0) 
 			play()
 			if fires_projectile:
@@ -214,6 +252,7 @@ func _attack(bypass : bool):
 			else:
 				celery_hit.play()
 				target.take_damage(damage)
+			sleep_timer.start(sleep_time)
 			await _do_attack_cooldown()
 			if attacking and target:
 				_attack(true)
@@ -247,7 +286,6 @@ func fire_projectile():
 	match type:
 		Type.CORN:
 			small_hit.play()
-		
 		Type.TOMATO:
 			tomato_hit.play()
 		_:
@@ -279,8 +317,9 @@ func pick_animation():
 			if not (animation == anim_str + "shoot_front" or animation == anim_str + "shoot_back"):
 				animation = anim_str + "idle_front" if facing_down else anim_str + "idle_back"
 		else:
-			if not (animation == anim_str + "shoot"):
-				animation = anim_str + "idle"
+			if not (animation == anim_str + "shoot" + _get_willow_arm_string()):
+				animation = anim_str + "idle" + _get_willow_arm_string() 
+				_set_willow_arm_offset()
 		play()
 
 func calc_facing_vars():
@@ -289,6 +328,10 @@ func calc_facing_vars():
 		facing_right = attack_dir.x >= 0.0
 		facing_down = attack_dir.y >= 0.0 
 
+func _get_willow_arm_string():
+	if type == Type.WILLOW_ARM:
+		return "_arm" + str(willow_arm_index)
+	else: return ""
 
 func take_damage(amount : int):
 	health -= amount
@@ -298,7 +341,7 @@ func take_damage(amount : int):
 
 func update_health_bar():
 	health_bar_label.text = str(health)
-	if main.show_info:
+	if main.show_info and display_health:
 		health_bar.show()
 	else:
 		health_bar.hide()
@@ -318,6 +361,68 @@ func die():
 	queue_free()
 #endregion: Universal functions
 
+#region: Willow functions
+func move_towards_root_anim():
+	willow_arm_index = move_toward(willow_arm_index, willow_arm_root_index, 1)
+
+func _set_willow_arm_offset():
+	if type == Type.WILLOW_ARM:
+		var arm_offset : Vector2
+		match willow_arm_index:
+			0:
+				arm_offset = Vector2(2, -1)
+			1:
+				arm_offset = Vector2(1, -2)
+			2:
+				arm_offset = Vector2(-1, -2)
+			3:
+				arm_offset = Vector2(-2, -1)
+			4:
+				arm_offset = Vector2(-2, 1)
+			5:
+				arm_offset = Vector2(-1, 2)
+			6:
+				arm_offset = Vector2(1, 2)
+			7:
+				arm_offset = Vector2(2, 1)
+		position = arm_offset
+
+func _angle_to_index(angle):
+	const CONVERSION_FACTOR = 8.0 / TAU
+	const ADDITION_IF_NEGATIVE = TAU
+	angle = fmod(angle, TAU)
+	if angle > 0: angle = TAU - angle
+	if angle < 0: angle = -angle
+	var index = roundi(CONVERSION_FACTOR * angle)
+	return index
+	
+func _add_all_willow_arms():
+	match willow_num_arms:
+		2:
+			_add_willow_arm(7)
+			_add_willow_arm(4)
+		3:
+			_add_willow_arm(0)
+			_add_willow_arm(3)
+			_add_willow_arm(6)
+		5:
+			_add_willow_arm(1)
+			_add_willow_arm(2)
+			_add_willow_arm(4)
+			_add_willow_arm(6)
+			_add_willow_arm(7)
+		8:
+			for i in range(8):
+				_add_willow_arm(i)
+
+func _add_willow_arm(index):
+	var arm : Plant = plant_scene.instantiate()
+	arm.type = Type.WILLOW_ARM
+	arm.willow_arm_root_index = index
+	add_child(arm)
+	
+
+#endregion: Willow functions
 
 #region: Eggplant functions
 func fire_eggplant():
@@ -356,16 +461,18 @@ func eggplant_arrive(eggplant):
 
 func _on_animation_finished():
 	var grow_str = anim_str + "grow"
-	var attack_str = anim_str + "shoot" 
+	var attack_str = anim_str + "shoot" + _get_willow_arm_string()
 	var attack_str_front = attack_str + "_front"
 	var attack_str_back = attack_str + "_back"
 	match animation:
 		grow_str:
 			growing = false
+			if type == Type.WILLOW: _add_all_willow_arms()
 			retarget()
 			if target: _attack(false)
 		attack_str:
-			animation = anim_str + "idle"
+			animation = anim_str + "idle" + _get_willow_arm_string()
+			_set_willow_arm_offset()
 			if type == Type.POTATO:
 				fire_condition_met.emit()
 		attack_str_front:
@@ -375,9 +482,12 @@ func _on_animation_finished():
 
 
 func _on_animation_looped():
-	match animation: 
-		"eggplant_idle":
-			fire_eggplant()
+	if type == Type.WILLOW_ARM:
+		move_towards_root_anim()
+	else:
+		match animation: 
+			"eggplant_idle":
+				fire_eggplant()
 
 
 func _on_attack_area_area_entered(area):
@@ -385,7 +495,7 @@ func _on_attack_area_area_entered(area):
 		var parent = area.get_parent()
 		if parent is Insect:
 			target_options.append(parent)
-			if not (attacking or growing):
+			if not (attacking or growing or not attack_timer.is_stopped()):
 				retarget()
 				_attack(false)
 
@@ -411,4 +521,7 @@ func _on_frame_changed():
 
 func _on_sleep_timer_timeout():
 	sleeping = true
+	if type == Type.WILLOW:
+		for child in get_children():
+			sleeping = true
 	sleep_effect.show()

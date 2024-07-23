@@ -17,7 +17,7 @@ boot_splash/bg_color=Color(0.717647, 0.690196, 0.588235, 1)
 boot_splash/image="res://assets/ui/shop-big-icon.png"
 boot_splash/fullsize=false
 boot_splash/use_filter=false
-config/icon="res://icon.svg"
+config/icon="res://assets/ui/shop-big-icon.png"
 
 [display]
 
@@ -46,6 +46,7 @@ shop_inventory=""
 [gui]
 
 common/snap_controls_to_pixels=false
+theme/custom_font="res://resources/fonts/Pxlvetica-XymZ.ttf"
 theme/default_font_antialiasing=0
 
 [input]

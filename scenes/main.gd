@@ -463,17 +463,13 @@ func _input(_event: InputEvent):
 				get_tree().paused = true
 				pause_menu.visible = true
 		if _event.is_action_pressed("show_info"):
-			show_info = true
-			info_toggled.emit()
-		if _event.is_action_released("show_info"):
-			show_info = false
+			show_info = not show_info
 			info_toggled.emit()
 
 func on_insect_died():
 	await get_tree().create_timer(0.1).timeout
 	if can_end_wave and get_tree().get_node_count_in_group("insect") == 0:
 		wave_ended.emit()
-		print("Ended wave")
 
 
 func _on_player_ui_bug_killed() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=95 format=3 uid="uid://c62n5plben7pl"]
+[gd_scene load_steps=104 format=3 uid="uid://c62n5plben7pl"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_kg3cv"]
 [ext_resource type="Texture2D" uid="uid://cgcjf6nxv7e76" path="res://assets/image/seeds/broccoli/broccoli-seed-spritesheet.png" id="2_61d4n"]
@@ -19,13 +19,12 @@
 [ext_resource type="Texture2D" uid="uid://be2wh07240oag" path="res://assets/image/seeds/potato/potato-seeds.png" id="12_ye2ag"]
 [ext_resource type="Texture2D" uid="uid://dd4cnn5yhdw7n" path="res://assets/image/seeds/tomato/tomato-seeds.png" id="14_38ym0"]
 [ext_resource type="Texture2D" uid="uid://cmqqym8d23ij3" path="res://assets/image/seeds/watermelon/watermelon-seeds.png" id="16_k1coj"]
+[ext_resource type="Texture2D" uid="uid://gbn8y3kcdqul" path="res://assets/image/seeds/willow/willow-seed-tear-spritesheet.png" id="19_2nx0g"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gae3b"]
 shader = ExtResource("1_kg3cv")
-shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
-shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
-shader_parameter/outline_1_active = false
-shader_parameter/outline_2_active = false
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iuhoh"]
@@ -320,6 +319,38 @@ region = Rect2(80, 0, 16, 16)
 atlas = ExtResource("10_g187u")
 region = Rect2(96, 0, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_tbjjb"]
+atlas = ExtResource("19_2nx0g")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yom42"]
+atlas = ExtResource("19_2nx0g")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_er1j1"]
+atlas = ExtResource("19_2nx0g")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h188y"]
+atlas = ExtResource("19_2nx0g")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lfk7c"]
+atlas = ExtResource("19_2nx0g")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ks6e"]
+atlas = ExtResource("19_2nx0g")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uvwrj"]
+atlas = ExtResource("19_2nx0g")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yxmxj"]
+atlas = ExtResource("19_2nx0g")
+region = Rect2(112, 0, 16, 16)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_3irme"]
 animations = [{
 "frames": [{
@@ -611,6 +642,35 @@ animations = [{
 "loop": false,
 "name": &"watermelon_tear",
 "speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tbjjb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yom42")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_er1j1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h188y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lfk7c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ks6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uvwrj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yxmxj")
+}],
+"loop": false,
+"name": &"willow_tear",
+"speed": 7.0
 }]
 
 [node name="SeedBag" type="AnimatedSprite2D"]
@@ -620,7 +680,7 @@ y_sort_enabled = true
 material = SubResource("ShaderMaterial_gae3b")
 scale = Vector2(1e-05, 1e-05)
 sprite_frames = SubResource("SpriteFrames_3irme")
-animation = &"celery_tear"
+animation = &"willow_tear"
 offset = Vector2(0, -6)
 script = ExtResource("3_q1lih")
 

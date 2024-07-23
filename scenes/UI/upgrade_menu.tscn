@@ -8,10 +8,8 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_edwx2"]
 shader = ExtResource("2_hngr3")
-shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
-shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
-shader_parameter/outline_1_active = false
-shader_parameter/outline_2_active = false
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
 
 [node name="Upgrade_Menu" type="Control" groups=["upgrade_menu"]]
@@ -108,5 +106,9 @@ type = 8
 [node name="Lemonlime" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
 position = Vector2(5184, 0)
 type = 9
+
+[node name="Willow" parent="MarginContainer/TextureRect/InventoryRoot/ShopInventory" instance=ExtResource("4_ja4l8")]
+position = Vector2(5760, 0)
+type = 10
 
 [connection signal="focus_entered" from="ColorRect" to="." method="_on_color_rect_focus_entered"]

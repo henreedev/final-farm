@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://00grn7q4tv8k"]
+[gd_scene load_steps=22 format=3 uid="uid://00grn7q4tv8k"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_titqg"]
 [ext_resource type="Texture2D" uid="uid://c44sgf3nnjjfy" path="res://assets/image/seeds/banana/banana-seeds.png" id="2_3kxv7"]
@@ -14,14 +14,13 @@
 [ext_resource type="Texture2D" uid="uid://be2wh07240oag" path="res://assets/image/seeds/potato/potato-seeds.png" id="9_oolfn"]
 [ext_resource type="Texture2D" uid="uid://dd4cnn5yhdw7n" path="res://assets/image/seeds/tomato/tomato-seeds.png" id="10_xy72f"]
 [ext_resource type="Texture2D" uid="uid://cmqqym8d23ij3" path="res://assets/image/seeds/watermelon/watermelon-seeds.png" id="11_iownx"]
+[ext_resource type="Texture2D" uid="uid://d0f28rwd1rbal" path="res://assets/image/seeds/willow/willow-seeds.png" id="12_k6gp1"]
 [ext_resource type="LabelSettings" uid="uid://dg2icno1lnx05" path="res://scenes/UI/bag_icon.tres" id="13_nmcsf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_csxw2"]
 shader = ExtResource("1_titqg")
-shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
-shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
-shader_parameter/outline_1_active = true
-shader_parameter/outline_2_active = false
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_beheq"]
@@ -105,37 +104,39 @@ animations = [{
 "loop": false,
 "name": &"watermelon",
 "speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_k6gp1")
+}],
+"loop": false,
+"name": &"willow",
+"speed": 0.0
 }]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a52m3"]
 shader = ExtResource("1_titqg")
-shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
-shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
-shader_parameter/outline_1_active = true
-shader_parameter/outline_2_active = false
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6giut"]
 shader = ExtResource("1_titqg")
-shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
-shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
-shader_parameter/outline_1_active = false
-shader_parameter/outline_2_active = false
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_36elg"]
 shader = ExtResource("1_titqg")
-shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
-shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
-shader_parameter/outline_1_active = true
-shader_parameter/outline_2_active = false
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
 
 [node name="BagIcon" type="AnimatedSprite2D"]
 material = SubResource("ShaderMaterial_csxw2")
 scale = Vector2(7, 7)
 sprite_frames = SubResource("SpriteFrames_beheq")
-animation = &"lemonlime"
+animation = &"willow"
 script = ExtResource("2_jafi8")
 
 [node name="Label" type="Label" parent="."]
@@ -161,5 +162,5 @@ offset_top = -18.1122
 offset_right = 36.1735
 offset_bottom = 9.88775
 scale = Vector2(0.395, 0.395)
-text = "Q"
+text = "Q    "
 label_settings = ExtResource("6_rnfhq")

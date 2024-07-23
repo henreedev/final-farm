@@ -128,6 +128,13 @@ func retarget():
 				var distances := all_plants.keys()
 				distances.sort()
 				target = all_plants[distances[0]]
+		Type.BEE:
+			if len(production_plants) > 0:
+				var distances = production_plants.keys()
+				distances.sort()
+				target = production_plants[distances[0]]
+			elif len(food_supply) > 0:
+				target = food_supply.values()[0]
 		Type.SNAIL:
 			if len(food_supply) > 0:
 				target = food_supply.values()[0]
@@ -283,10 +290,12 @@ func _on_attack_area_area_entered(area):
 
 
 func _on_animated_sprite_2d_animation_finished():
+	var attack_str_front = anim_str + "attack_front"
+	var attack_str_back = anim_str + "attack_back"
 	match asprite.animation:
-		"fly_attack_front": 
-			asprite.animation = "fly_front" 
+		attack_str_front:
+			asprite.animation = anim_str + "front" 
 			asprite.play()
-		"fly_attack_back":
-			asprite.animation = "fly_back"
+		attack_str_back:
+			asprite.animation = anim_str + "back"
 			asprite.play()

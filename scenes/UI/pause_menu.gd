@@ -38,5 +38,9 @@ func _on_restart_pressed():
 	continue_button.text = ""
 	$MarginContainer/VBoxContainer/Restart.text = "Restarting..."
 	$MarginContainer/VBoxContainer/Exit.text = ""
-	await get_tree().create_timer(0.5).timeout
+	var timer : Timer = Timer.new()
+	add_child(timer)
+	timer.start(0.2)
+	await timer.timeout
+	Utils.restart()
 	get_tree().reload_current_scene()

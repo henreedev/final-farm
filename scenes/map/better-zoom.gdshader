@@ -1,12 +1,9 @@
 shader_type canvas_item;
 //render_mode unshaded;
 
-// Bag selected outline color (black)
-uniform vec4 outline_color_1 : source_color = vec4(0.0, 0.0, 0.0, 1.0);
-// Insect targeting outline color (red)
-uniform vec4 outline_color_2 : source_color = vec4(1.0, 0.0, 0.0, 1.0);
-uniform bool outline_1_active = false;
-uniform bool outline_2_active = false;
+// outline color (black)
+uniform vec4 outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+uniform bool outline_active = false;
 uniform bool ignore_modulate = false;
 
 varying vec4 modulate;
@@ -35,19 +32,11 @@ void fragment() {
 	vec4 Texture = texturePointSmooth(TEXTURE, UV);
     COLOR = Texture.rgba;
 
-	vec4 outline_color;
-	if (outline_1_active) {
-		outline_color = outline_color_1;
-	} else if (outline_2_active) {
-		outline_color = outline_color_2;
-	} else {
-
-	}
 	float size_x = 1.0/float(textureSize(TEXTURE, 0).x);
 	float size_y = 1.0/float(textureSize(TEXTURE, 0).y);
 	vec4 sprite_color = COLOR;
 	float alpha = -4.0 * sprite_color.a;
-	if (!outline_1_active && !outline_2_active) {
+	if (!outline_active) {
 		alpha = 0.0;
 	} else {
 		alpha += texturePointSmooth(TEXTURE, UV + vec2(size_x, 0)).a;

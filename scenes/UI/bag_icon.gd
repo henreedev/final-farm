@@ -15,6 +15,7 @@ var label_setting : LabelSettings = preload("res://scenes/UI/bag_icon.tres")
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 @onready var inventory : Inventory = get_parent()
 @onready var label : Label = $Label
+@onready var buy_label : Label = $BuyIcon/Label
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var buy_icon : Sprite2D = $BuyIcon
 # Called when the node enters the scene tree for the first time.
@@ -26,9 +27,11 @@ func _ready():
 	label.label_settings.shadow_color = label_setting.shadow_color
 	label.label_settings.shadow_size = label_setting.shadow_size
 	buy_icon.hide()
+	buy_label.text = InputMap.action_get_events("purchase_seed")[0].as_text()[0]
 	Utils.give_zoom_shader(self)
 	initial_scale = scale
 	animation = Utils.get_plant_string(type)
+	
 
 func update():
 	amount = player.seed_counts[type]

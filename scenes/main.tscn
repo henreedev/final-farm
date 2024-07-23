@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://bxqqm0fji2wwm"]
+[gd_scene load_steps=75 format=3 uid="uid://bxqqm0fji2wwm"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_n7gso"]
 [ext_resource type="Script" path="res://scenes/map/wave.gd" id="2_1hows"]
@@ -14,15 +14,47 @@
 [sub_resource type="Resource" id="Resource_7vwte"]
 script = ExtResource("3_nwf1e")
 type = 0
-count = 6
+count = 41
 spawn_time = 0.0
 streams = true
 stream_duration = 0.5
 
+[sub_resource type="Resource" id="Resource_f42aq"]
+script = ExtResource("3_nwf1e")
+type = 1
+count = 30
+spawn_time = 5.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_8s5fo"]
+script = ExtResource("3_nwf1e")
+type = 2
+count = 20
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_idybs"]
+script = ExtResource("3_nwf1e")
+type = 4
+count = 35
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_x7xri"]
+script = ExtResource("3_nwf1e")
+type = 3
+count = 5
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
 [sub_resource type="Resource" id="Resource_b0u56"]
 script = ExtResource("2_1hows")
 duration = 1.1
-wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_7vwte")])
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_7vwte"), SubResource("Resource_f42aq"), SubResource("Resource_8s5fo"), SubResource("Resource_idybs"), SubResource("Resource_x7xri")])
 
 [sub_resource type="Resource" id="Resource_r8n0q"]
 script = ExtResource("3_nwf1e")

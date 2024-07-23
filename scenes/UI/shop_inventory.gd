@@ -19,7 +19,7 @@ func _input(event):
 			scroll_dir -= 1
 		elif event.is_action_released("scroll_down"):
 			scroll_dir += 1
-		_update_selection(clampi(selected_type + scroll_dir, 0, plant_types_len - 2))
+		_update_selection(clampi(selected_type + scroll_dir, 0, plant_types_len - 3)) # -1 , -1 for FOOD_SUPPLY, -1 for WILLOW_ARM
 
 func _update_selection(new_selected_type):
 	selected_type = new_selected_type

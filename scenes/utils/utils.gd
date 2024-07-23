@@ -23,6 +23,7 @@ static var watermelon_level : Plant.Level = Plant.Level.Level0
 static var pepper_level : Plant.Level = Plant.Level.Level0
 static var banana_level : Plant.Level = Plant.Level.Level0
 static var lemonlime_level : Plant.Level = Plant.Level.Level0
+static var willow_level : Plant.Level = Plant.Level.Level0
 
 static func restart():
 	eggplant_level = Plant.Level.Level0
@@ -34,6 +35,7 @@ static func restart():
 	banana_level = Plant.Level.Level0
 	pepper_level = Plant.Level.Level0
 	lemonlime_level = Plant.Level.Level0
+	willow_level = Plant.Level.Level0
 
 static func upgrade(type : Plant.Type):
 	match type:
@@ -57,6 +59,10 @@ static func upgrade(type : Plant.Type):
 			banana_level += 1 as Plant.Level			
 		Plant.Type.LEMONLIME:
 			lemonlime_level += 1 as Plant.Level			
+		Plant.Type.WILLOW:
+			willow_level += 1 as Plant.Level			
+
+#region: Insect functions
 
 static func get_insect_damage(type : Insect.Type):
 	match type:
@@ -67,7 +73,7 @@ static func get_insect_damage(type : Insect.Type):
 		Insect.Type.SNAIL:
 			return 54
 		Insect.Type.MOTH:
-			return 20
+			return 40
 		Insect.Type.BEE:
 			return 16
 
@@ -147,7 +153,7 @@ static func get_insect_speed(type : Insect.Type):
 		Insect.Type.MOTH:
 			return normal
 		Insect.Type.BEE:
-			return fast
+			return very_fast
 
 static func get_insect_detection_range(type : Insect.Type):
 	match type:
@@ -161,6 +167,23 @@ static func get_insect_detection_range(type : Insect.Type):
 			return 8
 		Insect.Type.BEE:
 			return 8
+
+#endregion: Insect functions
+
+#region: Plant functions
+
+static func get_plant_scale(type : Plant.Type):
+	match type:
+		Plant.Type.WILLOW:
+			match willow_level:
+				Plant.Level.Level0:
+					return Vector2(1, 1)
+				Plant.Level.Level1:
+					return Vector2(3.5 / 2.5, 3.5 / 2.5)
+				Plant.Level.Level2:
+					return Vector2(4.5 / 2.5, 4.5 / 2.5)
+				Plant.Level.Level3:
+					return Vector2(5.5 / 2.5, 5.5 / 2.5)
 
 static func get_plant_damage(type : Plant.Type):
 	match type:
@@ -256,15 +279,24 @@ static func get_plant_damage(type : Plant.Type):
 					return 720
 				Plant.Level.Level3: 
 					return 960
-			
+		Plant.Type.WILLOW:
+			match willow_level: 
+				Plant.Level.Level0:
+					return 195
+				Plant.Level.Level1:
+					return 270
+				Plant.Level.Level2: 
+					return 286
+				Plant.Level.Level3: 
+					return 320
 
 static func get_plant_health(type : Plant.Type):
 	match type:
 		Plant.Type.FOOD_SUPPLY:
-			var upgrades_purchased = int(eggplant_level + broccoli_level + tomato_level\
-			 + potato_level + celery_level + corn_level + \
-			banana_level + pepper_level + watermelon_level + lemonlime_level)
-			return 100 * (upgrades_purchased + 3)
+			#var upgrades_purchased = int(eggplant_level + broccoli_level + tomato_level\
+			 #+ potato_level + celery_level + corn_level + \
+			#banana_level + pepper_level + watermelon_level + lemonlime_level)
+			return 500 
 		Plant.Type.EGGPLANT:
 			match eggplant_level:
 				Plant.Level.Level0:
@@ -365,6 +397,16 @@ static func get_plant_health(type : Plant.Type):
 					return 1200
 				Plant.Level.Level3: 
 					return 1500
+		Plant.Type.WILLOW:
+			match willow_level: 
+				Plant.Level.Level0:
+					return 5500
+				Plant.Level.Level1:
+					return 6750
+				Plant.Level.Level2: 
+					return 8000
+				Plant.Level.Level3: 
+					return 12000
 
 static func get_plant_range(type : Plant.Type):
 	match type:
@@ -460,6 +502,8 @@ static func get_plant_range(type : Plant.Type):
 					return 7
 				Plant.Level.Level3: 
 					return 8
+		Plant.Type.WILLOW:
+			return 2 # range is determined using scale, see get_plant_scale()
 
 static func get_plant_attack_cooldown(type : Plant.Type, level : Plant.Level = -1):
 	if level >= 0:
@@ -548,6 +592,16 @@ static func get_plant_attack_cooldown(type : Plant.Type, level : Plant.Level = -
 						return 0.4
 					Plant.Level.Level3: 
 						return 0.3
+			Plant.Type.WILLOW:
+				match level: 
+					Plant.Level.Level0:
+						return 1.3
+					Plant.Level.Level1:
+						return 1.2
+					Plant.Level.Level2: 
+						return 1.1
+					Plant.Level.Level3: 
+						return 1.0
 	else:
 		match type:
 			Plant.Type.EGGPLANT, Plant.Type.FOOD_SUPPLY:
@@ -634,6 +688,16 @@ static func get_plant_attack_cooldown(type : Plant.Type, level : Plant.Level = -
 						return 0.4
 					Plant.Level.Level3: 
 						return 0.3
+			Plant.Type.WILLOW:
+				match willow_level: 
+					Plant.Level.Level0:
+						return 1.3
+					Plant.Level.Level1:
+						return 1.2
+					Plant.Level.Level2: 
+						return 1.1
+					Plant.Level.Level3: 
+						return 1.0
 
 static func get_plant_spawn_duration(type : Plant.Type):
 	match type:
@@ -659,6 +723,8 @@ static func get_plant_spawn_duration(type : Plant.Type):
 			return 60.0
 		Plant.Type.LEMONLIME:
 			return 150.0
+		Plant.Type.WILLOW:
+			return 180.0
 
 static func get_plant_health_decay(type : Plant.Type):
 	match type:
@@ -677,13 +743,15 @@ static func get_plant_health_decay(type : Plant.Type):
 		Plant.Type.CORN:
 			return 3.5
 		Plant.Type.WATERMELON:
-			return 2.0
+			return 1.0
 		Plant.Type.PEPPER:
-			return 2.0
+			return 1.0
 		Plant.Type.BANANA:
 			return 1.0
 		Plant.Type.LEMONLIME:
-			return 0.5
+			return 0.03
+		Plant.Type.WILLOW:
+			return 0.01
 
 static func get_next_upgrade_cost(type : Plant.Type):
 	match type:
@@ -767,6 +835,15 @@ static func get_next_upgrade_cost(type : Plant.Type):
 					return 5500
 				Plant.Level.Level2: 
 					return 8000
+		Plant.Type.WILLOW:
+			match willow_level:
+				Plant.Level.Level0:
+					return 4000
+				Plant.Level.Level1:
+					return 7000
+				Plant.Level.Level2: 
+					return 10000
+	return -1
 
 static func get_plant_cost(type : Plant.Type):
 	match type:
@@ -790,6 +867,8 @@ static func get_plant_cost(type : Plant.Type):
 			return 100
 		Plant.Type.LEMONLIME:
 			return 350
+		Plant.Type.WILLOW:
+			return 500
 
 static func get_plant_blurb(type : Plant.Type):
 	match type:
@@ -813,6 +892,8 @@ static func get_plant_blurb(type : Plant.Type):
 			return "A long-range sniper tower. Fires heavy projectiles that deal high single-target damage but at a slow rate."
 		Plant.Type.LEMONLIME:
 			return "An extremely high damage tower that spews volatile acid at a fast rate. Melts armor and shreds bosses."
+		Plant.Type.WILLOW:
+			return "An expensive but exceptionally powerful tower that deals high melee damage to multiple enemies at once."
 
 static func get_plant_upgrade_blurb(type : Plant.Type, level : Plant.Level):
 	return ""
@@ -838,7 +919,18 @@ static func get_plant_upgrade_blurb(type : Plant.Type, level : Plant.Level):
 static func get_plant_special_blurb(type : Plant.Type):
 	return "Special Stat (N/A)"
 
-static func get_plant_special_value(type : Plant.Type): # TODO
+static func get_plant_special_value(type : Plant.Type): 
+	match type:
+		Plant.Type.WILLOW:
+			match willow_level:
+				Plant.Level.Level0:
+					return 2
+				Plant.Level.Level1:
+					return 3
+				Plant.Level.Level2: 
+					return 5
+				Plant.Level.Level3: 
+					return 8
 	return ""
 
 static func get_plant_level(type : Plant.Type):
@@ -863,6 +955,8 @@ static func get_plant_level(type : Plant.Type):
 			return banana_level
 		Plant.Type.LEMONLIME:
 			return lemonlime_level
+		Plant.Type.WILLOW:
+			return willow_level
 
 static func get_plant_string(type):
 	match type:
@@ -888,6 +982,8 @@ static func get_plant_string(type):
 			return "banana"
 		Plant.Type.LEMONLIME:
 			return "lemonlime"
+		Plant.Type.WILLOW:
+			return "willow"
 
 static func get_plant_display_string(type):
 	match type:
@@ -913,6 +1009,11 @@ static func get_plant_display_string(type):
 			return "Banana"
 		Plant.Type.LEMONLIME:
 			return "Lemon and Lime"
+		Plant.Type.WILLOW:
+			return "Weeping Willow"
+
+#endregion: Plant functions
+
 
 static func give_zoom_shader(node_with_mat : Node2D):
 	node_with_mat.material = ShaderMaterial.new()

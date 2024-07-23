@@ -23,6 +23,7 @@ var initial_scale : Vector2
 @onready var buy_button : TextureButton = $Blurb/BuyButton
 @onready var buy_label : Label = $Blurb/BuyButton/Label
 @onready var upgrade_label : Label = $Blurb/UpgradeButton/Label
+@onready var upgrade_label_icon : Sprite2D = $Blurb/UpgradeButton/Sprite2D
 @onready var upgrade_button : TextureButton = $Blurb/UpgradeButton
 @onready var attack_label : Label = $Blurb/AttackIcon/Label
 @onready var health_label : Label = $Blurb/HealthIcon/Label
@@ -60,7 +61,12 @@ func _ready():
 func update():
 	buy_label.text = str(cost)
 	var upgrade_cost = Utils.get_next_upgrade_cost(type)
-	upgrade_label.text = str(upgrade_cost)
+	if upgrade_cost > 0:
+		upgrade_label.text = str(upgrade_cost)
+	else:
+		upgrade_label.text = ""
+		upgrade_label_icon.hide()
+		
 	if player.total_seeds >= cost and cost > 0:
 		# player has enough to buy
 		if not discovered_first_time:
@@ -70,7 +76,7 @@ func update():
 		hidden_label.text = str(cost)
 		buy_button.disabled = true
 	
-	if player.bug_kills >= upgrade_cost and cost > 0:
+	if player.bug_kills >= upgrade_cost and upgrade_cost > 0:
 		upgrade_button.disabled = false
 	else:
 		upgrade_button.disabled = true
@@ -167,9 +173,9 @@ func _on_upgrade_button_pressed():
 	var cost = Utils.get_next_upgrade_cost(type)
 	if cost > 0 and player.bug_kills - cost >= 0:
 		player.adjust_bug_kills(-cost)
-		main.food_supply_plant.health = Utils.get_plant_health(Plant.Type.FOOD_SUPPLY)
 		Utils.upgrade(type)
 		_update_bag_values(false)
+		update()
 
 
 func _on_area_2d_mouse_entered():
