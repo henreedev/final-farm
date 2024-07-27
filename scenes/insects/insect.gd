@@ -2,10 +2,14 @@ extends CharacterBody2D
 class_name Insect
 
 #region: Globals
-enum Type {FLY, GRUB, MOTH, SNAIL, BEE}
+enum Type {FLY, GRUB, MOTH, SNAIL, BEE, FUNGI, ANT, CATERPILLAR, SPORESPAWN,\
+		 LOCUST, BEETLE, CRICKET, FIREFLY}
 
 signal died 
 
+
+const FIREFLY_BOT_PROJ_OFFSET = Vector2(-7, 11)
+const FIREFLY_TOP_PROJ_OFFSET = Vector2(-7, 5)
 const MOVEMENT_REFRESH_DUR_MIN = 0.5
 const MOVEMENT_REFRESH_DUR_MAX = 1.2
 const MOVEMENT_DEVIATION_MAX = 25.0 # degrees
@@ -22,6 +26,7 @@ var base_speed : float
 var target_dir : Vector2
 var movement_dir : Vector2
 var movement_speed : float
+var movement_vec : Vector2 
 var target_options : Array[Plant] = []
 var target : Plant
 var attacking = false
@@ -34,6 +39,7 @@ var paused := false
 var moves_straight := false
 var fires_projectile := false
 var anim_str : String
+var deletes_after_firing := false
 
 var projectile_scene : PackedScene = preload("res://scenes/plants/projectile.tscn")
 var projectile_radius : int
@@ -85,22 +91,38 @@ func pick_values_on_type():
 	asprite.animation = anim_str + "front"
 	detection_range = Utils.get_insect_detection_range(type)
 	match type:
-		Type.MOTH, Type.FLY:
+		Type.FLY:
+			flying_sound.play()
+		Type.MOTH:
+			fires_projectile = true
 			flying_sound.play()
 			projectile_radius = 3
 			projectile_lifespan = 1.0
 			projectile_speed = 60.0
-		Type.GRUB, Type.SNAIL:
+		Type.GRUB:
 			asprite.offset = Vector2(0, 0)
-	
+		Type.SNAIL:
+			asprite.offset = Vector2(0, 0)
+			moves_straight = true
+		Type.FUNGI:
+			fires_projectile = true
+			deletes_after_firing = true
+			asprite.offset = Vector2(0, 0)
+		Type.FIREFLY:
+			fires_projectile = true
+			projectile_radius = 3
+			projectile_lifespan = 2.0
+			projectile_speed = 300.0
+		Type.SPORESPAWN:
+			fires_projectile = true
+			projectile_radius = 3
+			projectile_lifespan = 5.0
+		Type.BEETLE:
+			asprite.offset = Vector2(0, 0)
+			moves_straight = true
+
 	_set_range_area_radii()
 	asprite.play()
-	# custom values
-	match type:
-		Insect.Type.SNAIL:
-			moves_straight = true
-		Insect.Type.MOTH:
-			fires_projectile = true
 
 func _set_range_area_radii():
 	Utils.set_range_area_radii(detection_shape, detection_range)
@@ -122,20 +144,21 @@ func retarget():
 
 	# Below defines type-specific targeting behavior
 	match type:
-		Type.FLY, Type.GRUB, Type.MOTH:
+		Type.FLY, Type.GRUB, Type.MOTH, Type.FUNGI, Type.ANT, Type.LOCUST, \
+		Type.CRICKET, Type.SPORESPAWN, Type.FIREFLY:
 			var all_plants = food_supply.merged(production_plants.merged(other_plants))
 			if len(all_plants) > 0:
 				var distances := all_plants.keys()
 				distances.sort()
 				target = all_plants[distances[0]]
-		Type.BEE:
+		Type.BEE, Type.BEETLE:
 			if len(production_plants) > 0:
 				var distances = production_plants.keys()
 				distances.sort()
 				target = production_plants[distances[0]]
 			elif len(food_supply) > 0:
 				target = food_supply.values()[0]
-		Type.SNAIL:
+		Type.SNAIL, Type.CATERPILLAR:
 			if len(food_supply) > 0:
 				target = food_supply.values()[0]
 
@@ -184,9 +207,7 @@ func _physics_process(delta):
 	movement_timer.speed_scale = speed_scale
 	attack_timer.speed_scale = speed_scale
 	asprite.speed_scale = speed_scale
-	delta *= speed_scale
-	position += movement_speed * movement_dir * delta
-	pick_animation()
+	position += movement_vec * delta * speed_scale
 
 func pick_animation():
 	asprite.flip_h = going_right
@@ -208,7 +229,7 @@ func recalc_movement_vars():
 		var speed_deviation = randf_range(1 - SPEED_DEVIATION, 1 + SPEED_DEVIATION)
 		var speed_isometric_factor = lerpf(1, 0.5, abs(movement_dir.y))
 		movement_speed = base_speed * speed_isometric_factor * speed_deviation
-	
+		movement_vec = movement_dir * movement_speed
 	# Calculate variables to choose animations with
 	going_right = movement_dir.x >= 0 
 	going_down = movement_dir.y >= 0 
@@ -227,7 +248,7 @@ func _attack(bypass : bool):
 		asprite.frame = 0
 		asprite.play()
 		await _do_attack_cooldown()
-		if attacking and target:
+		if attacking and target and is_instance_valid(target):
 			_attack(true)
 
 func _fire_projectile():
@@ -240,8 +261,15 @@ func _fire_projectile():
 	projectile.dir = target_dir
 	projectile.rotation = target_dir.angle()
 	projectile.position = position 
+	if type == Type.FIREFLY:
+		var offset_base = FIREFLY_BOT_PROJ_OFFSET if going_down else FIREFLY_TOP_PROJ_OFFSET
+		var projectile_offset = Vector2(offset_base.x * -1 if going_right else 1.0 - 1,\
+				offset_base.y + asprite.offset.y) 
+		projectile.position += projectile_offset
 	projectile.should_fire = true
+	projectile.target = target
 	main.add_child.call_deferred(projectile)
+	if deletes_after_firing: die()
 
 func _do_attack_cooldown():
 	attack_timer.start(attack_cooldown)
@@ -265,6 +293,7 @@ func die():
 #region: Connection functions
 func _on_movement_timer_timeout():
 	recalc_movement_vars()
+	pick_animation()
 	movement_timer.start(randf_range(MOVEMENT_REFRESH_DUR_MIN, MOVEMENT_REFRESH_DUR_MAX))
 
 

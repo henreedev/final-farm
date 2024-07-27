@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://bc2thpswuubp"]
+[gd_scene load_steps=75 format=3 uid="uid://bc2thpswuubp"]
 
 [ext_resource type="Texture2D" uid="uid://dfj4ofuulehi" path="res://assets/image/seeds/broccoli/floret-projectile.png" id="1_ay28c"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_cetc4"]
@@ -8,12 +8,15 @@
 [ext_resource type="Texture2D" uid="uid://d2qbof6epfjnp" path="res://assets/image/seeds/corn/corn-projectile.png" id="4_qkflf"]
 [ext_resource type="Texture2D" uid="uid://cqxaoapkgdoj3" path="res://assets/image/seeds/lemonlime/lemonlime-projectile.png" id="4_u2nmf"]
 [ext_resource type="Texture2D" uid="uid://bvqca85jkooct" path="res://assets/image/seeds/potato/potato-explosion-spritesheet.png" id="5_mueuj"]
+[ext_resource type="Texture2D" uid="uid://d3p26f3kjof6w" path="res://assets/image/insects/fungi-explosion.png" id="6_2std0"]
 [ext_resource type="Texture2D" uid="uid://bhk7485up74ku" path="res://assets/image/seeds/tomato/tomato-fire-spritesheet.png" id="6_hfgem"]
 [ext_resource type="Texture2D" uid="uid://cbe57ltf22yd2" path="res://assets/image/seeds/pepper/pepper-projectile.png" id="6_jk277"]
 [ext_resource type="Texture2D" uid="uid://mlgjejebohdo" path="res://assets/image/seeds/pepper/pepper-effect.png" id="7_asgou"]
 [ext_resource type="Texture2D" uid="uid://cyaxfoh5voyxf" path="res://assets/image/insects/moth-projectile.png" id="7_xumwq"]
 [ext_resource type="Texture2D" uid="uid://cxxlneyo38vtk" path="res://assets/image/seeds/watermelon/watermelon-projectile.png" id="10_nsi2i"]
 [ext_resource type="Texture2D" uid="uid://bhlmxknivkg48" path="res://assets/image/seeds/watermelon/watermelon-explosion-spritesheet.png" id="11_qqhra"]
+[ext_resource type="Texture2D" uid="uid://criwisyd6d874" path="res://assets/image/insects/sporespawn-projectile.png" id="12_hmi8m"]
+[ext_resource type="Texture2D" uid="uid://c57fcqpedpubj" path="res://assets/image/insects/sporespawn-explosion.png" id="13_s6ugx"]
 [ext_resource type="AudioStream" uid="uid://duwao8jltlced" path="res://assets/audio/explosion.mp3" id="15_2aotb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u1v7a"]
@@ -27,6 +30,62 @@ shader = ExtResource("1_cetc4")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ov1wp"]
+atlas = ExtResource("6_2std0")
+region = Rect2(0, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tl0nq"]
+atlas = ExtResource("6_2std0")
+region = Rect2(108, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2sm15"]
+atlas = ExtResource("6_2std0")
+region = Rect2(216, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uyjgf"]
+atlas = ExtResource("6_2std0")
+region = Rect2(324, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_og8am"]
+atlas = ExtResource("6_2std0")
+region = Rect2(432, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hf67i"]
+atlas = ExtResource("6_2std0")
+region = Rect2(540, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_chmol"]
+atlas = ExtResource("6_2std0")
+region = Rect2(648, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7f5xo"]
+atlas = ExtResource("6_2std0")
+region = Rect2(756, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wwc4r"]
+atlas = ExtResource("6_2std0")
+region = Rect2(864, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_getlb"]
+atlas = ExtResource("6_2std0")
+region = Rect2(972, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ujenh"]
+atlas = ExtResource("6_2std0")
+region = Rect2(1080, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2t7ot"]
+atlas = ExtResource("6_2std0")
+region = Rect2(1188, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_daskj"]
+atlas = ExtResource("6_2std0")
+region = Rect2(1296, 0, 108, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mseet"]
+atlas = ExtResource("6_2std0")
+region = Rect2(1404, 0, 108, 86)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qvn1y"]
 atlas = ExtResource("7_asgou")
@@ -75,6 +134,50 @@ region = Rect2(480, 0, 80, 80)
 [sub_resource type="AtlasTexture" id="AtlasTexture_6upnd"]
 atlas = ExtResource("5_mueuj")
 region = Rect2(560, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_778g0"]
+atlas = ExtResource("12_hmi8m")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4f6nc"]
+atlas = ExtResource("12_hmi8m")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1au0p"]
+atlas = ExtResource("12_hmi8m")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_medms"]
+atlas = ExtResource("12_hmi8m")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c7icb"]
+atlas = ExtResource("13_s6ugx")
+region = Rect2(0, 0, 88, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mw7pd"]
+atlas = ExtResource("13_s6ugx")
+region = Rect2(88, 0, 88, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kpnsp"]
+atlas = ExtResource("13_s6ugx")
+region = Rect2(176, 0, 88, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1et1f"]
+atlas = ExtResource("13_s6ugx")
+region = Rect2(264, 0, 88, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rrn8m"]
+atlas = ExtResource("13_s6ugx")
+region = Rect2(352, 0, 88, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5tums"]
+atlas = ExtResource("13_s6ugx")
+region = Rect2(440, 0, 88, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hgt1f"]
+atlas = ExtResource("13_s6ugx")
+region = Rect2(528, 0, 88, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e5mvc"]
 atlas = ExtResource("6_hfgem")
@@ -158,9 +261,61 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("4_qkflf")
 }],
-"loop": false,
+"loop": true,
 "name": &"corn",
 "speed": 0.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"firefly",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ov1wp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tl0nq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2sm15")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uyjgf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_og8am")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hf67i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_chmol")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7f5xo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wwc4r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_getlb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ujenh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2t7ot")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_daskj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mseet")
+}],
+"loop": false,
+"name": &"fungi",
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -230,6 +385,49 @@ animations = [{
 }],
 "loop": false,
 "name": &"potato",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_778g0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4f6nc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1au0p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_medms")
+}],
+"loop": true,
+"name": &"sporespawn",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c7icb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mw7pd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kpnsp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1et1f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rrn8m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5tums")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hgt1f")
+}],
+"loop": false,
+"name": &"sporespawn_explosion",
 "speed": 8.0
 }, {
 "frames": [{
@@ -313,7 +511,7 @@ script = ExtResource("2_s1110")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Holder"]
 material = SubResource("ShaderMaterial_3hlgb")
 sprite_frames = SubResource("SpriteFrames_ncj44")
-animation = &"potato"
+animation = &"watermelon_explosion"
 
 [node name="Shadow" parent="." instance=ExtResource("3_o6g11")]
 
@@ -337,8 +535,12 @@ disabled = true
 
 [node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("15_2aotb")
-volume_db = -17.0
+volume_db = -13.83
 max_distance = 100.0
+
+[node name="FourTileExplosion" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, 37, -60, -2, -1, -39, 55, 1)
+disabled = true
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="animation_finished" from="Holder/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

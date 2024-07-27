@@ -19,7 +19,7 @@ func is_stopped():
 func _process(delta):
 	if not (stopped or disabled):
 		time_left -= delta * speed_scale
-	if time_left < 0:
-		stopped = true
-		time_left = 0.0
-		timeout.emit()
+		if time_left < 0:
+			stopped = true
+			time_left = 0.0
+			timeout.emit()

@@ -148,7 +148,7 @@ func pick_stats():
 			can_cancel_atk_anim = false
 		Type.WILLOW:
 			anims_bidir = false
-			scale = Utils.get_plant_scale(_type)
+			#scale = Utils.get_plant_scale(_type)
 			attack_area.process_mode = Node.PROCESS_MODE_DISABLED
 			willow_num_arms = Utils.get_plant_special_value(_type)
 		Type.WILLOW_ARM:
@@ -389,11 +389,10 @@ func _set_willow_arm_offset():
 
 func _angle_to_index(angle):
 	const CONVERSION_FACTOR = 8.0 / TAU
-	const ADDITION_IF_NEGATIVE = TAU
 	angle = fmod(angle, TAU)
 	if angle > 0: angle = TAU - angle
 	if angle < 0: angle = -angle
-	var index = roundi(CONVERSION_FACTOR * angle)
+	var index = clampi(roundi(CONVERSION_FACTOR * angle), 0, 7)
 	return index
 	
 func _add_all_willow_arms():

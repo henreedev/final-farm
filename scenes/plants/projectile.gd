@@ -2,6 +2,8 @@ extends Area2D
 class_name Projectile
 
 #region: Globals
+signal chase_complete
+
 var type : Plant.Type
 var insect_type : Insect.Type
 
@@ -26,7 +28,9 @@ var chase_duration : float
 var target : Node2D
 var target_last_pos : Vector2
 var start_pos : Vector2
-signal chase_complete
+
+var firefly_line_scene : PackedScene = preload("res://scenes/insects/firefly_trail.tscn")
+
 @onready var holder = $Holder
 @onready var shadow = $Shadow
 @onready var asprite : AnimatedSprite2D = $Holder/AnimatedSprite2D
@@ -34,7 +38,8 @@ signal chase_complete
 @onready var tomato_hitbox : CollisionPolygon2D = $TomatoFireHitbox
 @onready var potato_hitbox : CollisionPolygon2D = $PotatoExplosionHitbox
 @onready var watermelon_hitbox : CollisionPolygon2D = $WatermelonExplosionHitbox
-
+@onready var four_tile_hitbox : CollisionPolygon2D = $FourTileExplosion
+@onready var main : Main = get_tree().get_first_node_in_group("main")
 #endregion: Globals
 
 #region: Universal functions
@@ -94,12 +99,37 @@ func pick_values_on_type():
 			fires_to_target = true
 			chase_duration = 1.5
 			disable_collision_after_frames = 3
+	match insect_type:
+		Insect.Type.FIREFLY:
+			var firefly_line : ProjectileTrail = firefly_line_scene.instantiate()
+			firefly_line.parent = self
+			firefly_line.duration = 0.5
+			main.add_child(firefly_line)
+			has_shadow = false
+		Insect.Type.SPORESPAWN:
+			delete_on_damage = false
+			circle_hitbox.disabled = true
+			has_shadow = false
+			fires_to_target = true
+			chase_duration = 2.0
+			disable_collision_after_frames = 5
+		Insect.Type.FUNGI:
+			$ExplosionSound.play()
+			rotation = 0
+			offset = Vector2(0, 0)
+			delete_on_damage = false
+			circle_hitbox.disabled = true
+			four_tile_hitbox.disabled = false
+			has_shadow = false
+			disable_collision_after_frames = 5
+			should_fire = false
 	if not has_shadow: shadow.hide()
 	asprite.play()
 func _fire():
 	var tween : Tween = create_tween()
 	if fires_to_target:
 		tween.tween_property(self, "chase_progress", 1.0, chase_duration).from(0.0)
+		create_tween().tween_property(self, "rotation", randf_range(-TAU, TAU), chase_duration - 0.01).set_ease(Tween.EASE_OUT)
 		tween.tween_callback(_chase_complete)
 	else:
 		var final_pos := position + dir * speed * lifespan 
@@ -117,6 +147,12 @@ func _chase_complete():
 			asprite.animation = "watermelon_explosion"
 			asprite.play()
 			$ExplosionSound.play()
+			watermelon_hitbox.disabled = false
+			rotation = 0
+	match insect_type:
+		Insect.Type.SPORESPAWN:
+			asprite.animation = "sporespawn_explosion"
+			asprite.play()
 			watermelon_hitbox.disabled = false
 			rotation = 0
 
@@ -178,6 +214,8 @@ func _on_animated_sprite_2d_frame_changed():
 		circle_hitbox.disabled = true
 		potato_hitbox.disabled = true
 		tomato_hitbox.disabled = true
+		watermelon_hitbox.disabled = true
+		four_tile_hitbox.disabled = true
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:

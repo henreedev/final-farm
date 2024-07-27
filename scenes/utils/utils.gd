@@ -25,17 +25,224 @@ static var banana_level : Plant.Level = Plant.Level.Level0
 static var lemonlime_level : Plant.Level = Plant.Level.Level0
 static var willow_level : Plant.Level = Plant.Level.Level0
 
-static func restart():
-	eggplant_level = Plant.Level.Level0
-	broccoli_level = Plant.Level.Level0
-	tomato_level = Plant.Level.Level0
-	celery_level = Plant.Level.Level0
-	corn_level = Plant.Level.Level0
-	potato_level = Plant.Level.Level0
-	banana_level = Plant.Level.Level0
-	pepper_level = Plant.Level.Level0
-	lemonlime_level = Plant.Level.Level0
-	willow_level = Plant.Level.Level0
+
+#region: Insect functions
+
+static func get_insect_damage(type : Insect.Type):
+	match type:
+		Insect.Type.FLY:
+			return 25
+		Insect.Type.GRUB:
+			return 10
+		Insect.Type.SNAIL:
+			return 54
+		Insect.Type.MOTH:
+			return 40
+		Insect.Type.BEE:
+			return 16
+		Insect.Type.FUNGI:
+			return 500
+		Insect.Type.ANT:
+			return 72
+		Insect.Type.CATERPILLAR:
+			return 3
+		Insect.Type.SPORESPAWN:
+			return 200
+		Insect.Type.LOCUST:
+			return 18
+		Insect.Type.BEETLE:
+			return 300
+		Insect.Type.CRICKET:
+			return 2
+		Insect.Type.FIREFLY:
+			return 780
+
+static func get_insect_health(type : Insect.Type):
+	match type:
+		Insect.Type.FLY:
+			return 3
+		Insect.Type.GRUB:
+			return 1
+		Insect.Type.SNAIL:
+			return 50
+		Insect.Type.MOTH:
+			return 2
+		Insect.Type.BEE:
+			return 30
+		Insect.Type.FUNGI:
+			return 30
+		Insect.Type.ANT:
+			return 400
+		Insect.Type.CATERPILLAR:
+			return 80
+		Insect.Type.SPORESPAWN:
+			return 250
+		Insect.Type.LOCUST:
+			return 3
+		Insect.Type.BEETLE:
+			return 7200
+		Insect.Type.CRICKET:
+			return 1200
+		Insect.Type.FIREFLY:
+			return 800
+static func get_insect_kill_reward(type : Insect.Type):
+	match type:
+		Insect.Type.FLY:
+			return 1
+		Insect.Type.GRUB:
+			return 1
+		Insect.Type.SNAIL:
+			return 10
+		Insect.Type.MOTH:
+			return 2
+		Insect.Type.BEE:
+			return 5
+		Insect.Type.FUNGI:
+			return 5
+		Insect.Type.ANT:
+			return 30
+		Insect.Type.CATERPILLAR:
+			return 10
+		Insect.Type.SPORESPAWN:
+			return 50
+		Insect.Type.LOCUST:
+			return 3
+		Insect.Type.BEETLE:
+			return 100
+		Insect.Type.CRICKET:
+			return 80
+		Insect.Type.FIREFLY:
+			return 200
+static func get_insect_range(type : Insect.Type):
+	match type:
+		Insect.Type.FLY:
+			return 0
+		Insect.Type.GRUB:
+			return 0
+		Insect.Type.SNAIL:
+			return 0
+		Insect.Type.MOTH:
+			return 3
+		Insect.Type.BEE:
+			return 0
+		Insect.Type.FUNGI:
+			return 0
+		Insect.Type.ANT:
+			return 1
+		Insect.Type.CATERPILLAR:
+			return 0
+		Insect.Type.SPORESPAWN:
+			return 5
+		Insect.Type.LOCUST:
+			return 0
+		Insect.Type.BEETLE:
+			return 300
+		Insect.Type.CRICKET:
+			return 6
+		Insect.Type.FIREFLY:
+			return 8
+
+static func get_insect_attack_cooldown(type : Insect.Type):
+	match type:
+		Insect.Type.FLY:
+			return 1.00
+		Insect.Type.GRUB:
+			return 0.50
+		Insect.Type.SNAIL:
+			return 3.60
+		Insect.Type.MOTH:
+			return 2.00
+		Insect.Type.BEE:
+			return 0.80
+		Insect.Type.FUNGI:
+			return 0.1
+		Insect.Type.ANT:
+			return 1.8
+		Insect.Type.CATERPILLAR:
+			return 0.2
+		Insect.Type.SPORESPAWN:
+			return 5.0
+		Insect.Type.LOCUST:
+			return 0.3
+		Insect.Type.BEETLE:
+			return 3.0
+		Insect.Type.CRICKET:
+			return 5.0
+		Insect.Type.FIREFLY:
+			return 1.3
+
+static func get_insect_string(type : Insect.Type):
+	match type:
+		Insect.Type.FLY:
+			return "fly"
+		Insect.Type.GRUB:
+			return "grub"
+		Insect.Type.SNAIL:
+			return "snail"
+		Insect.Type.MOTH:
+			return "moth"
+		Insect.Type.BEE:
+			return "bee"
+		Insect.Type.FUNGI:
+			return "fungi"
+		Insect.Type.ANT:
+			return "ant"
+		Insect.Type.CATERPILLAR:
+			return "caterpillar"
+		Insect.Type.SPORESPAWN:
+			return "sporespawn"
+		Insect.Type.LOCUST:
+			return "locust"
+		Insect.Type.BEETLE:
+			return "beetle"
+		Insect.Type.CRICKET:
+			return "cricket"
+		Insect.Type.FIREFLY:
+			return "firefly"
+
+static func get_insect_speed(type : Insect.Type):
+	match type:
+		Insect.Type.FLY:
+			return normal
+		Insect.Type.GRUB:
+			return fast
+		Insect.Type.SNAIL:
+			return very_slow
+		Insect.Type.MOTH:
+			return normal
+		Insect.Type.BEE:
+			return very_fast
+		Insect.Type.FUNGI:
+			return very_fast
+		Insect.Type.ANT:
+			return slow
+		Insect.Type.CATERPILLAR:
+			return very_fast
+		Insect.Type.SPORESPAWN:
+			return slow
+		Insect.Type.LOCUST:
+			return very_fast
+		Insect.Type.BEETLE:
+			return very_slow
+		Insect.Type.CRICKET:
+			return normal
+		Insect.Type.FIREFLY:
+			return normal
+
+static func get_insect_detection_range(type : Insect.Type):
+	match type:
+		Insect.Type.FLY, Insect.Type.GRUB, Insect.Type.MOTH, Insect.Type.BEE, Insect.Type.FUNGI, \
+		Insect.Type.ANT, Insect.Type.LOCUST, Insect.Type.BEETLE, \
+		Insect.Type.CRICKET:
+			return 8
+		Insect.Type.SPORESPAWN, Insect.Type.FIREFLY:
+			return 12
+		Insect.Type.SNAIL, Insect.Type.CATERPILLAR:
+			return 80
+
+#endregion: Insect functions
+
+#region: Plant functions
 
 static func upgrade(type : Plant.Type):
 	match type:
@@ -62,115 +269,6 @@ static func upgrade(type : Plant.Type):
 		Plant.Type.WILLOW:
 			willow_level += 1 as Plant.Level			
 
-#region: Insect functions
-
-static func get_insect_damage(type : Insect.Type):
-	match type:
-		Insect.Type.FLY:
-			return 25
-		Insect.Type.GRUB:
-			return 10
-		Insect.Type.SNAIL:
-			return 54
-		Insect.Type.MOTH:
-			return 40
-		Insect.Type.BEE:
-			return 16
-
-static func get_insect_health(type : Insect.Type):
-	match type:
-		Insect.Type.FLY:
-			return 3
-		Insect.Type.GRUB:
-			return 1
-		Insect.Type.SNAIL:
-			return 50
-		Insect.Type.MOTH:
-			return 2
-		Insect.Type.BEE:
-			return 30
-
-static func get_insect_kill_reward(type : Insect.Type):
-	match type:
-		Insect.Type.FLY:
-			return 1
-		Insect.Type.GRUB:
-			return 1
-		Insect.Type.SNAIL:
-			return 10
-		Insect.Type.MOTH:
-			return 2
-		Insect.Type.BEE:
-			return 5
-
-static func get_insect_range(type : Insect.Type):
-	match type:
-		Insect.Type.FLY:
-			return 0
-		Insect.Type.GRUB:
-			return 0
-		Insect.Type.SNAIL:
-			return 0
-		Insect.Type.MOTH:
-			return 3
-		Insect.Type.BEE:
-			return 0
-
-static func get_insect_attack_cooldown(type : Insect.Type):
-	match type:
-		Insect.Type.FLY:
-			return 1.00
-		Insect.Type.GRUB:
-			return 0.50
-		Insect.Type.SNAIL:
-			return 3.60
-		Insect.Type.MOTH:
-			return 2.00
-		Insect.Type.BEE:
-			return 0.80
-
-static func get_insect_string(type : Insect.Type):
-	match type:
-		Insect.Type.FLY:
-			return "fly"
-		Insect.Type.GRUB:
-			return "grub"
-		Insect.Type.SNAIL:
-			return "snail"
-		Insect.Type.MOTH:
-			return "moth"
-		Insect.Type.BEE:
-			return "bee"
-			
-static func get_insect_speed(type : Insect.Type):
-	match type:
-		Insect.Type.FLY:
-			return normal
-		Insect.Type.GRUB:
-			return fast
-		Insect.Type.SNAIL:
-			return very_slow
-		Insect.Type.MOTH:
-			return normal
-		Insect.Type.BEE:
-			return very_fast
-
-static func get_insect_detection_range(type : Insect.Type):
-	match type:
-		Insect.Type.FLY:
-			return 8
-		Insect.Type.GRUB:
-			return 8
-		Insect.Type.SNAIL:
-			return 80
-		Insect.Type.MOTH:
-			return 8
-		Insect.Type.BEE:
-			return 8
-
-#endregion: Insect functions
-
-#region: Plant functions
 
 static func get_plant_scale(type : Plant.Type):
 	match type:
@@ -503,7 +601,15 @@ static func get_plant_range(type : Plant.Type):
 				Plant.Level.Level3: 
 					return 8
 		Plant.Type.WILLOW:
-			return 2 # range is determined using scale, see get_plant_scale()
+			match willow_level: 
+				Plant.Level.Level0:
+					return 2
+				Plant.Level.Level1:
+					return 3
+				Plant.Level.Level2: 
+					return 4
+				Plant.Level.Level3: 
+					return 5
 
 static func get_plant_attack_cooldown(type : Plant.Type, level : Plant.Level = -1):
 	if level >= 0:
@@ -1014,6 +1120,21 @@ static func get_plant_display_string(type):
 
 #endregion: Plant functions
 
+#region: General functions
+
+static func restart():
+	eggplant_level = Plant.Level.Level0
+	broccoli_level = Plant.Level.Level0
+	tomato_level = Plant.Level.Level0
+	celery_level = Plant.Level.Level0
+	corn_level = Plant.Level.Level0
+	potato_level = Plant.Level.Level0
+	banana_level = Plant.Level.Level0
+	pepper_level = Plant.Level.Level0
+	lemonlime_level = Plant.Level.Level0
+	willow_level = Plant.Level.Level0
+
+
 
 static func give_zoom_shader(node_with_mat : Node2D):
 	node_with_mat.material = ShaderMaterial.new()
@@ -1058,3 +1179,5 @@ static func tween_arc_between(parent : Node2D, p1 : Vector2, p2 : Vector2, durat
 		
 	
 	return hoz_tween
+
+#endregion: General functions

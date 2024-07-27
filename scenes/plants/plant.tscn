@@ -2484,7 +2484,7 @@ z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_8lxin")
 sprite_frames = SubResource("SpriteFrames_rowdm")
-animation = &"willow_idle_arm4"
+animation = &"willow_shoot_arm0"
 script = ExtResource("1_7ry7i")
 
 [node name="Hurtbox" type="Area2D" parent="."]

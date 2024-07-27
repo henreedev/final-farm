@@ -1,6 +1,7 @@
 extends Node2D
 class_name ShopInventory
 
+var close_enough = false
 var target_pos : Vector2
 var selected_type : Plant.Type = Plant.Type.BROCCOLI
 var selected_bag : ShopBag
@@ -22,6 +23,7 @@ func _input(event):
 		_update_selection(clampi(selected_type + scroll_dir, 0, plant_types_len - 3)) # -1 , -1 for FOOD_SUPPLY, -1 for WILLOW_ARM
 
 func _update_selection(new_selected_type):
+	close_enough = false
 	selected_type = new_selected_type
 	target_pos = -types_to_bags[selected_type].position
 	for bag : ShopBag in types_to_bags.values():
@@ -32,5 +34,8 @@ func _update_selection(new_selected_type):
 func _process(delta):
 	const STR = 5.0
 	const BASE = 0.2
-	var dist2 = clampf(position.distance_squared_to(target_pos), 0, 1)
-	position = lerp(position, target_pos, dist2 * delta * STR + BASE * delta)
+	if not close_enough:
+		var dist2 = clampf(position.distance_squared_to(target_pos), 0, 1)
+		position = lerp(position, target_pos, dist2 * delta * STR + BASE * delta)
+		if dist2 < 0.01:
+			close_enough = true

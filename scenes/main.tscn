@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://bxqqm0fji2wwm"]
+[gd_scene load_steps=74 format=3 uid="uid://bxqqm0fji2wwm"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_n7gso"]
 [ext_resource type="Script" path="res://scenes/map/wave.gd" id="2_1hows"]
@@ -13,74 +13,72 @@
 
 [sub_resource type="Resource" id="Resource_7vwte"]
 script = ExtResource("3_nwf1e")
-type = 0
-count = 41
+type = 5
+count = 62
 spawn_time = 0.0
 streams = true
 stream_duration = 0.5
 
 [sub_resource type="Resource" id="Resource_f42aq"]
 script = ExtResource("3_nwf1e")
-type = 1
-count = 30
-spawn_time = 5.0
+type = 6
+count = 0
+spawn_time = 0.0
 streams = false
 stream_duration = 0.0
 
 [sub_resource type="Resource" id="Resource_8s5fo"]
 script = ExtResource("3_nwf1e")
-type = 2
-count = 20
+type = 7
+count = 31
 spawn_time = 0.0
 streams = false
 stream_duration = 0.0
 
 [sub_resource type="Resource" id="Resource_idybs"]
 script = ExtResource("3_nwf1e")
-type = 4
-count = 35
+type = 8
+count = 0
 spawn_time = 0.0
 streams = false
 stream_duration = 0.0
 
 [sub_resource type="Resource" id="Resource_x7xri"]
 script = ExtResource("3_nwf1e")
-type = 3
-count = 5
+type = 9
+count = 1001
 spawn_time = 0.0
+streams = true
+stream_duration = 8.7
+
+[sub_resource type="Resource" id="Resource_ox0sa"]
+script = ExtResource("3_nwf1e")
+type = 10
+count = 1
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_mjmim"]
+script = ExtResource("3_nwf1e")
+type = 11
+count = 1
+spawn_time = 0.0
+streams = false
+stream_duration = 0.0
+
+[sub_resource type="Resource" id="Resource_y6x5u"]
+script = ExtResource("3_nwf1e")
+type = 12
+count = 3
+spawn_time = 9.0
 streams = false
 stream_duration = 0.0
 
 [sub_resource type="Resource" id="Resource_b0u56"]
 script = ExtResource("2_1hows")
 duration = 1.1
-wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_7vwte"), SubResource("Resource_f42aq"), SubResource("Resource_8s5fo"), SubResource("Resource_idybs"), SubResource("Resource_x7xri")])
-
-[sub_resource type="Resource" id="Resource_r8n0q"]
-script = ExtResource("3_nwf1e")
-type = 0
-count = 8
-spawn_time = 0.0
-streams = true
-stream_duration = 0.5
-
-[sub_resource type="Resource" id="Resource_fvwto"]
-script = ExtResource("2_1hows")
-duration = 2.3
-wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_r8n0q")])
-
-[sub_resource type="Resource" id="Resource_fxj2w"]
-script = ExtResource("3_nwf1e")
-type = 0
-count = 10
-spawn_time = 0.0
-streams = true
-stream_duration = 0.5
-
-[sub_resource type="Resource" id="Resource_uhtp1"]
-script = ExtResource("2_1hows")
-duration = 10.0
-wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_fxj2w")])
+wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_7vwte"), SubResource("Resource_f42aq"), SubResource("Resource_8s5fo"), SubResource("Resource_idybs"), SubResource("Resource_x7xri"), SubResource("Resource_ox0sa"), SubResource("Resource_mjmim"), SubResource("Resource_y6x5u")])
 
 [sub_resource type="Resource" id="Resource_luyui"]
 script = ExtResource("3_nwf1e")
@@ -469,7 +467,7 @@ wave_groups = Array[ExtResource("3_nwf1e")]([SubResource("Resource_65gpc")])
 [node name="Main" type="Node2D" groups=["main"]]
 y_sort_enabled = true
 script = ExtResource("1_n7gso")
-quarter_1_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_b0u56"), SubResource("Resource_fvwto"), SubResource("Resource_uhtp1")])
+quarter_1_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_b0u56")])
 quarter_1_wave_table_2 = Array[ExtResource("2_1hows")]([SubResource("Resource_l67q4"), SubResource("Resource_eir6q"), SubResource("Resource_xcjlv")])
 quarter_1_wave_table_3 = Array[ExtResource("2_1hows")]([SubResource("Resource_qhdjf"), SubResource("Resource_0a2vg"), SubResource("Resource_ftjwp")])
 quarter_2_wave_table_1 = Array[ExtResource("2_1hows")]([SubResource("Resource_tx74o"), SubResource("Resource_htv5n"), SubResource("Resource_hwou5"), SubResource("Resource_8tpwl")])
