@@ -834,30 +834,9 @@ static func get_plant_spawn_duration(type : Plant.Type):
 
 static func get_plant_health_decay(type : Plant.Type):
 	match type:
-		Plant.Type.FOOD_SUPPLY:
-			return -1.0
-		Plant.Type.EGGPLANT:
-			return 1.66
 		Plant.Type.BROCCOLI:
 			return 5.0
-		Plant.Type.TOMATO:
-			return 3.0
-		Plant.Type.POTATO:
-			return 10.0
-		Plant.Type.CELERY:
-			return 2.0
-		Plant.Type.CORN:
-			return 3.5
-		Plant.Type.WATERMELON:
-			return 1.0
-		Plant.Type.PEPPER:
-			return 1.0
-		Plant.Type.BANANA:
-			return 1.0
-		Plant.Type.LEMONLIME:
-			return 0.03
-		Plant.Type.WILLOW:
-			return 0.01
+	return 0.0
 
 static func get_next_upgrade_cost(type : Plant.Type):
 	match type:
@@ -1023,7 +1002,13 @@ static func get_plant_upgrade_blurb(type : Plant.Type, level : Plant.Level):
 		_:
 			return "-1"
 static func get_plant_special_blurb(type : Plant.Type):
-	return "Special Stat (N/A)"
+	match type:
+		Plant.Type.BROCCOLI:
+			return "Health Decay Rate"
+		Plant.Type.WILLOW:
+			return "Number of Arms"
+		_:
+			return "Special Stat (N/A)"
 
 static func get_plant_special_value(type : Plant.Type): 
 	match type:
@@ -1037,6 +1022,8 @@ static func get_plant_special_value(type : Plant.Type):
 					return 5
 				Plant.Level.Level3: 
 					return 8
+		Plant.Type.BROCCOLI:
+			return str(get_plant_health_decay(Plant.Type.BROCCOLI)) + "%/sec"
 	return ""
 
 static func get_plant_level(type : Plant.Type):

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/insects/projectile_trail.gd" id="1_hf7w0"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_loq6e"]
+[ext_resource type="Texture2D" uid="uid://tv55n234w6r4" path="res://assets/image/insects/firefly-line.png" id="2_phclu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5civm"]
 shader = ExtResource("1_loq6e")
@@ -9,17 +10,14 @@ shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
 
-[sub_resource type="Gradient" id="Gradient_5b8ur"]
-colors = PackedColorArray(1, 0.952941, 0.6, 1, 1, 1, 1, 1)
-
 [node name="FireflyTrail" type="Line2D"]
 z_index = 1
 y_sort_enabled = true
 texture_repeat = 2
 material = SubResource("ShaderMaterial_5civm")
-width = 5.0
-gradient = SubResource("Gradient_5b8ur")
-texture_mode = 1
-joint_mode = 2
-end_cap_mode = 2
+points = PackedVector2Array(64, 5, 13, 10)
+width = 8.0
+texture = ExtResource("2_phclu")
+texture_mode = 2
+end_cap_mode = 1
 script = ExtResource("1_hf7w0")

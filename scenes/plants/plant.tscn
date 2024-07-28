@@ -1,4 +1,4 @@
-[gd_scene load_steps=331 format=3 uid="uid://qmlvoryj0irv"]
+[gd_scene load_steps=335 format=3 uid="uid://qmlvoryj0irv"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_7oxxv"]
 [ext_resource type="Script" path="res://scenes/plants/plant.gd" id="1_7ry7i"]
@@ -17,11 +17,13 @@
 [ext_resource type="Texture2D" uid="uid://lwvty6vvgimo" path="res://assets/image/seeds/willow/willow-arms-0123-spritesheet.png" id="13_v2ihe"]
 [ext_resource type="Texture2D" uid="uid://cmouk8lhs6134" path="res://assets/image/seeds/willow/willow-arms-4567-spritesheet.png" id="14_13mtk"]
 [ext_resource type="Texture2D" uid="uid://cai60lrtkj03b" path="res://assets/ui/buttons/icon-hp.png" id="14_iqgia"]
-[ext_resource type="LabelSettings" uid="uid://dg2icno1lnx05" path="res://scenes/UI/bag_icon.tres" id="15_tfeep"]
 [ext_resource type="Texture2D" uid="uid://cxew14ylw4vx2" path="res://assets/image/seeds/sleeping-effect.png" id="16_vqvjw"]
 [ext_resource type="AudioStream" uid="uid://celekxrqvqjd1" path="res://assets/audio/normal shot.mp3" id="17_g1k3g"]
 [ext_resource type="AudioStream" uid="uid://beu7j1nuwh6xw" path="res://assets/audio/small shot.mp3" id="18_l7n2y"]
+[ext_resource type="PackedScene" uid="uid://cp0865njrn4sl" path="res://scenes/UI/sleep_bar.tscn" id="18_nmhx0"]
+[ext_resource type="PackedScene" uid="uid://ba6mc1dkvyisn" path="res://scenes/UI/health_bar.tscn" id="19_87p1y"]
 [ext_resource type="AudioStream" uid="uid://djtt00dufxobp" path="res://assets/audio/tomato fire.mp3" id="19_tdsdr"]
+[ext_resource type="FontFile" uid="uid://mpjdnkqeym20" path="res://resources/fonts/Pxlvetica-XymZ.ttf" id="20_62xyg"]
 [ext_resource type="AudioStream" uid="uid://c3q50f5cnoyr5" path="res://assets/audio/celery melee swing.mp3" id="20_aw20f"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lxin"]
@@ -2457,6 +2459,18 @@ radius = 2.5
 [sub_resource type="CircleShape2D" id="CircleShape2D_7l117"]
 radius = 40.0
 
+[sub_resource type="LabelSettings" id="LabelSettings_fguqy"]
+font = ExtResource("20_62xyg")
+font_size = 24
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jw4r3"]
+font = ExtResource("20_62xyg")
+font_size = 24
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 1)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_7uxjk"]
 atlas = ExtResource("16_vqvjw")
 region = Rect2(0, 0, 17, 36)
@@ -2484,7 +2498,7 @@ z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_8lxin")
 sprite_frames = SubResource("SpriteFrames_rowdm")
-animation = &"willow_shoot_arm0"
+animation = &"broccoli_idle_back"
 script = ExtResource("1_7ry7i")
 
 [node name="Hurtbox" type="Area2D" parent="."]
@@ -2492,6 +2506,7 @@ collision_layer = 32
 collision_mask = 0
 monitoring = false
 metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0.5, 0)
@@ -2503,6 +2518,7 @@ scale = Vector2(1, 0.5)
 collision_layer = 0
 monitorable = false
 metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 shape = SubResource("CircleShape2D_7l117")
@@ -2511,23 +2527,52 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 [node name="AttackTimer" type="Node" parent="."]
 script = ExtResource("5_sqecx")
 
-[node name="HealthBar" type="Node2D" parent="."]
-visible = false
+[node name="Info" type="Node2D" parent="."]
+z_index = 3
 use_parent_material = true
 
-[node name="Sprite2D" type="Sprite2D" parent="HealthBar"]
+[node name="Sprite2D" type="Sprite2D" parent="Info"]
+visible = false
 use_parent_material = true
 position = Vector2(0, 3)
 scale = Vector2(0.32, 0.32)
 texture = ExtResource("14_iqgia")
 
-[node name="Label" type="Label" parent="HealthBar"]
+[node name="SleepBar" parent="Info" instance=ExtResource("18_nmhx0")]
+offset_left = 7.0
+offset_top = -9.0
+offset_right = 9.0
+offset_bottom = 3.0
+value = 81.0
+
+[node name="HealthBar" parent="Info" instance=ExtResource("19_87p1y")]
+offset_left = -6.0
+offset_top = 3.0
+offset_right = 6.0
+offset_bottom = 5.0
+value = 54.0
+
+[node name="HealthLabel" type="Label" parent="Info"]
+modulate = Color(1, 1, 1, 0.52549)
 use_parent_material = true
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = -4.0
+offset_top = 2.0
+offset_right = 36.0
+offset_bottom = 25.0
 scale = Vector2(0.19, 0.19)
 text = "123"
-label_settings = ExtResource("15_tfeep")
+label_settings = SubResource("LabelSettings_fguqy")
+horizontal_alignment = 1
+
+[node name="SleepLabel" type="Label" parent="Info"]
+modulate = Color(1, 1, 1, 0.52549)
+use_parent_material = true
+offset_left = 4.0
+offset_top = -5.0
+offset_right = 44.0
+offset_bottom = 23.0
+scale = Vector2(0.19, 0.19)
+label_settings = SubResource("LabelSettings_jw4r3")
 horizontal_alignment = 1
 
 [node name="SleepTimer" type="Node" parent="."]

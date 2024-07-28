@@ -1330,7 +1330,6 @@ metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
 shape = SubResource("CircleShape2D_a1533")
-disabled = true
 debug_color = Color(0, 0.6, 0, 0.033)
 
 [node name="AttackArea" type="Area2D" parent="."]
@@ -1342,7 +1341,6 @@ metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 shape = SubResource("CircleShape2D_hiu7l")
-disabled = true
 debug_color = Color(0.993118, 0, 0.242322, 0.42)
 
 [node name="MovementTimer" type="Node" parent="."]

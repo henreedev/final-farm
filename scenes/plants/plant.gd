@@ -16,6 +16,7 @@ signal fired(projectile : Projectile)
 var type : Type 
 
 var health : int
+var max_health : int
 var health_drain_percent : float
 var time_to_grow : int
 var damage : int
@@ -54,6 +55,7 @@ var attack_dir : Vector2
 var attacking := false
 var growing := true
 var sleeping := false
+var sleep_time := 15.0
 var paused := false
 var can_cancel_atk_anim := true
 var anims_bidir := true
@@ -66,7 +68,8 @@ var facing_down := true
 var anim_str : String
 var health_to_decay : float = 0
 var health_decay_mod : float = 1.0
-var display_health := true
+var decays := false
+var display_info := true
 #endregion: Other vars
 
 #region: Willow vars
@@ -79,29 +82,35 @@ const willow_outline_color := Color(0.2, 0.4, 0.2, 1.0)
 @onready var attack_timer : ScalableTimer = $AttackTimer
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
-@onready var health_bar = $HealthBar
-@onready var health_bar_label = $HealthBar/Label
-@onready var sleep_timer : ScalableTimer = $SleepTimer
-@onready var sleep_effect : AnimatedSprite2D = $SleepEffect
 @onready var normal_hit : AudioStreamPlayer2D = $normal
 @onready var small_hit : AudioStreamPlayer2D = $small
 @onready var tomato_hit : AudioStreamPlayer2D = $tomato
 @onready var celery_hit : AudioStreamPlayer2D = $celery
 @onready var attack_area : Area2D = $AttackArea
 @onready var hurtbox : Area2D = $Hurtbox
-var sleep_time = 15.0
+@onready var sleep_bar : TextureProgressBar = $Info/SleepBar
+@onready var sleep_timer : ScalableTimer = $SleepTimer
+@onready var sleep_effect : AnimatedSprite2D = $SleepEffect
+@onready var sleep_bar_label : Label = $Info/SleepLabel
+@onready var health_bar : TextureProgressBar = $Info/HealthBar
+@onready var health_bar_label : Label = $Info/HealthLabel
+@onready var info = $Info
+
+
 #region: Universal functions
-# Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
-	main.info_toggled.connect(update_health_bar)
+	main.info_toggled.connect(toggle_info)
 	Utils.give_zoom_shader(self)
 	pick_stats()
 	pick_starting_animation()
+	setup_bars()
 
 func pick_stats():
 	var _type = type if not type == Type.WILLOW_ARM else Type.WILLOW
 	damage = Utils.get_plant_damage(_type)
-	health = Utils.get_plant_health(_type)
+	max_health = Utils.get_plant_health(_type)
+	health = max_health
 	attack_range = Utils.get_plant_range(_type)
 	attack_cooldown = Utils.get_plant_attack_cooldown(_type)
 	health_decay = Utils.get_plant_health_decay(_type) * 0.01 * health
@@ -110,13 +119,16 @@ func pick_stats():
 	match type:
 		Type.FOOD_SUPPLY:
 			can_attack = false
-			health_bar.scale = Vector2(2, 2)
-			health_bar.position = Vector2(0, 8)
+			info.scale = Vector2(2, 2)
+			info.position = Vector2(0, 8)
+			sleep_bar.visible = false
+			sleep_bar_label.visible = false
 		Type.EGGPLANT:
 			flip_h = facing_right
 			anims_bidir = false
 			can_attack = false
 		Type.BROCCOLI:
+			decays = true
 			projectile_lifespan = 0.7
 			projectile_radius = 3
 			projectile_speed = 120.0
@@ -148,7 +160,6 @@ func pick_stats():
 			can_cancel_atk_anim = false
 		Type.WILLOW:
 			anims_bidir = false
-			#scale = Utils.get_plant_scale(_type)
 			attack_area.process_mode = Node.PROCESS_MODE_DISABLED
 			willow_num_arms = Utils.get_plant_special_value(_type)
 		Type.WILLOW_ARM:
@@ -157,18 +168,18 @@ func pick_stats():
 			growing = false
 			anims_bidir = false
 			hurtbox.process_mode = Node.PROCESS_MODE_DISABLED
-			display_health = false
+			display_info = false
 			fires_projectile = false
 			sleep_timer.disabled = true
 			material.set_shader_parameter("outline_active", true)
 			material.set_shader_parameter("outline_color", willow_outline_color)
 			
+	sleep_timer.start(sleep_time)
+	sleep_timer.stopped = true
 	Utils.set_range_area_radii($AttackArea/CollisionShape2D, attack_range)
 	update_health_bar()
+	update_sleep_bar()
 
-func _do_attack_cooldown():
-	attack_timer.start(attack_cooldown)
-	await attack_timer.timeout
 
 func pick_starting_animation():
 	if type == Type.WILLOW_ARM: 
@@ -177,6 +188,17 @@ func pick_starting_animation():
 		animation = anim_str + "grow"
 		sprite_frames.set_animation_speed(animation, sprite_frames.get_frame_count(animation) / float(Utils.get_plant_spawn_duration(type)))
 	play()
+
+func setup_bars():
+	health_bar.max_value = max_health
+	health_bar.value = max_health
+	health_bar_label.text = str(health_bar.value)
+	sleep_bar.max_value = sleep_time
+	sleep_bar_label.text = str(sleep_time)
+
+func _do_attack_cooldown():
+	attack_timer.start(attack_cooldown)
+	await attack_timer.timeout
 
 func on_hit_by_hoe(duration, start_strength, end_strength):
 	if type == Type.WILLOW:
@@ -215,15 +237,20 @@ func _physics_process(delta) -> void:
 	calc_facing_vars()
 	pick_animation()
 	_decay_health(delta)
+	update_sleep_bar()
 
 func _decay_health(delta : float):
-	health_to_decay += delta * health_decay * speed_scale * health_decay_mod
-	if growing: health_to_decay = 0.0
-	var int_health_to_decay = int(health_to_decay)
-	if int_health_to_decay > 0:
-		health_to_decay -= int_health_to_decay
-		take_damage(int_health_to_decay)
-	
+	if decays:
+		health_to_decay += delta * health_decay * speed_scale * health_decay_mod
+		if growing: health_to_decay = 0.0
+		var int_health_to_decay = int(health_to_decay)
+		if int_health_to_decay != 0:
+			health_to_decay -= int_health_to_decay
+			take_damage(int_health_to_decay)
+
+func update_sleep_bar():
+	sleep_bar.value = sleep_time - sleep_timer.time_left
+	sleep_bar_label.text = str(int(sleep_timer.time_left))
 
 func _attack(bypass : bool):
 	if not can_attack or sleeping:
@@ -338,13 +365,18 @@ func take_damage(amount : int):
 	update_health_bar()
 	if health <= 0:
 		die()
+	if health >= 0: 
+		health = max_health
 
 func update_health_bar():
 	health_bar_label.text = str(health)
-	if main.show_info and display_health:
-		health_bar.show()
+	health_bar.value = health
+
+func toggle_info():
+	if main.show_info and display_info:
+		info.show()
 	else:
-		health_bar.hide()
+		info.hide()
 
 func die():
 	is_dead = true
@@ -466,6 +498,7 @@ func _on_animation_finished():
 	match animation:
 		grow_str:
 			growing = false
+			sleep_timer.stopped = false
 			if type == Type.WILLOW: _add_all_willow_arms()
 			retarget()
 			if target: _attack(false)
@@ -522,5 +555,6 @@ func _on_sleep_timer_timeout():
 	sleeping = true
 	if type == Type.WILLOW:
 		for child in get_children():
-			sleeping = true
+			if child is Plant:
+				child.sleeping = true
 	sleep_effect.show()

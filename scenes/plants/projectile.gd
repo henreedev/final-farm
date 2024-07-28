@@ -103,7 +103,7 @@ func pick_values_on_type():
 		Insect.Type.FIREFLY:
 			var firefly_line : ProjectileTrail = firefly_line_scene.instantiate()
 			firefly_line.parent = self
-			firefly_line.duration = 0.5
+			firefly_line.duration = 0.25
 			main.add_child(firefly_line)
 			has_shadow = false
 		Insect.Type.SPORESPAWN:

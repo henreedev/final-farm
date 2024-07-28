@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cp0865njrn4sl"]
+
+[ext_resource type="Texture2D" uid="uid://cfbmvtd1s7uoy" path="res://assets/ui/sleep-bar-below.png" id="1_3hq8n"]
+[ext_resource type="Texture2D" uid="uid://c54yossyt6b6o" path="res://assets/ui/sleep-bar-progress.png" id="2_jbghh"]
+
+[node name="SleepBar" type="TextureProgressBar"]
+modulate = Color(1, 1, 1, 0.654)
+use_parent_material = true
+fill_mode = 3
+texture_under = ExtResource("1_3hq8n")
+texture_progress = ExtResource("2_jbghh")
