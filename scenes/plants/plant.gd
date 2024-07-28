@@ -17,7 +17,6 @@ var type : Type
 
 var health : int
 var max_health : int
-var health_drain_percent : float
 var time_to_grow : int
 var damage : int
 var attack_range : int
@@ -55,6 +54,7 @@ var attack_dir : Vector2
 var attacking := false
 var growing := true
 var sleeping := false
+var can_sleep := true
 var sleep_time := 15.0
 var paused := false
 var can_cancel_atk_anim := true
@@ -70,6 +70,7 @@ var health_to_decay : float = 0
 var health_decay_mod : float = 1.0
 var decays := false
 var display_info := true
+var projectile_scale : Vector2
 #endregion: Other vars
 
 #region: Willow vars
@@ -114,21 +115,26 @@ func pick_stats():
 	attack_range = Utils.get_plant_range(_type)
 	attack_cooldown = Utils.get_plant_attack_cooldown(_type)
 	health_decay = Utils.get_plant_health_decay(_type) * 0.01 * health
+	if health_decay: decays = true
 	upgrade_fire_rate_mod = Utils.get_plant_attack_cooldown(_type, Level.Level0) / Utils.get_plant_attack_cooldown(_type)
 	anim_str = Utils.get_plant_string(_type) + "_"
+	projectile_scale = Utils.get_plant_projectile_scale(_type)
 	match type:
 		Type.FOOD_SUPPLY:
-			can_attack = false
+			can_sleep = false
+			anims_bidir = false
 			info.scale = Vector2(2, 2)
 			info.position = Vector2(0, 8)
 			sleep_bar.visible = false
 			sleep_bar_label.visible = false
+			projectile_lifespan = 1.0
+			projectile_radius = 5
+			projectile_speed = 72.0
 		Type.EGGPLANT:
 			flip_h = facing_right
 			anims_bidir = false
 			can_attack = false
 		Type.BROCCOLI:
-			decays = true
 			projectile_lifespan = 0.7
 			projectile_radius = 3
 			projectile_speed = 120.0
@@ -174,8 +180,9 @@ func pick_stats():
 			material.set_shader_parameter("outline_active", true)
 			material.set_shader_parameter("outline_color", willow_outline_color)
 			
-	sleep_timer.start(sleep_time)
-	sleep_timer.stopped = true
+	if can_sleep:
+		sleep_timer.start(sleep_time)
+		sleep_timer.stopped = true
 	Utils.set_range_area_radii($AttackArea/CollisionShape2D, attack_range)
 	update_health_bar()
 	update_sleep_bar()
@@ -205,9 +212,10 @@ func on_hit_by_hoe(duration, start_strength, end_strength):
 		for child in get_children():
 			if child is Plant:
 				child.on_hit_by_hoe(duration, start_strength, end_strength)
-	sleeping = false
-	sleep_effect.hide()
-	sleep_timer.start(sleep_time)
+	if can_sleep:
+		sleeping = false
+		sleep_effect.hide()
+		sleep_timer.start(sleep_time)
 	var start_modulate = Color(start_strength, start_strength, start_strength, 1)
 	var end_modulate = Color(end_strength, end_strength, end_strength, 1)
 	health_decay_mod = 0.0
@@ -279,7 +287,8 @@ func _attack(bypass : bool):
 			else:
 				celery_hit.play()
 				target.take_damage(damage)
-			sleep_timer.start(sleep_time)
+			if can_sleep:
+				sleep_timer.start(sleep_time)
 			await _do_attack_cooldown()
 			if attacking and target:
 				_attack(true)
@@ -322,6 +331,7 @@ func fire_projectile():
 	projectile.allied = true
 	projectile.damage = damage
 	projectile.radius = projectile_radius
+	projectile.scale = projectile_scale
 	projectile.speed = projectile_speed
 	projectile.dir = attack_dir
 	projectile.rotation = attack_dir.angle()
@@ -362,11 +372,11 @@ func _get_willow_arm_string():
 
 func take_damage(amount : int):
 	health -= amount
-	update_health_bar()
 	if health <= 0:
 		die()
-	if health >= 0: 
+	if health >= max_health: 
 		health = max_health
+	update_health_bar()
 
 func update_health_bar():
 	health_bar_label.text = str(health)
@@ -552,9 +562,11 @@ func _on_frame_changed():
 
 
 func _on_sleep_timer_timeout():
-	sleeping = true
+	if can_sleep:
+		sleeping = true
+		sleep_effect.show()
 	if type == Type.WILLOW:
 		for child in get_children():
 			if child is Plant:
 				child.sleeping = true
-	sleep_effect.show()
+				child.sleep_effect.show()

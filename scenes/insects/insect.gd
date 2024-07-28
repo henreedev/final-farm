@@ -56,8 +56,9 @@ var label_setting : LabelSettings = preload("res://scenes/UI/bag_icon.tres")
 @onready var asprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 @onready var main : Main = get_tree().get_first_node_in_group("main")
-@onready var health_bar_label : Label = $HealthBar/Label
-@onready var health_bar = $HealthBar
+@onready var health_bar_label : Label = $Info/HealthLabel
+@onready var health_bar = $Info/HealthBar
+@onready var info = $Info
 @onready var bug_hit_sound : AudioStreamPlayer2D = $BugHit
 @onready var flying_sound : AudioStreamPlayer2D = $FlyingSound
 #endregion: Globals
@@ -65,7 +66,7 @@ var label_setting : LabelSettings = preload("res://scenes/UI/bag_icon.tres")
 #region: Universal functions
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	main.info_toggled.connect(update_health_bar)
+	main.info_toggled.connect(toggle_info)
 	Utils.give_zoom_shader(self)
 	pick_values_on_type()
 	retarget()
@@ -73,12 +74,7 @@ func _ready():
 	setup_health_bar()
 
 func setup_health_bar():
-	health_bar_label.label_settings = LabelSettings.new()
-	health_bar_label.label_settings.font = label_setting.font
-	health_bar_label.label_settings.font_color = Color(1, 0.2, 0.2, 1)
-	health_bar_label.label_settings.font_size = label_setting.font_size
-	health_bar_label.label_settings.shadow_color = label_setting.shadow_color
-	health_bar_label.label_settings.shadow_size = label_setting.shadow_size
+	health_bar.max_value = health
 	update_health_bar()
 
 func pick_values_on_type():
@@ -185,10 +181,13 @@ func _target_in_range():
 
 func update_health_bar():
 	health_bar_label.text = str(health)
+	health_bar.value = health
+
+func toggle_info():
 	if main.show_info:
-		health_bar.show()
+		info.show()
 	else:
-		health_bar.hide()
+		info.hide()
 
 
 func get_new_target_options():
@@ -229,7 +228,7 @@ func recalc_movement_vars():
 		var speed_deviation = randf_range(1 - SPEED_DEVIATION, 1 + SPEED_DEVIATION)
 		var speed_isometric_factor = lerpf(1, 0.5, abs(movement_dir.y))
 		movement_speed = base_speed * speed_isometric_factor * speed_deviation
-		movement_vec = movement_dir * movement_speed
+	movement_vec = movement_dir * movement_speed
 	# Calculate variables to choose animations with
 	going_right = movement_dir.x >= 0 
 	going_down = movement_dir.y >= 0 

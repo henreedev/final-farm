@@ -1,4 +1,4 @@
-[gd_scene load_steps=170 format=3 uid="uid://c8uklt2csnoh6"]
+[gd_scene load_steps=172 format=3 uid="uid://c8uklt2csnoh6"]
 
 [ext_resource type="Texture2D" uid="uid://drxj5jytj73fa" path="res://assets/image/insects/fly-spritesheet.png" id="1_ijdku"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_uluky"]
@@ -16,12 +16,13 @@
 [ext_resource type="Texture2D" uid="uid://c0jgd2bte1t2g" path="res://assets/image/insects/firefly-spritesheet.png" id="8_8nxce"]
 [ext_resource type="Texture2D" uid="uid://5xqvknm2jefw" path="res://assets/image/insects/fungi-spritesheet.png" id="10_5r1hv"]
 [ext_resource type="Texture2D" uid="uid://cai60lrtkj03b" path="res://assets/ui/buttons/icon-hp.png" id="10_dhmuj"]
-[ext_resource type="LabelSettings" uid="uid://dg2icno1lnx05" path="res://scenes/UI/bag_icon.tres" id="11_w784r"]
 [ext_resource type="AudioStream" uid="uid://cy63kacth8jff" path="res://assets/audio/bug hit.mp3" id="12_j1cui"]
 [ext_resource type="Texture2D" uid="uid://xnat55u7hs8i" path="res://assets/image/insects/locust-spritesheet.png" id="12_yj7q4"]
 [ext_resource type="AudioStream" uid="uid://djmnsdys0bpxs" path="res://assets/audio/flying fly.mp3" id="13_yns3p"]
 [ext_resource type="AudioStream" uid="uid://c24vobndscvg1" path="res://assets/audio/enemy death.mp3" id="14_dye52"]
 [ext_resource type="Texture2D" uid="uid://bs5obtt2rnbi6" path="res://assets/image/insects/sporespawn-spritesheet.png" id="15_q1gk1"]
+[ext_resource type="PackedScene" uid="uid://ba6mc1dkvyisn" path="res://scenes/UI/health_bar.tscn" id="18_6fwc3"]
+[ext_resource type="FontFile" uid="uid://mpjdnkqeym20" path="res://resources/fonts/Pxlvetica-XymZ.ttf" id="19_6mms6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0bnlj"]
 shader = ExtResource("1_uluky")
@@ -1291,6 +1292,14 @@ radius = 136.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_hiu7l"]
 radius = 8.0
 
+[sub_resource type="LabelSettings" id="LabelSettings_qoy6y"]
+font = ExtResource("19_6mms6")
+font_size = 24
+font_color = Color(1, 0.443137, 0.431373, 1)
+outline_color = Color(1, 1, 1, 0.513726)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.529412)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_0qtki"]
 radius = 2.0
 
@@ -1343,6 +1352,39 @@ metadata/_edit_group_ = true
 shape = SubResource("CircleShape2D_hiu7l")
 debug_color = Color(0.993118, 0, 0.242322, 0.42)
 
+[node name="Info" type="Node2D" parent="."]
+z_index = 3
+use_parent_material = true
+position = Vector2(0, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Info"]
+visible = false
+use_parent_material = true
+position = Vector2(0, 3)
+scale = Vector2(0.32, 0.32)
+texture = ExtResource("10_dhmuj")
+
+[node name="HealthBar" parent="Info" instance=ExtResource("18_6fwc3")]
+offset_left = -6.0
+offset_top = 3.0
+offset_right = 6.0
+offset_bottom = 5.0
+scale = Vector2(0.5, 1)
+pivot_offset = Vector2(6, 0)
+value = 54.0
+
+[node name="HealthLabel" type="Label" parent="Info"]
+modulate = Color(1, 1, 1, 0.858824)
+use_parent_material = true
+offset_left = -4.0
+offset_top = 1.0
+offset_right = 36.0
+offset_bottom = 24.0
+scale = Vector2(0.19, 0.19)
+text = "123"
+label_settings = SubResource("LabelSettings_qoy6y")
+horizontal_alignment = 1
+
 [node name="MovementTimer" type="Node" parent="."]
 script = ExtResource("5_gry4m")
 
@@ -1353,24 +1395,6 @@ script = ExtResource("5_gry4m")
 shape = SubResource("CircleShape2D_0qtki")
 disabled = true
 debug_color = Color(0, 0, 0, 0.42)
-
-[node name="HealthBar" type="Node2D" parent="."]
-use_parent_material = true
-
-[node name="Sprite2D" type="Sprite2D" parent="HealthBar"]
-use_parent_material = true
-position = Vector2(0, 3)
-scale = Vector2(0.32, 0.32)
-texture = ExtResource("10_dhmuj")
-
-[node name="Label" type="Label" parent="HealthBar"]
-use_parent_material = true
-offset_right = 40.0
-offset_bottom = 23.0
-scale = Vector2(0.19, 0.19)
-text = "123"
-label_settings = ExtResource("11_w784r")
-horizontal_alignment = 1
 
 [node name="BugHit" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_j1cui")

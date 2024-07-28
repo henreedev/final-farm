@@ -1,4 +1,4 @@
-[gd_scene load_steps=335 format=3 uid="uid://qmlvoryj0irv"]
+[gd_scene load_steps=336 format=3 uid="uid://qmlvoryj0irv"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_7oxxv"]
 [ext_resource type="Script" path="res://scenes/plants/plant.gd" id="1_7ry7i"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://djqti1c0o5jjs" path="res://assets/image/seeds/celery/celery-spritesheet.png" id="4_wu0oc"]
 [ext_resource type="Texture2D" uid="uid://qvaquqshknik" path="res://assets/image/seeds/corn/corn-spritesheet.png" id="5_aa1ky"]
 [ext_resource type="Script" path="res://scenes/utils/scalable_timer.gd" id="5_sqecx"]
+[ext_resource type="Texture2D" uid="uid://bxnq0u28e1734" path="res://assets/image/seeds/eggplant/eggplant.png" id="7_8aws0"]
 [ext_resource type="Texture2D" uid="uid://c0okjq1m5gf3m" path="res://assets/image/seeds/lemonlime/lemonandlime-spritesheet.png" id="7_l6imw"]
 [ext_resource type="Texture2D" uid="uid://vhgnrqjh2smf" path="res://assets/image/seeds/pepper/pepper-spritesheet.png" id="7_unygh"]
 [ext_resource type="Texture2D" uid="uid://e3xfpxdledxa" path="res://assets/image/seeds/potato/potato-spritesheet.png" id="8_ylwju"]
@@ -1667,10 +1668,29 @@ animations = [{
 "name": &"eggplant_idle",
 "speed": 1.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_8aws0")
+}],
 "loop": false,
 "name": &"food_supply_grow",
-"speed": 0.0
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_8aws0")
+}],
+"loop": true,
+"name": &"food_supply_idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_8aws0")
+}],
+"loop": false,
+"name": &"food_supply_shoot",
+"speed": 1.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -2463,13 +2483,13 @@ radius = 40.0
 font = ExtResource("20_62xyg")
 font_size = 24
 shadow_size = 3
-shadow_color = Color(0, 0, 0, 1)
+shadow_color = Color(0, 0, 0, 0.513726)
 
 [sub_resource type="LabelSettings" id="LabelSettings_jw4r3"]
 font = ExtResource("20_62xyg")
 font_size = 24
 shadow_size = 3
-shadow_color = Color(0, 0, 0, 1)
+shadow_color = Color(0, 0, 0, 0.517647)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7uxjk"]
 atlas = ExtResource("16_vqvjw")
@@ -2498,7 +2518,7 @@ z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_8lxin")
 sprite_frames = SubResource("SpriteFrames_rowdm")
-animation = &"broccoli_idle_back"
+animation = &"food_supply_shoot"
 script = ExtResource("1_7ry7i")
 
 [node name="Hurtbox" type="Area2D" parent="."]
@@ -2556,9 +2576,9 @@ value = 54.0
 modulate = Color(1, 1, 1, 0.52549)
 use_parent_material = true
 offset_left = -4.0
-offset_top = 2.0
+offset_top = 1.0
 offset_right = 36.0
-offset_bottom = 25.0
+offset_bottom = 24.0
 scale = Vector2(0.19, 0.19)
 text = "123"
 label_settings = SubResource("LabelSettings_fguqy")

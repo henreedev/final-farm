@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://bc2thpswuubp"]
+[gd_scene load_steps=76 format=3 uid="uid://bc2thpswuubp"]
 
 [ext_resource type="Texture2D" uid="uid://dfj4ofuulehi" path="res://assets/image/seeds/broccoli/floret-projectile.png" id="1_ay28c"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_cetc4"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://d3p26f3kjof6w" path="res://assets/image/insects/fungi-explosion.png" id="6_2std0"]
 [ext_resource type="Texture2D" uid="uid://bhk7485up74ku" path="res://assets/image/seeds/tomato/tomato-fire-spritesheet.png" id="6_hfgem"]
 [ext_resource type="Texture2D" uid="uid://cbe57ltf22yd2" path="res://assets/image/seeds/pepper/pepper-projectile.png" id="6_jk277"]
+[ext_resource type="Texture2D" uid="uid://bxnq0u28e1734" path="res://assets/image/seeds/eggplant/eggplant.png" id="6_o3635"]
 [ext_resource type="Texture2D" uid="uid://mlgjejebohdo" path="res://assets/image/seeds/pepper/pepper-effect.png" id="7_asgou"]
 [ext_resource type="Texture2D" uid="uid://cyaxfoh5voyxf" path="res://assets/image/insects/moth-projectile.png" id="7_xumwq"]
 [ext_resource type="Texture2D" uid="uid://cxxlneyo38vtk" path="res://assets/image/seeds/watermelon/watermelon-projectile.png" id="10_nsi2i"]
@@ -272,6 +273,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("6_o3635")
+}],
+"loop": false,
+"name": &"food_supply",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_ov1wp")
 }, {
 "duration": 1.0,
@@ -511,7 +520,7 @@ script = ExtResource("2_s1110")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Holder"]
 material = SubResource("ShaderMaterial_3hlgb")
 sprite_frames = SubResource("SpriteFrames_ncj44")
-animation = &"watermelon_explosion"
+animation = &"food_supply"
 
 [node name="Shadow" parent="." instance=ExtResource("3_o6g11")]
 

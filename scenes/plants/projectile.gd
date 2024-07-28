@@ -64,6 +64,7 @@ func pick_values_on_type():
 	else:
 		asprite.animation = Utils.get_insect_string(insect_type)
 	circle_hitbox.shape.radius = radius
+	asprite.scale = scale
 	start_pos = position
 	if target:
 		target_last_pos = target.position
@@ -99,6 +100,8 @@ func pick_values_on_type():
 			fires_to_target = true
 			chase_duration = 1.5
 			disable_collision_after_frames = 3
+		Plant.Type.FOOD_SUPPLY:
+			rotation += PI / 4
 	match insect_type:
 		Insect.Type.FIREFLY:
 			var firefly_line : ProjectileTrail = firefly_line_scene.instantiate()

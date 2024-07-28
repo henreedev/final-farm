@@ -13,6 +13,7 @@ static var very_fast = 48.0
 
 static var fly_mutated := false
 
+static var food_supply_level : Plant.Level = Plant.Level.Level0
 static var eggplant_level : Plant.Level = Plant.Level.Level0
 static var broccoli_level : Plant.Level = Plant.Level.Level0
 static var tomato_level : Plant.Level = Plant.Level.Level0
@@ -246,6 +247,8 @@ static func get_insect_detection_range(type : Insect.Type):
 
 static func upgrade(type : Plant.Type):
 	match type:
+		Plant.Type.FOOD_SUPPLY:
+			food_supply_level += 1 as Plant.Level
 		Plant.Type.EGGPLANT:
 			eggplant_level += 1 as Plant.Level
 		Plant.Type.BROCCOLI:
@@ -269,7 +272,6 @@ static func upgrade(type : Plant.Type):
 		Plant.Type.WILLOW:
 			willow_level += 1 as Plant.Level			
 
-
 static func get_plant_scale(type : Plant.Type):
 	match type:
 		Plant.Type.WILLOW:
@@ -285,7 +287,17 @@ static func get_plant_scale(type : Plant.Type):
 
 static func get_plant_damage(type : Plant.Type):
 	match type:
-		Plant.Type.EGGPLANT, Plant.Type.FOOD_SUPPLY:
+		Plant.Type.FOOD_SUPPLY:
+			match food_supply_level:
+				Plant.Level.Level0:
+					return 1
+				Plant.Level.Level1:
+					return 15
+				Plant.Level.Level2: 
+					return 50
+				Plant.Level.Level3: 
+					return 100
+		Plant.Type.EGGPLANT:
 			return 0
 		Plant.Type.BROCCOLI:
 			match broccoli_level: 
@@ -391,10 +403,15 @@ static func get_plant_damage(type : Plant.Type):
 static func get_plant_health(type : Plant.Type):
 	match type:
 		Plant.Type.FOOD_SUPPLY:
-			#var upgrades_purchased = int(eggplant_level + broccoli_level + tomato_level\
-			 #+ potato_level + celery_level + corn_level + \
-			#banana_level + pepper_level + watermelon_level + lemonlime_level)
-			return 500 
+			match food_supply_level:
+				Plant.Level.Level0:
+					return 250
+				Plant.Level.Level1:
+					return 500
+				Plant.Level.Level2: 
+					return 750
+				Plant.Level.Level3: 
+					return 1000
 		Plant.Type.EGGPLANT:
 			match eggplant_level:
 				Plant.Level.Level0:
@@ -508,7 +525,9 @@ static func get_plant_health(type : Plant.Type):
 
 static func get_plant_range(type : Plant.Type):
 	match type:
-		Plant.Type.EGGPLANT, Plant.Type.FOOD_SUPPLY:
+		Plant.Type.FOOD_SUPPLY:
+			return 3
+		Plant.Type.EGGPLANT:
 			return 0
 		Plant.Type.BROCCOLI:
 			match broccoli_level: 
@@ -614,7 +633,17 @@ static func get_plant_range(type : Plant.Type):
 static func get_plant_attack_cooldown(type : Plant.Type, level : Plant.Level = -1):
 	if level >= 0:
 		match type:
-			Plant.Type.EGGPLANT, Plant.Type.FOOD_SUPPLY:
+			Plant.Type.FOOD_SUPPLY:
+				match food_supply_level:
+					Plant.Level.Level0:
+						return 1.0
+					Plant.Level.Level1:
+						return 1.0
+					Plant.Level.Level2: 
+						return 1.0
+					Plant.Level.Level3: 
+						return 1.0
+			Plant.Type.EGGPLANT:
 				match level:
 					Plant.Level.Level0:
 						return 10.0
@@ -710,7 +739,17 @@ static func get_plant_attack_cooldown(type : Plant.Type, level : Plant.Level = -
 						return 1.0
 	else:
 		match type:
-			Plant.Type.EGGPLANT, Plant.Type.FOOD_SUPPLY:
+			Plant.Type.FOOD_SUPPLY:
+				match food_supply_level:
+					Plant.Level.Level0:
+						return 1.0
+					Plant.Level.Level1:
+						return 1.0
+					Plant.Level.Level2: 
+						return 1.0
+					Plant.Level.Level3: 
+						return 1.0
+			Plant.Type.EGGPLANT:
 				match eggplant_level:
 					Plant.Level.Level0:
 						return 10.0
@@ -834,6 +873,8 @@ static func get_plant_spawn_duration(type : Plant.Type):
 
 static func get_plant_health_decay(type : Plant.Type):
 	match type:
+		Plant.Type.FOOD_SUPPLY:
+			return -1.66
 		Plant.Type.BROCCOLI:
 			return 5.0
 	return 0.0
@@ -1028,6 +1069,8 @@ static func get_plant_special_value(type : Plant.Type):
 
 static func get_plant_level(type : Plant.Type):
 	match type:
+		Plant.Type.FOOD_SUPPLY:
+			return food_supply_level
 		Plant.Type.EGGPLANT:
 			return eggplant_level
 		Plant.Type.BROCCOLI:
@@ -1081,7 +1124,7 @@ static func get_plant_string(type):
 static func get_plant_display_string(type):
 	match type:
 		Plant.Type.FOOD_SUPPLY:
-			return "food_supply"
+			return "Food Supply"
 		Plant.Type.EGGPLANT:
 			return "Eggplant"
 		Plant.Type.BROCCOLI:
@@ -1105,11 +1148,27 @@ static func get_plant_display_string(type):
 		Plant.Type.WILLOW:
 			return "Weeping Willow"
 
+static func get_plant_projectile_scale(type):
+	var range = get_plant_range(type)
+	match type:
+		Plant.Type.POTATO:
+			# FIXME hardcoded base range
+			const BASE_RANGE = 1.5
+			var factor = (range + 0.5) / BASE_RANGE
+			return Vector2(factor, factor)
+		Plant.Type.TOMATO:
+			# FIXME hardcoded base range
+			const BASE_RANGE = 2.5
+			var factor = (range + 0.5) / BASE_RANGE
+			return Vector2(factor, factor)
+		_:
+			return Vector2(1, 1)
 #endregion: Plant functions
 
 #region: General functions
 
 static func restart():
+	food_supply_level = Plant.Level.Level0
 	eggplant_level = Plant.Level.Level0
 	broccoli_level = Plant.Level.Level0
 	tomato_level = Plant.Level.Level0
