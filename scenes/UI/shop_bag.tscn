@@ -1,8 +1,9 @@
-[gd_scene load_steps=162 format=3 uid="uid://dfnmp8x7omvv5"]
+[gd_scene load_steps=164 format=3 uid="uid://dfnmp8x7omvv5"]
 
 [ext_resource type="Texture2D" uid="uid://byul80lgrxvho" path="res://assets/image/seeds/eggplant/eggplant-seed-flip-spritesheet.png" id="1_8435w"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_fvytx"]
 [ext_resource type="Texture2D" uid="uid://0tlmtxnaqec6" path="res://assets/image/seeds/broccoli/broccoli-seed-flip-spritesheet.png" id="2_3bugb"]
+[ext_resource type="Texture2D" uid="uid://cy46gelaikf8n" path="res://scenes/UI/rainbow-gradient.tres" id="2_13ov3"]
 [ext_resource type="Texture2D" uid="uid://dwdbfx1m7jnes" path="res://assets/image/seeds/banana/banana-seed-flip-spritesheet.png" id="2_ucw5a"]
 [ext_resource type="Script" path="res://scenes/UI/shop_bag.gd" id="4_cxq4w"]
 [ext_resource type="Texture2D" uid="uid://bn807lcrilrog" path="res://assets/image/seeds/celery/celery-seed-flip-spritesheet.png" id="4_e8jdv"]
@@ -42,6 +43,9 @@ shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = true
+shader_parameter/scroll_speed = -1.4
+shader_parameter/gradient = ExtResource("2_13ov3")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7pngf"]
 atlas = ExtResource("2_ucw5a")
@@ -876,24 +880,30 @@ shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_scu2y"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bhrgk"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ehcdp"]
 size = Vector2(13, 14.75)
 
 [sub_resource type="LabelSettings" id="LabelSettings_bkohc"]
-line_spacing = 0.0
+line_spacing = -10.975
 font_size = 32
 font_color = Color(0, 0, 0, 1)
 outline_color = Color(0, 0, 0, 1)
@@ -903,18 +913,33 @@ shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5ed8n"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cxar3"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k2l6o"]
+shader = ExtResource("1_fvytx")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = false
+shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = -1.4
+shader_parameter/gradient = ExtResource("2_13ov3")
 
 [sub_resource type="LabelSettings" id="LabelSettings_r4iia"]
 line_spacing = 0.0
@@ -924,7 +949,7 @@ outline_size = 9
 outline_color = Color(0.854902, 0.815686, 0.815686, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8adr3"]
-size = Vector2(42.0229, 12.6984)
+size = Vector2(42.0229, 56.3492)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_boaom"]
 animations = [{
@@ -953,9 +978,9 @@ outline_size = 9
 outline_color = Color(0.698039, 0.662745, 0.662745, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1s816"]
-size = Vector2(9.14286, 9.14286)
+size = Vector2(14.8571, 6.85714)
 
-[node name="ShopBag" type="AnimatedSprite2D"]
+[node name="ShopBag" type="AnimatedSprite2D" groups=["shopbag"]]
 material = SubResource("ShaderMaterial_11cig")
 scale = Vector2(14, 14)
 sprite_frames = SubResource("SpriteFrames_yxxld")
@@ -1117,7 +1142,7 @@ position = Vector2(15.7143, 47.1429)
 texture = ExtResource("25_j6m62")
 
 [node name="AttackIcon" type="Sprite2D" parent="Blurb"]
-use_parent_material = true
+material = SubResource("ShaderMaterial_k2l6o")
 position = Vector2(-3.52492, -1.595)
 scale = Vector2(0.09, 0.09)
 texture = ExtResource("17_qy0hc")
@@ -1132,8 +1157,29 @@ scale = Vector2(0.275, 0.275)
 text = ": "
 label_settings = ExtResource("7_avxe2")
 
+[node name="Info" type="Label" parent="Blurb/AttackIcon"]
+material = SubResource("ShaderMaterial_kf5xs")
+anchors_preset = -1
+anchor_left = 0.245
+anchor_top = 0.5
+anchor_right = 0.245
+anchor_bottom = 0.5
+offset_left = -73.9053
+offset_top = -36.1397
+offset_right = 207.095
+offset_bottom = 221.86
+grow_vertical = 2
+scale = Vector2(0.24, 0.24)
+theme = ExtResource("13_h32js")
+text = "Damage"
+label_settings = SubResource("LabelSettings_r4iia")
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 3
+text_overrun_behavior = 3
+metadata/_edit_use_anchors_ = true
+
 [node name="HealthIcon" type="Sprite2D" parent="Blurb"]
-use_parent_material = true
 position = Vector2(-3.52492, -0.84)
 scale = Vector2(0.09, 0.09)
 texture = ExtResource("18_ju4lr")
@@ -1148,8 +1194,29 @@ scale = Vector2(0.275, 0.275)
 text = ":"
 label_settings = ExtResource("7_avxe2")
 
+[node name="Info" type="Label" parent="Blurb/HealthIcon"]
+material = SubResource("ShaderMaterial_kf5xs")
+anchors_preset = -1
+anchor_left = 0.245
+anchor_top = 0.5
+anchor_right = 0.245
+anchor_bottom = 0.5
+offset_left = -73.9053
+offset_top = -36.1397
+offset_right = 207.095
+offset_bottom = 221.86
+grow_vertical = 2
+scale = Vector2(0.24, 0.24)
+theme = ExtResource("13_h32js")
+text = "Health"
+label_settings = SubResource("LabelSettings_r4iia")
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 3
+text_overrun_behavior = 3
+metadata/_edit_use_anchors_ = true
+
 [node name="RangeIcon" type="Sprite2D" parent="Blurb"]
-use_parent_material = true
 position = Vector2(-3.52492, -0.097)
 scale = Vector2(0.09, 0.09)
 texture = ExtResource("19_6pi4y")
@@ -1163,9 +1230,31 @@ offset_bottom = 38.3125
 scale = Vector2(0.275, 0.275)
 text = ":"
 label_settings = ExtResource("7_avxe2")
+metadata/_edit_use_anchors_ = true
+
+[node name="Info" type="Label" parent="Blurb/RangeIcon"]
+material = SubResource("ShaderMaterial_kf5xs")
+anchors_preset = -1
+anchor_left = 0.245
+anchor_top = 0.5
+anchor_right = 0.245
+anchor_bottom = 0.5
+offset_left = -73.9053
+offset_top = -36.1397
+offset_right = 207.095
+offset_bottom = 221.86
+grow_vertical = 2
+scale = Vector2(0.24, 0.24)
+theme = ExtResource("13_h32js")
+text = "Range"
+label_settings = SubResource("LabelSettings_r4iia")
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 3
+text_overrun_behavior = 3
+metadata/_edit_use_anchors_ = true
 
 [node name="AtkSpdIcon" type="Sprite2D" parent="Blurb"]
-use_parent_material = true
 position = Vector2(-3.52492, 0.717)
 scale = Vector2(0.09, 0.09)
 texture = ExtResource("20_x35f8")
@@ -1179,6 +1268,28 @@ offset_bottom = 37.9746
 scale = Vector2(0.275, 0.275)
 text = ":"
 label_settings = ExtResource("7_avxe2")
+metadata/_edit_use_anchors_ = true
+
+[node name="Info" type="Label" parent="Blurb/AtkSpdIcon"]
+material = SubResource("ShaderMaterial_kf5xs")
+anchors_preset = -1
+anchor_left = 0.245
+anchor_top = 0.5
+anchor_right = 0.245
+anchor_bottom = 0.5
+offset_left = -73.9053
+offset_top = -36.1397
+offset_right = 207.095
+offset_bottom = 221.86
+grow_vertical = 2
+scale = Vector2(0.24, 0.24)
+theme = ExtResource("13_h32js")
+text = "Attack Cooldown"
+label_settings = SubResource("LabelSettings_r4iia")
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 3
+text_overrun_behavior = 3
 metadata/_edit_use_anchors_ = true
 
 [node name="Info" type="Label" parent="Blurb"]
@@ -1195,13 +1306,12 @@ offset_bottom = 125.0
 grow_vertical = 2
 scale = Vector2(0.015, 0.015)
 theme = ExtResource("13_h32js")
-text = "An expensive tower that requires extensive time to grow but deals very high melee damage to multiple targets at once.An expensive tower that requires extensive time to grow but deals very high melee damage to multiple targets at once."
+text = "A cheap but effective one-time use area damage tower. Blows up after a brief delay when an enemy enters its range "
 label_settings = SubResource("LabelSettings_bkohc")
 autowrap_mode = 3
-text_overrun_behavior = 3
+text_overrun_behavior = 4
 
 [node name="SpawnTimeIcon" type="Sprite2D" parent="Blurb"]
-use_parent_material = true
 position = Vector2(-3.52506, 1.60329)
 scale = Vector2(0.09, 0.09)
 texture = ExtResource("23_3gxk0")
@@ -1217,8 +1327,29 @@ text = ":"
 label_settings = ExtResource("7_avxe2")
 metadata/_edit_use_anchors_ = true
 
+[node name="Info" type="Label" parent="Blurb/SpawnTimeIcon"]
+material = SubResource("ShaderMaterial_kf5xs")
+anchors_preset = -1
+anchor_left = 0.245
+anchor_top = 0.5
+anchor_right = 0.245
+anchor_bottom = 0.5
+offset_left = -73.9053
+offset_top = -36.1397
+offset_right = 207.095
+offset_bottom = 221.86
+grow_vertical = 2
+scale = Vector2(0.24, 0.24)
+theme = ExtResource("13_h32js")
+text = "Spawn Duration"
+label_settings = SubResource("LabelSettings_r4iia")
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 3
+text_overrun_behavior = 3
+metadata/_edit_use_anchors_ = true
+
 [node name="SpecialIcon" type="Sprite2D" parent="Blurb"]
-use_parent_material = true
 position = Vector2(-3.52492, 2.419)
 scale = Vector2(0.09, 0.09)
 texture = ExtResource("24_8t04g")
@@ -1260,7 +1391,8 @@ metadata/_edit_use_anchors_ = true
 [node name="Area2D" type="Area2D" parent="Blurb/SpecialIcon"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Blurb/SpecialIcon/Area2D"]
-position = Vector2(11.0115, 0.10635)
+position = Vector2(11.0115, -21.719)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_8adr3")
 
 [node name="UpgradeIcon1" type="AnimatedSprite2D" parent="Blurb"]
@@ -1362,7 +1494,8 @@ metadata/_edit_use_anchors_ = true
 [node name="Upgrade3Area" type="Area2D" parent="Blurb/UpgradeIcon3"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Blurb/UpgradeIcon3/Upgrade3Area"]
-position = Vector2(3.8147e-06, 0.0571442)
+position = Vector2(-0.00344276, 0)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_1s816")
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

@@ -71,9 +71,11 @@ var health_decay_mod : float = 1.0
 var decays := false
 var display_info := true
 var projectile_scale : Vector2
+var first_time := true
 #endregion: Other vars
 
 #region: Willow vars
+var created_arms := false
 var willow_num_arms : int
 var willow_arm_root_index : int
 var willow_arm_index : int
@@ -106,6 +108,12 @@ func _ready() -> void:
 	pick_stats()
 	pick_starting_animation()
 	setup_bars()
+
+func on_upgrade():
+	pick_stats()
+	setup_bars()
+	if type == Type.WILLOW and created_arms:
+		_add_all_willow_arms()
 
 func pick_stats():
 	var _type = type if not type == Type.WILLOW_ARM else Type.WILLOW
@@ -186,6 +194,7 @@ func pick_stats():
 	Utils.set_range_area_radii($AttackArea/CollisionShape2D, attack_range)
 	update_health_bar()
 	update_sleep_bar()
+	first_time = false
 
 
 func pick_starting_animation():
@@ -438,6 +447,10 @@ func _angle_to_index(angle):
 	return index
 	
 func _add_all_willow_arms():
+	for child in get_children():
+		if child is Plant:
+			remove_child(child)
+			child.queue_free()
 	match willow_num_arms:
 		2:
 			_add_willow_arm(7)
@@ -455,13 +468,13 @@ func _add_all_willow_arms():
 		8:
 			for i in range(8):
 				_add_willow_arm(i)
+	created_arms = true
 
 func _add_willow_arm(index):
 	var arm : Plant = plant_scene.instantiate()
 	arm.type = Type.WILLOW_ARM
 	arm.willow_arm_root_index = index
 	add_child(arm)
-	
 
 #endregion: Willow functions
 

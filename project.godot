@@ -21,7 +21,6 @@ config/icon="res://assets/ui/shop-big-icon.png"
 
 [display]
 
-window/size/mode=4
 window/stretch/mode="canvas_items"
 "[rendering]textures/canvas_textures/default_texture_filter"=0
 window/quality/msaa_2d=0
@@ -42,6 +41,7 @@ plant=""
 insect=""
 inventory=""
 shop_inventory=""
+shopbag=""
 
 [gui]
 

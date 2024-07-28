@@ -26,6 +26,18 @@ static var banana_level : Plant.Level = Plant.Level.Level0
 static var lemonlime_level : Plant.Level = Plant.Level.Level0
 static var willow_level : Plant.Level = Plant.Level.Level0
 
+static var temp_food_supply_level : Plant.Level = Plant.Level.Level0
+static var temp_eggplant_level : Plant.Level = Plant.Level.Level0
+static var temp_broccoli_level : Plant.Level = Plant.Level.Level0
+static var temp_tomato_level : Plant.Level = Plant.Level.Level0
+static var temp_potato_level : Plant.Level = Plant.Level.Level0
+static var temp_celery_level : Plant.Level = Plant.Level.Level0
+static var temp_corn_level : Plant.Level = Plant.Level.Level0
+static var temp_watermelon_level : Plant.Level = Plant.Level.Level0
+static var temp_pepper_level : Plant.Level = Plant.Level.Level0
+static var temp_banana_level : Plant.Level = Plant.Level.Level0
+static var temp_lemonlime_level : Plant.Level = Plant.Level.Level0
+static var temp_willow_level : Plant.Level = Plant.Level.Level0
 
 #region: Insect functions
 
@@ -271,6 +283,72 @@ static func upgrade(type : Plant.Type):
 			lemonlime_level += 1 as Plant.Level			
 		Plant.Type.WILLOW:
 			willow_level += 1 as Plant.Level			
+
+static func temp_set_level(type : Plant.Type, level : Plant.Level):
+	match type:
+		Plant.Type.FOOD_SUPPLY:
+			temp_food_supply_level = food_supply_level
+			food_supply_level = level
+		Plant.Type.EGGPLANT:
+			temp_eggplant_level = eggplant_level
+			eggplant_level = level
+		Plant.Type.BROCCOLI:
+			temp_broccoli_level = broccoli_level
+			broccoli_level = level
+		Plant.Type.TOMATO:
+			temp_tomato_level = tomato_level
+			tomato_level = level
+		Plant.Type.POTATO:
+			temp_potato_level = potato_level
+			potato_level = level
+		Plant.Type.CELERY:
+			temp_celery_level = celery_level
+			celery_level = level
+		Plant.Type.CORN:
+			temp_corn_level = corn_level
+			corn_level = level
+		Plant.Type.WATERMELON:
+			temp_watermelon_level = watermelon_level
+			watermelon_level = level
+		Plant.Type.PEPPER:
+			temp_pepper_level = pepper_level
+			pepper_level = level
+		Plant.Type.BANANA:
+			temp_banana_level = banana_level
+			banana_level = level
+		Plant.Type.LEMONLIME:
+			temp_lemonlime_level = lemonlime_level
+			lemonlime_level = level
+		Plant.Type.WILLOW:
+			temp_willow_level = willow_level
+			willow_level = level
+
+static func undo_temp_set_level(type):
+	match type:
+		Plant.Type.FOOD_SUPPLY:
+			food_supply_level = temp_food_supply_level
+		Plant.Type.EGGPLANT:
+			eggplant_level = temp_eggplant_level
+		Plant.Type.BROCCOLI:
+			broccoli_level = temp_broccoli_level
+		Plant.Type.TOMATO:
+			tomato_level = temp_tomato_level
+		Plant.Type.POTATO:
+			potato_level = temp_potato_level
+		Plant.Type.CELERY:
+			celery_level = temp_celery_level
+		Plant.Type.CORN:
+			corn_level = temp_corn_level
+		Plant.Type.WATERMELON:
+			watermelon_level = temp_watermelon_level
+		Plant.Type.PEPPER:
+			pepper_level = temp_pepper_level
+		Plant.Type.BANANA:
+			banana_level = temp_banana_level
+		Plant.Type.LEMONLIME:
+			lemonlime_level = temp_lemonlime_level
+		Plant.Type.WILLOW:
+			willow_level = temp_willow_level
 
 static func get_plant_scale(type : Plant.Type):
 	match type:
@@ -999,27 +1077,27 @@ static func get_plant_cost(type : Plant.Type):
 static func get_plant_blurb(type : Plant.Type):
 	match type:
 		Plant.Type.EGGPLANT:
-			return "The starting production tower. Generates food at a slow but steady rate."
+			return "The starting production tower. Generates food at a slow but steady rate"
 		Plant.Type.BROCCOLI:
-			return "The starting tower. Fires single-target florets that deal low damage at a medium rate."
+			return "The starting tower. Fires single-target florets that deal low damage at a medium rate"
 		Plant.Type.TOMATO:
-			return "A short-range multi-target tower. Spews fire in a cone, dealing moderate area damage."
+			return "A short-range multi-target tower. Spews fire in a cone, dealing moderate area damage"
 		Plant.Type.POTATO:
-			return "A cheap but effective one-time use area damage tower. Blows up after a brief delay when an enemy enters its range."
+			return "A cheap but effective one-time use area damage tower. Blows up after a brief delay when an enemy enters its range"
 		Plant.Type.CELERY:
-			return "A short-range melee tower with high health. Deals powerful single-target attacks to enemies."
+			return "A short-range melee tower with high health. Deals powerful single-target attacks to enemies"
 		Plant.Type.CORN:
-			return "A single-target tower with a high firerate. Pelts enemies with kernels of corn."
+			return "A single-target tower with a high firerate. Pelts enemies with kernels of corn"
 		Plant.Type.WATERMELON:
-			return "A long-range mortar tower. Hurls watermelons that explode in a large radius on impact."
+			return "A long-range mortar tower. Hurls watermelons that explode in a large radius on impact"
 		Plant.Type.PEPPER:
-			return "A strong single-target tower that attaches to and continuously attacks one enemy until it dies before switching targets."
+			return "A strong single-target tower that attaches to and continuously attacks one enemy until it dies before switching targets"
 		Plant.Type.BANANA:
-			return "A long-range sniper tower. Fires heavy projectiles that deal high single-target damage but at a slow rate."
+			return "A long-range sniper tower. Fires heavy projectiles that deal high single-target damage but at a slow rate"
 		Plant.Type.LEMONLIME:
-			return "An extremely high damage tower that spews volatile acid at a fast rate. Melts armor and shreds bosses."
+			return "An extremely high damage tower that spews volatile acid at a fast rate. Melts armor and shreds bosses"
 		Plant.Type.WILLOW:
-			return "An expensive but exceptionally powerful tower that deals high melee damage to multiple enemies at once."
+			return "An expensive but exceptionally powerful tower that deals high melee damage to multiple enemies at once"
 
 static func get_plant_upgrade_blurb(type : Plant.Type, level : Plant.Level):
 	return ""

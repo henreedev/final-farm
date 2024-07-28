@@ -82,6 +82,9 @@ func _spawn_plant():
 	plant.type = type
 	plant.position = global_position
 	plant.paused = main.plants_paused
+	for shop_bag : ShopBag in get_tree().get_nodes_in_group("shopbag"):
+		if shop_bag.type == type:
+			shop_bag._undo_upgrade()
 	main.add_child(plant)
 
 func pick_animation():
