@@ -18,12 +18,16 @@ shader = ExtResource("3_01w31")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fdl7g"]
 shader = ExtResource("3_01w31")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="Image" id="Image_kbssk"]
 data = {
@@ -177,12 +181,16 @@ shader = ExtResource("3_01w31")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d7dii"]
 shader = ExtResource("3_01w31")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [node name="Player_UI" type="Control"]
 layout_mode = 3

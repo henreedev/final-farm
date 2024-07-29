@@ -18,6 +18,8 @@ shader = ExtResource("2_bep4r")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2fus1"]
 atlas = ExtResource("2_v527p")
@@ -112,6 +114,8 @@ shader = ExtResource("2_bep4r")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c6gb1"]
 atlas = ExtResource("3_rm0ig")
@@ -324,6 +328,8 @@ shader = ExtResource("2_bep4r")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [sub_resource type="GDScript" id="GDScript_vy72f"]
 script/source = "extends Sprite2D
@@ -479,6 +485,10 @@ one_shot = true
 [node name="IgnoreSwingTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="AutothrowTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="frame_changed" from="S/Bot" to="." method="_on_bot_frame_changed"]
 [connection signal="animation_finished" from="S/Top" to="." method="_on_top_animation_finished"]
 [connection signal="timeout" from="IgnoreSwingTimer" to="." method="_on_ignore_swing_timer_timeout"]
+[connection signal="timeout" from="AutothrowTimer" to="." method="_on_autothrow_timer_timeout"]

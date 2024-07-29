@@ -84,14 +84,14 @@ var shop : Shop
 var music_tween : Tween
 var upgrade_menu_tween : Tween
 
-@onready var food_holder = $FoodHolder
-@onready var player_ui: PlayerUI = $CanvasLayer/Player_UI
-@onready var upgrade_menu: UpgradeMenu = $CanvasLayer/Upgrade_Menu
-@onready var pause_menu: Control = $CanvasLayer/pause_menu
+@onready var food_holder = $Permanent/FoodHolder
+@onready var player_ui: PlayerUI = $Permanent/CanvasLayer/Player_UI
+@onready var upgrade_menu: UpgradeMenu = $Permanent/CanvasLayer/Upgrade_Menu
+@onready var pause_menu: Control = $Permanent/CanvasLayer/pause_menu
 @onready var player : Player = get_tree().get_first_node_in_group("player")
-@onready var wave_timer : Timer = $WaveTimer
-@onready var wave_music : AudioStreamPlayer = $WaveMusic
-@onready var prewave_music : AudioStreamPlayer = $PreWaveMusic
+@onready var wave_timer : Timer = $Permanent/WaveTimer
+@onready var wave_music : AudioStreamPlayer = $Permanent/WaveMusic
+@onready var prewave_music : AudioStreamPlayer = $Permanent/PreWaveMusic
 
 func _ready() -> void:
 	get_tree().paused = false

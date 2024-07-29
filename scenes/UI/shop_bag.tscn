@@ -1392,7 +1392,6 @@ metadata/_edit_use_anchors_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Blurb/SpecialIcon/Area2D"]
 position = Vector2(11.0115, -21.719)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_8adr3")
 
 [node name="UpgradeIcon1" type="AnimatedSprite2D" parent="Blurb"]
@@ -1495,7 +1494,6 @@ metadata/_edit_use_anchors_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Blurb/UpgradeIcon3/Upgrade3Area"]
 position = Vector2(-0.00344276, 0)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_1s816")
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

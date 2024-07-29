@@ -36,9 +36,7 @@ var swinging = false
 var throwing = false
 var holding_throw = false
 # Tracks how many of each seed you have
-var seed_counts = { # TODO add all plants
-	Plant.Type.EGGPLANT : 1,
-}
+var seed_counts = {} # initialized in _init_vars()
 
 var total_seeds := 100000
 var bug_kills := 1000000
@@ -64,6 +62,8 @@ var throw_offset_upgrade_unlocked := false
 var throw_zoomout_ratio = 0.9
 var throw_zoomout_time = 1.5
 var throw_duration = 1.5
+var autothrowing := false
+var AUTOTHROW_START_DELAY = 0.5
 var prev_coords : Vector2i
 var indicator_scene : PackedScene = preload("res://scenes/player/indicator.tscn")
 var prev_indicator : Sprite2D
@@ -82,6 +82,7 @@ var waiting_for_release := false
 @onready var cam : Camera2D = $Camera2D
 @onready var throw_zoom_timer : Timer = $ThrowZoomTimer
 @onready var ignore_swing_timer : Timer = $IgnoreSwingTimer
+@onready var autothrow_timer : Timer = $AutothrowTimer
 @onready var line : Line2D = $LineContainer/Line2D
 @onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
 @onready var main : Main = get_tree().get_first_node_in_group("main")
@@ -167,9 +168,7 @@ func _pick_legs_animation():
 
 func _pick_arms_animation():
 	if holding_throw or throwing or swinging:
-		if swinging:
-			pass
-		elif holding_throw or throwing:
+		if holding_throw or throwing:
 			top.flip_h = not mouse_left
 	else:
 		if moving:
@@ -187,12 +186,24 @@ func _on_throw_zoomout_upgrade_unlocked():
 	throw_zoomout_ratio = 0.7
 
 func _act_on_input():
-	if Input.is_action_pressed("swing"):
-		swing()
-	elif Input.is_action_pressed("throw"):
-		start_throw()
-	elif holding_throw:
-		throw()
+	if holding_throw:
+		if Input.is_action_just_pressed("throw"):
+			stop_throwing()
+		if autothrowing:
+			if Input.is_action_pressed("swing"):
+				throw()
+		else:
+			if Input.is_action_just_pressed("swing"):
+				throw()
+				autothrow_timer.start(AUTOTHROW_START_DELAY)
+		if Input.is_action_just_released("swing"):
+			autothrow_timer.stop()
+			autothrowing = false
+	else:
+		if Input.is_action_just_pressed("throw"):
+			start_throwing()
+		if Input.is_action_pressed("swing"):
+			swing()
 	if Input.is_action_just_pressed("fullscreen"):
 		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
@@ -209,30 +220,55 @@ func attempt_purchase():
 		if total_seeds - cost >= 0:
 			adjust_total_seeds(-cost)
 			shop.queue_throw(inventory.selected_type)
-	
 
-func start_throw():
-	if not (holding_throw or swinging or throwing or ignore_swing or waiting_for_release):
-		if not seed_counts[equipped_seed_type] <= 0:
-			holding_throw = true
-			showing_arc = true
-			finished_throw = false
-			top.animation = "throw_windup"
-			top.play()
-			throw_zoom_timer.start(throw_zoomout_time)
-			create_seed_bag()
+func start_throwing():
+	holding_throw = true
+	if not seed_counts[equipped_seed_type] <= 0:
+		create_seed_bag()
+	top.animation = "throw_windup"
+	top.play()
+	throw_zoom_timer.start(throw_zoomout_time)
+
+func stop_throwing():
+	autothrowing = false
+	holding_throw = false
+	if seed_bag:
+		seed_bag.delete()
+		seed_bag = null
+	line.clear_points()
+	throw_tile_changed.emit()
 
 func throw():
-	if not swinging:
-		throwing = true
-		showing_arc = false
+	if can_plant:
+		create_seed_bag()
+		if seed_bag:
+			seed_bag.throw(line.points[-1], throw_duration)
+			seed_counts[equipped_seed_type] -= 1
+			seed_bag = null
 		top.animation = "throw"
 		top.play()
 
+
+func _show_arc():
+	if holding_throw:
+		var root = _get_throw_root()
+		var end_pos = get_tile_pos_at_mouse()
+		if can_plant: line.default_color = Color(2,2,2,1)
+		else: line.default_color = Color(1,.2,.2,1)
+		var points = Utils.calc_arc_between(root + position, end_pos)
+		line.clear_points()
+		for point in points:
+			line.add_point(point)
+		if seed_bag:
+			seed_bag.position = root
+
+
+
 func create_seed_bag():
-	seed_bag = seed_bag_scene.instantiate()
-	seed_bag.type = equipped_seed_type
-	$S.add_child(seed_bag)
+	if not (seed_bag or seed_counts[equipped_seed_type] <= 0):
+		seed_bag = seed_bag_scene.instantiate()
+		seed_bag.type = equipped_seed_type
+		$S.add_child(seed_bag)
 
 func _calc_throw_zoom(delta):
 	if holding_throw or throwing:
@@ -331,30 +367,6 @@ func receive_seed(seed_type : Plant.Type):
 	seed_counts[seed_type] += 1
 	seed_count_changed.emit(seed_type)
 
-func _show_arc():
-	if showing_arc:
-		var root = _get_throw_root()
-		var end_pos = get_tile_pos_at_mouse()
-		if can_plant: line.default_color = Color(200,200,200,1)
-		else: line.default_color = Color(1,.2,.2,1)
-		var points = Utils.calc_arc_between(root + position, end_pos)
-		line.clear_points()
-		for point in points:
-			line.add_point(point)
-		if seed_bag:
-			seed_bag.position = root
-	else:
-		if not finished_throw:
-			if seed_bag:
-				if can_plant:
-					seed_bag.throw(line.points[-1], throw_duration)
-					seed_counts[equipped_seed_type] -= 1
-				else:
-					seed_bag.delete()
-				seed_bag = null
-			line.clear_points()
-			throw_tile_changed.emit()
-			finished_throw = true
 
 func get_tile_pos_at_mouse():
 	var coords = floor.local_to_map(floor.get_local_mouse_position())
@@ -406,8 +418,10 @@ func _on_top_animation_finished() -> void:
 			swinging = false
 			locked_swing_animation = false
 		"throw":
-			holding_throw = false
-			throwing = false
+			if holding_throw:
+				create_seed_bag()
+				top.animation = "throw_windup"
+				top.play()
 		"throw_windup":
 			top.animation = "throw_hold"
 			top.play()
@@ -415,3 +429,7 @@ func _on_top_animation_finished() -> void:
 
 func _on_ignore_swing_timer_timeout() -> void:
 	ignore_swing = false
+
+
+func _on_autothrow_timer_timeout():
+	autothrowing = true

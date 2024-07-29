@@ -11,6 +11,8 @@ shader = ExtResource("2_hngr3")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_active = false
 shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [node name="Upgrade_Menu" type="Control" groups=["upgrade_menu"]]
 layout_mode = 3
@@ -30,7 +32,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 0.519)
+color = Color(0.0980392, 0.0431373, 0, 0.694118)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -40,10 +42,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 18
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 18
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer"]
 material = SubResource("ShaderMaterial_edwx2")

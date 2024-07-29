@@ -101,13 +101,11 @@ func _on_animation_looped() -> void:
 func _on_frame_changed() -> void:
 	match animation:
 		"throw", "closed_throw":
-			if frame == 1:
+			if frame == 0:
 				_release_seed(throws.pop_back())
-			elif frame == 2:
+			elif frame == 1:
 				if not throws.is_empty(): throw()
 				else: throwing = false
-
-
 
 func _on_wave_timer_timeout() -> void:
 	should_wave = true

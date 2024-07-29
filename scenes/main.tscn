@@ -426,33 +426,37 @@ quarter_4_wave_table_3 = Array[ExtResource("2_1hows")]([SubResource("Resource_yy
 fly_sightings_until_mutation = 5
 WINNING_FOOD_AMOUNT = 1000
 
-[node name="Map" parent="." instance=ExtResource("2_nevbb")]
+[node name="Permanent" type="Node2D" parent="."]
+y_sort_enabled = true
 
-[node name="Player" parent="." instance=ExtResource("2_1vtnu")]
+[node name="Map" parent="Permanent" instance=ExtResource("2_nevbb")]
+
+[node name="Player" parent="Permanent" instance=ExtResource("2_1vtnu")]
 position = Vector2(9.53674e-07, 0)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="Permanent"]
 
-[node name="Player_UI" parent="CanvasLayer" instance=ExtResource("3_pq8xe")]
+[node name="Player_UI" parent="Permanent/CanvasLayer" instance=ExtResource("3_pq8xe")]
+metadata/_edit_use_anchors_ = true
 
-[node name="Upgrade_Menu" parent="CanvasLayer" instance=ExtResource("4_1qibe")]
+[node name="Upgrade_Menu" parent="Permanent/CanvasLayer" instance=ExtResource("4_1qibe")]
 visible = false
 
-[node name="pause_menu" parent="CanvasLayer" instance=ExtResource("5_3rix5")]
+[node name="pause_menu" parent="Permanent/CanvasLayer" instance=ExtResource("5_3rix5")]
 visible = false
 
-[node name="FoodHolder" type="CanvasGroup" parent="."]
+[node name="FoodHolder" type="CanvasGroup" parent="Permanent"]
 
-[node name="WaveTimer" type="Timer" parent="."]
+[node name="WaveTimer" type="Timer" parent="Permanent"]
 one_shot = true
 
-[node name="WaveMusic" type="AudioStreamPlayer" parent="."]
+[node name="WaveMusic" type="AudioStreamPlayer" parent="Permanent"]
 stream = ExtResource("9_qtrh0")
 volume_db = -17.0
 
-[node name="PreWaveMusic" type="AudioStreamPlayer" parent="."]
+[node name="PreWaveMusic" type="AudioStreamPlayer" parent="Permanent"]
 stream = ExtResource("10_4wsqy")
 volume_db = -19.0
 
-[connection signal="unpausing_with_esc" from="CanvasLayer/pause_menu" to="." method="_on_pause_menu_unpausing_with_esc"]
-[connection signal="timeout" from="WaveTimer" to="." method="_on_wave_timer_timeout"]
+[connection signal="unpausing_with_esc" from="Permanent/CanvasLayer/pause_menu" to="." method="_on_pause_menu_unpausing_with_esc"]
+[connection signal="timeout" from="Permanent/WaveTimer" to="." method="_on_wave_timer_timeout"]

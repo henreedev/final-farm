@@ -6,6 +6,7 @@ var is_open := false
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 @onready var shop_inventory : ShopInventory = $MarginContainer/TextureRect/InventoryRoot/ShopInventory
+@onready var margin_container = $MarginContainer
 
 func _ready():
 	set_process(false)
@@ -25,6 +26,8 @@ func open():
 		main.upgrade_menu_tween = create_tween().set_parallel()
 		main.upgrade_menu_tween.tween_property(self, "modulate", Color(1,1,1,1), 1.0).set_delay(0.25).set_trans(Tween.TRANS_CUBIC)
 		main.upgrade_menu_tween.tween_property(player, "target_zoom_override", Vector2(10,10), 0.0)
+		main.upgrade_menu_tween.tween_property(margin_container, "position", Vector2(0, 0), 1.0)\
+			.set_delay(0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT).from(Vector2(0, 550))
 
 func close():
 	await get_tree().create_timer(0.05).timeout
@@ -37,3 +40,5 @@ func close():
 		main.upgrade_menu_tween.tween_property(self, "modulate", Color(1,1,1,0), 0.25)
 		main.upgrade_menu_tween.tween_property(player, "target_zoom_override", Vector2(0,0), 0)
 		main.upgrade_menu_tween.tween_callback(hide).set_delay(0.25)
+		main.upgrade_menu_tween.tween_property(margin_container, "position", Vector2(0, 550), 0.25)\
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)

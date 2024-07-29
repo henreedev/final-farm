@@ -87,7 +87,6 @@ func set_rainbow(sprite_list : Array[Sprite2D], rainbow_on := true):
 			sprite.material.set_shader_parameter("scroll_speed", -1.4)
 			sprite.material.set_shader_parameter("use_gradient", true)
 		else:
-			print("turning ", rainbow_on)
 			sprite.material.set_shader_parameter("outline_active", rainbow_on)
 	first_time_setting_rainbow = false
 
