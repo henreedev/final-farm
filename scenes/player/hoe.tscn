@@ -1,16 +1,26 @@
-[gd_scene load_steps=9 format=3 uid="uid://bqsyx60crwgod"]
+[gd_scene load_steps=12 format=3 uid="uid://bqsyx60crwgod"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_srv8m"]
 [ext_resource type="Texture2D" uid="uid://x5c15l8dlplw" path="res://assets/image/items/hoe.png" id="1_v0tp4"]
 [ext_resource type="Script" path="res://scenes/player/hoe.gd" id="2_5xjis"]
 [ext_resource type="Texture2D" uid="uid://crjse1tdl8vsg" path="res://assets/image/items/hoe-flipped.png" id="2_qhuys"]
 
+[sub_resource type="Gradient" id="Gradient_gop64"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.0470588, 1, 0.4, 0.733333, 0.847059, 1, 0.027451, 1, 0, 1, 0.423529, 0.654902)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7wl5r"]
+gradient = SubResource("Gradient_gop64")
+width = 32
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cgcit"]
 shader = ExtResource("1_srv8m")
-shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
-shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
-shader_parameter/outline_1_active = false
-shader_parameter/outline_2_active = false
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = true
+shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = true
+shader_parameter/scroll_speed = -1.0
+shader_parameter/gradient = SubResource("GradientTexture1D_7wl5r")
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kbn6t"]
 animations = [{
@@ -37,15 +47,19 @@ size = Vector2(29, 3)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_repkw"]
 size = Vector2(7, 16)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8cmbo"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+
 [node name="Hoe" type="AnimatedSprite2D"]
 material = SubResource("ShaderMaterial_cgcit")
-scale = Vector2(1e-05, 1e-05)
 sprite_frames = SubResource("SpriteFrames_kbn6t")
 animation = &"normal"
 script = ExtResource("2_5xjis")
 
 [node name="Hitbox" type="Area2D" parent="."]
-collision_layer = 64
+visible = false
+collision_layer = 0
 collision_mask = 32
 
 [node name="Rect1" type="CollisionShape2D" parent="Hitbox"]
@@ -59,5 +73,14 @@ shape = SubResource("RectangleShape2D_repkw")
 [node name="Node" type="Node" parent="."]
 
 [node name="Line2D" type="Line2D" parent="Node"]
+
+[node name="Particles" type="GPUParticles2D" parent="Node"]
+visible = false
+process_material = SubResource("ParticleProcessMaterial_8cmbo")
+
+[node name="DeleteTimer" type="Timer" parent="."]
+
+[node name="LineRoot" type="Node2D" parent="."]
+position = Vector2(15, 0.5)
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

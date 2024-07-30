@@ -37,7 +37,7 @@ func _process(delta):
 func add_map_icon(pos):
 	var sprite = Sprite2D.new()
 	sprite.texture = icon_image
-	sprite.modulate = Color(1, 1, 1, 0.2)
+	sprite.modulate = Color(1, 1, 1, 0.5)
 	sprite.scale = Vector2(1, 0.5)
 	sprite.position = pos
 	sub_viewport.add_child(sprite)

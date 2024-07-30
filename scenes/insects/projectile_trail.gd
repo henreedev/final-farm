@@ -1,11 +1,12 @@
 extends Line2D
 class_name ProjectileTrail
 
-var parent : Projectile
-var last_pos : Vector2
-var duration := 2.0
+var parent : Node2D
+var relative_to : Node2D
+@export var duration := 2.0
 var deleting := false
-
+@export var use_global_transform := false
+@export var use_relative_transform := false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	clear_points()
@@ -15,11 +16,20 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
+func _process(delta):
 	if deleting:
 		if len(points) <= 0:
 			queue_free()
 		else:
 			remove_point(0)
 	if parent and is_instance_valid(parent):
-		add_point(parent.position)
+		if use_global_transform:
+			add_point(parent.global_position)
+		elif use_relative_transform:
+			#print(-(relative_to.global_position - parent.global_position))
+			#var rel_pos = relative_to.scale * (parent.global_position - relative_to.global_position)
+			var rel_transform := parent.get_relative_transform_to_parent(relative_to)
+			var rel_pos := rel_transform * relative_to.position 
+			add_point(rel_pos)
+		else:
+			add_point(parent.position)

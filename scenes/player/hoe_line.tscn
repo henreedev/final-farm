@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://7eek4tm7qexe"]
+
+[ext_resource type="Shader" path="res://scenes/player/hoe_line.gdshader" id="1_srbba"]
+[ext_resource type="Script" path="res://scenes/insects/projectile_trail.gd" id="2_ja62h"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_tmwb7"]
+noise_type = 4
+frequency = 1.0
+fractal_octaves = 10
+fractal_lacunarity = 5.62
+fractal_gain = 5.56
+fractal_weighted_strength = 0.75
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x1r0w"]
+width = 32
+height = 32
+seamless = true
+noise = SubResource("FastNoiseLite_tmwb7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0ovw3"]
+shader = ExtResource("1_srbba")
+shader_parameter/x_pixels = 40
+shader_parameter/y_pixels = 10
+shader_parameter/scroll_speed = 0.9
+shader_parameter/thickness_pow = 1.0
+shader_parameter/thickness = 0.2
+shader_parameter/noise = SubResource("NoiseTexture2D_x1r0w")
+
+[sub_resource type="Curve" id="Curve_8q2wg"]
+_data = [Vector2(0, 0.496827), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_vy50o"]
+colors = PackedColorArray(0, 0.333333, 0.384314, 0, 0.847059, 1, 0.384314, 1)
+
+[node name="HoeLine" type="Line2D"]
+material = SubResource("ShaderMaterial_0ovw3")
+points = PackedVector2Array(474, -73, 479, 88)
+width = 29.0
+width_curve = SubResource("Curve_8q2wg")
+gradient = SubResource("Gradient_vy50o")
+texture_mode = 2
+script = ExtResource("2_ja62h")
+duration = 0.5
+use_relative_transform = true

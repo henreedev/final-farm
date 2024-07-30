@@ -223,13 +223,14 @@ func attempt_purchase():
 			shop.queue_throw(inventory.selected_type)
 
 func start_throwing():
-	holding_throw = true
-	if not seed_counts[equipped_seed_type] <= 0:
-		create_seed_bag()
-	top.animation = "throw_windup"
-	top.play()
-	throw_zoom_timer.start(throw_zoomout_time)
-	main.player_ui.toggle_minimap(false)
+	if not swinging:
+		holding_throw = true
+		if not seed_counts[equipped_seed_type] <= 0:
+			create_seed_bag()
+		top.animation = "throw_windup"
+		top.play()
+		throw_zoom_timer.start(throw_zoomout_time)
+		main.player_ui.toggle_minimap(false)
 
 func stop_throwing():
 	autothrowing = false
@@ -257,8 +258,8 @@ func _show_arc():
 	if holding_throw:
 		var root = _get_throw_root()
 		var end_pos = get_tile_pos_at_mouse()
-		if can_plant: line.default_color = Color(2,2,2,1)
-		else: line.default_color = Color(1,.2,.2,1)
+		if can_plant: line.modulate = Color(2,2,2,1)
+		else: line.modulate = Color(1,.2,.2,1)
 		var points = Utils.calc_arc_between(root + position, end_pos)
 		line.clear_points()
 		for point in points:
@@ -327,6 +328,7 @@ func _create_hoe():
 	hoe.buff_duration = hoe_buff_duration
 	hoe.buff_start_strength = hoe_buff_start_strength
 	hoe.buff_end_strength = hoe_buff_end_strength
+	hoe.scale = Vector2.ZERO
 	hoe.final_scale = hoe_scale
 	hoe.ccw = not top.flip_h
 	$S.add_child(hoe)
