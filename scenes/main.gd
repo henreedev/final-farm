@@ -92,7 +92,7 @@ var upgrade_menu_tween : Tween
 @onready var wave_timer : Timer = $Permanent/WaveTimer
 @onready var wave_music : AudioStreamPlayer = $Permanent/WaveMusic
 @onready var prewave_music : AudioStreamPlayer = $Permanent/PreWaveMusic
-
+@onready var minimap : Minimap = get_tree().get_first_node_in_group("minimap")
 func _ready() -> void:
 	get_tree().paused = false
 	_calculate_thresholds()
@@ -103,6 +103,8 @@ func _initial_setup():
 	player.adjust_bug_kills(0) 
 	player_ui.food_bar.create_tween().tween_property(player_ui.food_bar, "position", Vector2(0, -3), 1.5).from(Vector2(0,-100)).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	player_ui.food_bar.max_value = WINNING_FOOD_AMOUNT
+	player_ui.minimap.modulate.a = 0
+	player_ui.toggle_minimap(true)
 
 func begin_prewave():
 	if state == State.GAME_OVER: return
@@ -259,6 +261,12 @@ func _pick_random_spawner_pos(index : int, total : int):
 	spawner_pos.y *= ISOMETRIC_ADJUST
 	return spawner_pos
 
+
+func add_minimap_icon(node):
+	minimap.add_icon(node)
+
+func remove_minimap_icon(node):
+	minimap.remove_icon(node)
 
 func _pause_plants(paused : bool):
 	plants_paused = paused
@@ -444,7 +452,9 @@ func win():
 	if state != State.GAME_OVER:
 		state = State.GAME_OVER
 		player.target_zoom_override = Vector2(4.0, 4.0)
-		player_ui.winlose_label.text = "You won!!!"
+		player_ui.winlose_label.text = "[rainbow freq=0.2 sat=1.0 val=1.0][wave amp=50.0 freq=5.0 connected=1]You Won[/wave][/rainbow]"
+		create_tween().tween_property(player_ui.winlose_label, "position:y", 120, 2.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		create_tween().tween_property(player_ui.winlose_label, "scale", Vector2(3, 3), 2.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		create_tween().tween_property(food_holder, "modulate", Color(2,2,2,1), 1.0).set_trans(Tween.TRANS_CUBIC)
 		create_tween().tween_property(food_holder, "position", Vector2(0, -600), 3.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
@@ -453,7 +463,9 @@ func lose():
 		state = State.GAME_OVER
 		player.target_zoom_override = Vector2(4.0, 4.0)
 		create_tween().tween_property(food_holder, "modulate", Color(.5,.5,.5,0), 5.0).set_trans(Tween.TRANS_CUBIC)
-		player_ui.winlose_label.text = "You lost..."
+		player_ui.winlose_label.text = "[wave amp=50.0 freq=1.0 connected=1]You Lost[/wave]"
+		create_tween().tween_property(player_ui.winlose_label, "position:y", 120, 2.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		create_tween().tween_property(player_ui.winlose_label, "scale", Vector2(3, 3), 2.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 
 func _input(_event: InputEvent):

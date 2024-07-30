@@ -8,6 +8,9 @@ var insects_to_spawn : Array[WaveGroup]
 var progress := 0.0
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 
+func _ready():
+	main.add_minimap_icon(self)
+
 func begin_spawning():
 	var spawner_tween = create_tween().set_parallel()
 	for wave_group : WaveGroup in insects_to_spawn:
@@ -34,3 +37,7 @@ func _spawn_insect(type : Insect.Type):
 								randf_range(-spawn_radius, spawn_radius) / 2)
 	insect.position = position + random_offset
 	main.add_child(insect)
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		main.remove_minimap_icon(self)

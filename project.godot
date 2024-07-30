@@ -42,6 +42,7 @@ insect=""
 inventory=""
 shop_inventory=""
 shopbag=""
+minimap=""
 
 [gui]
 

@@ -435,6 +435,7 @@ y_sort_enabled = true
 position = Vector2(9.53674e-07, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Permanent"]
+follow_viewport_scale = 0.213
 
 [node name="Player_UI" parent="Permanent/CanvasLayer" instance=ExtResource("3_pq8xe")]
 metadata/_edit_use_anchors_ = true

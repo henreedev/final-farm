@@ -1,9 +1,10 @@
-[gd_scene load_steps=51 format=3 uid="uid://cem6gwr7id7u8"]
+[gd_scene load_steps=52 format=3 uid="uid://cem6gwr7id7u8"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_4cvge"]
 [ext_resource type="Script" path="res://addons/smoothing/smoothing_2d.gd" id="2_ak4hf"]
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="2_bep4r"]
 [ext_resource type="Texture2D" uid="uid://dim6b6vi1leqo" path="res://assets/image/player/mc-legs-spritesheet.png" id="2_v527p"]
+[ext_resource type="PackedScene" uid="uid://brdpee5pykcx5" path="res://scenes/utils/shadow.tscn" id="3_nmg7y"]
 [ext_resource type="Texture2D" uid="uid://bln5p1i8434oy" path="res://assets/image/player/mc-arms-spritesheet.png" id="3_rm0ig"]
 [ext_resource type="Texture2D" uid="uid://dl032r2w8f1sn" path="res://assets/image/player/wave_bug.png" id="6_5vxee"]
 [ext_resource type="Texture2D" uid="uid://8v0fi6acvw05" path="res://assets/image/player/line_texture.png" id="6_mnvkn"]
@@ -414,6 +415,9 @@ shape = SubResource("CapsuleShape2D_vc0j8")
 
 [node name="S" type="Node2D" parent="."]
 script = ExtResource("2_ak4hf")
+
+[node name="Shadow" parent="S" instance=ExtResource("3_nmg7y")]
+scale = Vector2(2, 1)
 
 [node name="Bot" type="AnimatedSprite2D" parent="S"]
 y_sort_enabled = true

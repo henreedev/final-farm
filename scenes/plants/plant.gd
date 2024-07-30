@@ -108,6 +108,7 @@ func _ready() -> void:
 	pick_stats()
 	pick_starting_animation()
 	setup_bars()
+	main.add_minimap_icon(self)
 
 func on_upgrade():
 	pick_stats()
@@ -409,6 +410,7 @@ func die():
 		var tile = floor.get_cell_tile_data(coords)
 		if tile: 
 			floor.set_cell(coords, 0, Vector2i(0, 0))
+	main.remove_minimap_icon(self)
 	queue_free()
 #endregion: Universal functions
 

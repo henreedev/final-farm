@@ -72,6 +72,7 @@ func _ready():
 	retarget()
 	movement_timer.start(1.0)
 	setup_health_bar()
+	main.add_minimap_icon(self)
 
 func setup_health_bar():
 	health_bar.max_value = health
@@ -278,6 +279,7 @@ func take_damage(amount : int):
 	health -= amount
 	update_health_bar()
 	if health <= 0:
+		print("took ", amount, " damage")
 		die()
 
 func die():
@@ -285,6 +287,7 @@ func die():
 	player.adjust_bug_kills(Utils.get_insect_kill_reward(type))
 	main.on_insect_died()
 	died.emit()
+	main.remove_minimap_icon(self)
 	queue_free()
 
 #endregion: Universal functions

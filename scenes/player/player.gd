@@ -59,7 +59,7 @@ var hoe_scale = 1.0
 # Throw varsa
 var throw_tween : Tween
 var throw_offset_upgrade_unlocked := false
-var throw_zoomout_ratio = 0.9
+var throw_zoomout_ratio = 0.8
 var throw_zoomout_time = 1.5
 var throw_duration = 1.5
 var autothrowing := false
@@ -84,6 +84,7 @@ var waiting_for_release := false
 @onready var ignore_swing_timer : Timer = $IgnoreSwingTimer
 @onready var autothrow_timer : Timer = $AutothrowTimer
 @onready var line : Line2D = $LineContainer/Line2D
+@onready var line_container = $LineContainer
 @onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
 @onready var main : Main = get_tree().get_first_node_in_group("main")
 var shop : Shop # onready does not work because shop is instantiated in a TileMapLayer after _ready
@@ -106,7 +107,7 @@ func _init_vars() -> void:
 		if type == Plant.Type.FOOD_SUPPLY:
 			continue
 		if type == Plant.Type.EGGPLANT:
-			seed_counts[type] = 1
+			seed_counts[type] = 10000 #FIXME 
 		else:
 			seed_counts[type] = 0
 	
@@ -228,6 +229,7 @@ func start_throwing():
 	top.animation = "throw_windup"
 	top.play()
 	throw_zoom_timer.start(throw_zoomout_time)
+	main.player_ui.toggle_minimap(false)
 
 func stop_throwing():
 	autothrowing = false
@@ -237,6 +239,7 @@ func stop_throwing():
 		seed_bag = null
 	line.clear_points()
 	throw_tile_changed.emit()
+	main.player_ui.toggle_minimap(true)
 
 func throw():
 	if can_plant:
@@ -247,6 +250,7 @@ func throw():
 			seed_bag = null
 		top.animation = "throw"
 		top.play()
+		_show_arc()
 
 
 func _show_arc():
@@ -269,6 +273,7 @@ func create_seed_bag():
 		seed_bag = seed_bag_scene.instantiate()
 		seed_bag.type = equipped_seed_type
 		$S.add_child(seed_bag)
+		seed_bag.position = _get_throw_root()
 
 func _calc_throw_zoom(delta):
 	if holding_throw or throwing:
@@ -301,13 +306,7 @@ func _calc_camera_offset(delta):
 		cam.offset = lerp(cam.offset, target_offset, STR * delta)
 
 func swing():
-	if holding_throw:
-		holding_throw = false
-		ignore_swing_timer.start(IGNORE_SWING_AFTER_CANCEL_DUR)
-		ignore_swing = true
-		showing_arc = false
-		can_plant = false
-	elif not (swinging or throwing or ignore_swing):
+	if not (upgrade_menu.is_open or swinging):
 		swinging = true
 		_calc_animation_vars(Vector2(0,0))
 		top.animation = "swing_top" if mouse_up else "swing"
@@ -373,20 +372,22 @@ func get_tile_pos_at_mouse():
 	var center_pos = floor.map_to_local(coords)
 	var indicator_pos = center_pos
 	tile = floor.get_cell_tile_data(coords)
+	var prev_can_plant := can_plant
 	if tile:
 		# Sets global bool here
 		can_plant = tile.get_custom_data("can_plant")
-	if not can_plant:
+	if not can_plant and not autothrowing:
 		# Look nearby for a plantable tile
 		for neighbor_coords in floor.get_surrounding_cells(coords):
 			var neighbor = floor.get_cell_tile_data(neighbor_coords)
 			if not neighbor: continue
 			if neighbor.get_custom_data("can_plant"):
+				coords = neighbor_coords
 				center_pos = floor.map_to_local(neighbor_coords)
 				indicator_pos = center_pos
 				can_plant = true
 				break
-	if coords != prev_coords:
+	if coords != prev_coords or can_plant != prev_can_plant:
 		throw_tile_changed.emit()
 		_spawn_indicator(indicator_pos)
 		prev_coords = coords

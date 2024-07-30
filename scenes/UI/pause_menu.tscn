@@ -7,10 +7,11 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xmii4"]
 shader = ExtResource("2_ps323")
-shader_parameter/outline_color_1 = Color(0, 0, 0, 1)
-shader_parameter/outline_color_2 = Color(1, 0, 0, 1)
-shader_parameter/outline_1_active = false
-shader_parameter/outline_2_active = false
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = false
+shader_parameter/ignore_modulate = false
+shader_parameter/use_gradient = false
+shader_parameter/scroll_speed = null
 
 [node name="pause_menu" type="Control"]
 process_mode = 2
