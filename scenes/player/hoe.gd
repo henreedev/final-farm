@@ -11,7 +11,7 @@ var buff_duration : float
 var buff_start_strength : float
 var buff_end_strength : float
 var final_scale : float
-@onready var particles = $Node/Particles
+@onready var particles = $Particles
 @onready var delete_timer : Timer = $DeleteTimer
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 @onready var line_root = $LineRoot
@@ -19,7 +19,7 @@ var final_scale : float
 const SPAWN_DURATION_RATIO = 0.5 # what ratio of the total duration is taken up by spawning and despawning? 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
+	particles.emitting = true
 	animation = "normal" if ccw else "flipped"
 	play()
 	$Hitbox.scale.y = 1 if ccw else -1

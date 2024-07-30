@@ -31,7 +31,7 @@ _data = [Vector2(0, 0.496827), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_vy50o"]
-colors = PackedColorArray(0, 0.333333, 0.384314, 0, 0.847059, 1, 0.384314, 1)
+colors = PackedColorArray(0, 0, 0.384314, 0, 0, 1, 0.384314, 1)
 
 [node name="HoeLine" type="Line2D"]
 material = SubResource("ShaderMaterial_0ovw3")

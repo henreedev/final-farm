@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bqsyx60crwgod"]
+[gd_scene load_steps=16 format=3 uid="uid://bqsyx60crwgod"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_srv8m"]
 [ext_resource type="Texture2D" uid="uid://x5c15l8dlplw" path="res://assets/image/items/hoe.png" id="1_v0tp4"]
@@ -42,14 +42,47 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1y8rf"]
-size = Vector2(29, 3)
+size = Vector2(35, 7)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_repkw"]
-size = Vector2(7, 16)
+size = Vector2(12, 24)
+
+[sub_resource type="Curve" id="Curve_qeom4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0839416, 1), 0.0, 0.0, 0, 0, Vector2(0.89781, 0.688623), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_tv1pm"]
+curve = SubResource("Curve_qeom4")
+
+[sub_resource type="Gradient" id="Gradient_llvmo"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 2, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3x7lc"]
+gradient = SubResource("Gradient_llvmo")
+use_hdr = true
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8cmbo"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
 particle_flag_disable_z = true
-gravity = Vector3(0, 98, 0)
+emission_shape_offset = Vector3(21.505, 0, 0)
+emission_shape = 3
+emission_box_extents = Vector3(11.32, 1, 1)
+inherit_velocity_ratio = 0.05
+velocity_pivot = Vector3(15, 0, 0)
+gravity = Vector3(0, -27.505, 0)
+radial_accel_min = 13.31
+radial_accel_max = 30.08
+tangential_accel_min = -69.68
+tangential_accel_max = 63.12
+damping_min = 2.256
+damping_max = 2.256
+color = Color(0, 1, 0.529412, 1)
+color_ramp = SubResource("GradientTexture1D_3x7lc")
+alpha_curve = SubResource("CurveTexture_tv1pm")
+hue_variation_min = -0.09
+hue_variation_max = 0.1
 
 [node name="Hoe" type="AnimatedSprite2D"]
 material = SubResource("ShaderMaterial_cgcit")
@@ -58,29 +91,29 @@ animation = &"normal"
 script = ExtResource("2_5xjis")
 
 [node name="Hitbox" type="Area2D" parent="."]
-visible = false
 collision_layer = 0
 collision_mask = 32
 
 [node name="Rect1" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(14.5, 0.5)
+position = Vector2(11.5, 0.5)
 shape = SubResource("RectangleShape2D_1y8rf")
 
 [node name="Rect2" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(25.5, -6)
+position = Vector2(26, -7)
 shape = SubResource("RectangleShape2D_repkw")
 
 [node name="Node" type="Node" parent="."]
 
 [node name="Line2D" type="Line2D" parent="Node"]
 
-[node name="Particles" type="GPUParticles2D" parent="Node"]
-visible = false
-process_material = SubResource("ParticleProcessMaterial_8cmbo")
-
 [node name="DeleteTimer" type="Timer" parent="."]
 
 [node name="LineRoot" type="Node2D" parent="."]
 position = Vector2(15, 0.5)
+
+[node name="Particles" type="GPUParticles2D" parent="."]
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_8cmbo")
+explosiveness = 0.4
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
