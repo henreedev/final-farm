@@ -1,5 +1,8 @@
 extends Control
 class_name UpgradeMenu
+
+signal opened
+
 var is_open := false
 
 
@@ -19,6 +22,7 @@ func _input(event):
 func open():
 	if not is_open:
 		is_open = true
+		opened.emit()
 		set_process(true)
 		show()
 		if main.upgrade_menu_tween:

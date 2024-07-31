@@ -50,8 +50,8 @@ var ignore_swing := false
 var hoe_scene : PackedScene = preload("res://scenes/player/hoe.tscn")
 var hoe_angle_cone = 180.0
 var hoe_duration = 1.0
-var hoe_buff_duration = 1.0
-var hoe_buff_start_strength = 200.0
+var hoe_buff_duration = 3.0
+var hoe_buff_start_strength = 1.5
 var hoe_buff_end_strength = 1.25
 var hoe_scale = 1.0
 
@@ -63,7 +63,10 @@ var throw_zoomout_ratio = 0.8
 var throw_zoomout_time = 1.5
 var throw_duration = 1.5
 var autothrowing := false
-var AUTOTHROW_START_DELAY = 0.5
+const AUTOTHROW_START_DELAY = 0.3
+var autobuying := false
+const AUTOBUY_START_DELAY = 0.3
+const BASE_PURCHASES_PER_SEC = 6
 var prev_coords : Vector2i
 var indicator_scene : PackedScene = preload("res://scenes/player/indicator.tscn")
 var prev_indicator : Sprite2D
@@ -83,10 +86,13 @@ var waiting_for_release := false
 @onready var throw_zoom_timer : Timer = $ThrowZoomTimer
 @onready var ignore_swing_timer : Timer = $IgnoreSwingTimer
 @onready var autothrow_timer : Timer = $AutothrowTimer
+@onready var autobuy_timer : Timer = $AutobuyTimer
+@onready var autobuy_interval_timer : Timer = $AutobuyIntervalTimer
 @onready var line : Line2D = $LineContainer/Line2D
 @onready var line_container = $LineContainer
 @onready var floor : TileMapLayer = get_tree().get_first_node_in_group("floor")
 @onready var main : Main = get_tree().get_first_node_in_group("main")
+@onready var autobuy_inverval = 1.0 / BASE_PURCHASES_PER_SEC
 var shop : Shop # onready does not work because shop is instantiated in a TileMapLayer after _ready
 
 @onready var upgrade_menu = get_tree().get_first_node_in_group("upgrade_menu")
@@ -96,6 +102,7 @@ var shop : Shop # onready does not work because shop is instantiated in a TileMa
 #region: Built-in functions
 func _ready() -> void:
 	_init_vars()
+	upgrade_menu.opened.connect(stop_throwing)
 
 func _init_vars() -> void:
 	scale = Vector2(1, 1)
@@ -214,6 +221,13 @@ func _act_on_input():
 		main.trigger_wave_begun()
 	if Input.is_action_just_pressed("purchase_seed"):
 		attempt_purchase()
+		autobuy_timer.start(AUTOBUY_START_DELAY)
+	if autobuying and autobuy_interval_timer.is_stopped():
+		autobuy_interval_timer.start(autobuy_inverval)
+	if Input.is_action_just_released("purchase_seed"):
+		autobuying = false
+		autobuy_timer.stop()
+		autobuy_interval_timer.stop()
 
 func attempt_purchase():
 	if shop:
@@ -223,7 +237,7 @@ func attempt_purchase():
 			shop.queue_throw(inventory.selected_type)
 
 func start_throwing():
-	if not swinging:
+	if not (swinging or upgrade_menu.is_open):
 		holding_throw = true
 		if not seed_counts[equipped_seed_type] <= 0:
 			create_seed_bag()
@@ -436,3 +450,11 @@ func _on_ignore_swing_timer_timeout() -> void:
 
 func _on_autothrow_timer_timeout():
 	autothrowing = true
+
+
+func _on_autobuy_timer_timeout():
+	autobuying = true
+
+
+func _on_autobuy_interval_timer_timeout():
+	attempt_purchase()

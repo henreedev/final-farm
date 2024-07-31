@@ -149,7 +149,7 @@ func pick_stats():
 			projectile_speed = 120.0
 		Type.CORN:
 			anims_bidir = false
-			projectile_lifespan = 0.5
+			projectile_lifespan = 0.65
 			projectile_radius = 3
 			projectile_speed = 200.0
 		Type.LEMONLIME:
@@ -217,6 +217,15 @@ func _do_attack_cooldown():
 	attack_timer.start(attack_cooldown)
 	await attack_timer.timeout
 
+func _set_outline_scroll_speed(scroll_speed):
+	material.set_shader_parameter("scroll_speed", scroll_speed)
+	
+func _set_outline_scroll_offset(scroll_offset):
+	material.set_shader_parameter("scroll_offset", scroll_offset)
+
+func _set_outline_opacity(opacity):
+	material.set_shader_parameter("outline_active", opacity)
+
 func on_hit_by_hoe(duration, start_strength, end_strength):
 	if type == Type.WILLOW:
 		for child in get_children():
@@ -229,6 +238,7 @@ func on_hit_by_hoe(duration, start_strength, end_strength):
 	var start_modulate = Color(start_strength, start_strength, start_strength, 1)
 	var end_modulate = Color(end_strength, end_strength, end_strength, 1)
 	health_decay_mod = 0.0
+	_set_outline_opacity(1.0)
 	if hoe_tween:
 		hoe_tween.kill()
 	hoe_tween = create_tween()
@@ -238,9 +248,11 @@ func on_hit_by_hoe(duration, start_strength, end_strength):
 	hoe_tween.parallel().tween_property(self, "modulate", end_modulate, duration)\
 		.from(start_modulate)\
 		.set_trans(Tween.TRANS_LINEAR)
+	hoe_tween.parallel().tween_method(_set_outline_scroll_offset, -start_strength * 3.0, -end_strength * 0.5, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	hoe_tween.tween_property(self, "hoe_fire_rate_mod", 1.0, 0)
 	hoe_tween.tween_property(self, "health_decay_mod", 1.0, 0)
 	hoe_tween.tween_property(self, "modulate", Color(1,1,1,1), 0.5).set_trans(Tween.TRANS_CUBIC)
+	hoe_tween.parallel().tween_method(_set_outline_opacity, 1.0, 0.0, 0.5).set_trans(Tween.TRANS_CUBIC)
 	retarget()
 
 func _physics_process(delta) -> void:

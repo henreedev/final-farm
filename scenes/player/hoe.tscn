@@ -16,10 +16,14 @@ width = 32
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cgcit"]
 shader = ExtResource("1_srv8m")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = true
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = true
+shader_parameter/outline_active = 1.0
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = 1.0
 shader_parameter/scroll_speed = -1.0
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 shader_parameter/gradient = SubResource("GradientTexture1D_7wl5r")
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kbn6t"]
@@ -66,18 +70,19 @@ use_hdr = true
 lifetime_randomness = 0.5
 particle_flag_align_y = true
 particle_flag_disable_z = true
+particle_flag_damping_as_friction = true
 emission_shape_offset = Vector3(21.505, 0, 0)
 emission_shape = 3
 emission_box_extents = Vector3(11.32, 1, 1)
-inherit_velocity_ratio = 0.05
+inherit_velocity_ratio = 0.31
 velocity_pivot = Vector3(15, 0, 0)
 gravity = Vector3(0, -27.505, 0)
 radial_accel_min = 13.31
 radial_accel_max = 30.08
 tangential_accel_min = -69.68
 tangential_accel_max = 63.12
-damping_min = 2.256
-damping_max = 2.256
+damping_min = 1.0
+damping_max = 1.0
 color = Color(0, 1, 0.529412, 1)
 color_ramp = SubResource("GradientTexture1D_3x7lc")
 alpha_curve = SubResource("CurveTexture_tv1pm")
@@ -91,8 +96,11 @@ animation = &"normal"
 script = ExtResource("2_5xjis")
 
 [node name="Hitbox" type="Area2D" parent="."]
+show_behind_parent = true
 collision_layer = 0
 collision_mask = 32
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
 
 [node name="Rect1" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(11.5, 0.5)
@@ -112,8 +120,10 @@ shape = SubResource("RectangleShape2D_repkw")
 position = Vector2(15, 0.5)
 
 [node name="Particles" type="GPUParticles2D" parent="."]
-amount = 10
+emitting = false
+amount = 15
 process_material = SubResource("ParticleProcessMaterial_8cmbo")
-explosiveness = 0.4
+one_shot = true
+explosiveness = 0.26
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

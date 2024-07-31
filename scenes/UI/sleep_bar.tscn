@@ -1,11 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://cp0865njrn4sl"]
+[gd_scene load_steps=5 format=3 uid="uid://cp0865njrn4sl"]
 
 [ext_resource type="Texture2D" uid="uid://cfbmvtd1s7uoy" path="res://assets/ui/sleep-bar-below.png" id="1_3hq8n"]
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_j0h3s"]
 [ext_resource type="Texture2D" uid="uid://c54yossyt6b6o" path="res://assets/ui/sleep-bar-progress.png" id="2_jbghh"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ihi7b"]
+shader = ExtResource("1_j0h3s")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
+shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
+
 [node name="SleepBar" type="TextureProgressBar"]
-modulate = Color(1, 1, 1, 0.654)
-use_parent_material = true
+material = SubResource("ShaderMaterial_ihi7b")
+scale = Vector2(0.5, 1)
+value = 48.0
 fill_mode = 3
 texture_under = ExtResource("1_3hq8n")
 texture_progress = ExtResource("2_jbghh")
+tint_progress = Color(2, 2, 100, 1)

@@ -41,10 +41,14 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_11cig"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = true
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = -1.4
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 shader_parameter/gradient = ExtResource("2_13ov3")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7pngf"]
@@ -878,26 +882,38 @@ animations = [{
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kf5xs"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_scu2y"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bhrgk"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ehcdp"]
 size = Vector2(13, 14.75)
@@ -911,34 +927,50 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jsxxd"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5ed8n"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cxar3"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k2l6o"]
 shader = ExtResource("1_fvytx")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = -1.4
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 shader_parameter/gradient = ExtResource("2_13ov3")
 
 [sub_resource type="LabelSettings" id="LabelSettings_r4iia"]
@@ -1497,10 +1529,13 @@ position = Vector2(-0.00344276, 0)
 shape = SubResource("RectangleShape2D_1s816")
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
+[connection signal="frame_changed" from="." to="." method="_on_frame_changed"]
 [connection signal="input_event" from="MouseZone" to="." method="_on_mouse_zone_input_event"]
 [connection signal="mouse_entered" from="MouseZone" to="." method="_on_mouse_zone_mouse_entered"]
 [connection signal="mouse_exited" from="MouseZone" to="." method="_on_mouse_zone_mouse_exited"]
 [connection signal="pressed" from="Blurb/BuyButton" to="." method="_on_buy_button_pressed"]
+[connection signal="mouse_entered" from="Blurb/UpgradeButton" to="." method="_on_upgrade_button_mouse_entered"]
+[connection signal="mouse_exited" from="Blurb/UpgradeButton" to="." method="_on_upgrade_button_mouse_exited"]
 [connection signal="pressed" from="Blurb/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
 [connection signal="mouse_entered" from="Blurb/SpecialIcon/Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Blurb/SpecialIcon/Area2D" to="." method="_on_area_2d_mouse_exited"]

@@ -8,10 +8,14 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xmii4"]
 shader = ExtResource("2_ps323")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [node name="pause_menu" type="Control"]
 process_mode = 2

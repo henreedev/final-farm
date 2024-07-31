@@ -1,14 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://ba6mc1dkvyisn"]
+[gd_scene load_steps=5 format=3 uid="uid://ba6mc1dkvyisn"]
 
+[ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_aadka"]
 [ext_resource type="Texture2D" uid="uid://ba0uysnly7ikl" path="res://assets/ui/health-bar-below.png" id="1_l84xr"]
 [ext_resource type="Texture2D" uid="uid://bpx8jnjengdkv" path="res://assets/ui/health-bar-progress.png" id="2_shqie"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mvt3h"]
+shader = ExtResource("1_aadka")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
+shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [node name="HealthBar" type="TextureProgressBar"]
-modulate = Color(1, 1, 1, 0.535)
 material = SubResource("ShaderMaterial_mvt3h")
 use_parent_material = true
+scale = Vector2(1, 0.5)
 value = 34.0
 texture_under = ExtResource("1_l84xr")
 texture_progress = ExtResource("2_shqie")

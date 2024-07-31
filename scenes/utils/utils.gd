@@ -4,7 +4,7 @@ class_name Utils
 static var num_points = 50
 static var arc_height = 50
 static var better_zoom_shader = preload("res://scenes/map/better-zoom.gdshader")
-
+static var plant_outline_gradient : GradientTexture1D = preload("res://scenes/plants/plant-outline-gradient.tres")
 static var very_slow = 6.0
 static var slow = 10.0
 static var normal = 16.0
@@ -1263,6 +1263,11 @@ static func restart():
 static func give_zoom_shader(node_with_mat : Node2D):
 	node_with_mat.material = ShaderMaterial.new()
 	node_with_mat.material.shader = better_zoom_shader
+	if node_with_mat is Plant:
+		node_with_mat.material.set_shader_parameter("use_gradient", 1.0)
+		node_with_mat.material.set_shader_parameter("gradient", plant_outline_gradient)
+		node_with_mat.material.set_shader_parameter("scroll_dir", 1.0)
+		node_with_mat.material.set_shader_parameter("scroll_speed", 0.0)
 
 static func set_range_area_radii(shape : CollisionShape2D, tile_radius : int):
 	shape.shape = CircleShape2D.new()

@@ -1,10 +1,11 @@
-[gd_scene load_steps=336 format=3 uid="uid://qmlvoryj0irv"]
+[gd_scene load_steps=337 format=3 uid="uid://qmlvoryj0irv"]
 
 [ext_resource type="Shader" path="res://scenes/map/better-zoom.gdshader" id="1_7oxxv"]
 [ext_resource type="Script" path="res://scenes/plants/plant.gd" id="1_7ry7i"]
 [ext_resource type="Texture2D" uid="uid://cly5nrvrsyfqm" path="res://assets/image/seeds/eggplant/plant.png" id="2_6aba3"]
 [ext_resource type="Texture2D" uid="uid://hqreowdgc7tp" path="res://assets/image/seeds/broccoli/broccoli-spritesheet.png" id="2_hhxel"]
 [ext_resource type="Texture2D" uid="uid://bsryjll64kmre" path="res://assets/image/seeds/banana/banana-spritesheet.png" id="2_o1brq"]
+[ext_resource type="Texture2D" uid="uid://cijyf74ngjhd3" path="res://scenes/plants/plant-outline-gradient.tres" id="2_u1abx"]
 [ext_resource type="Texture2D" uid="uid://6y7wi33emp7m" path="res://assets/image/seeds/tomato/tomato-spritesheet.png" id="4_kb5ji"]
 [ext_resource type="Texture2D" uid="uid://djqti1c0o5jjs" path="res://assets/image/seeds/celery/celery-spritesheet.png" id="4_wu0oc"]
 [ext_resource type="Texture2D" uid="uid://qvaquqshknik" path="res://assets/image/seeds/corn/corn-spritesheet.png" id="5_aa1ky"]
@@ -30,10 +31,15 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lxin"]
 shader = ExtResource("1_7oxxv")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
-shader_parameter/scroll_speed = null
+shader_parameter/outline_active = 1.0
+shader_parameter/ignore_modulate = 0.0
+shader_parameter/use_gradient = 1.0
+shader_parameter/scroll_speed = 0.1
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = 1.0
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
+shader_parameter/gradient = ExtResource("2_u1abx")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m1v3w"]
 atlas = ExtResource("2_o1brq")
@@ -2520,7 +2526,8 @@ z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_8lxin")
 sprite_frames = SubResource("SpriteFrames_rowdm")
-animation = &"food_supply_shoot"
+animation = &"willow_idle"
+frame_progress = 0.954369
 script = ExtResource("1_7ry7i")
 
 [node name="Hurtbox" type="Area2D" parent="."]
@@ -2550,7 +2557,6 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 script = ExtResource("5_sqecx")
 
 [node name="Info" type="Node2D" parent="."]
-visible = false
 z_index = 3
 use_parent_material = true
 
@@ -2562,21 +2568,23 @@ scale = Vector2(0.32, 0.32)
 texture = ExtResource("14_iqgia")
 
 [node name="SleepBar" parent="Info" instance=ExtResource("18_nmhx0")]
-offset_left = 7.0
-offset_top = -9.0
-offset_right = 9.0
-offset_bottom = 3.0
+offset_left = 6.0
+offset_top = 5.0
+offset_right = 8.0
+offset_bottom = 17.0
+rotation = 1.5708
 value = 81.0
 
 [node name="HealthBar" parent="Info" instance=ExtResource("19_87p1y")]
+use_parent_material = false
 offset_left = -6.0
-offset_top = 3.0
+offset_top = 4.0
 offset_right = 6.0
-offset_bottom = 5.0
+offset_bottom = 6.0
 value = 54.0
 
 [node name="HealthLabel" type="Label" parent="Info"]
-modulate = Color(1, 1, 1, 0.52549)
+visible = false
 use_parent_material = true
 offset_left = -4.0
 offset_top = 1.0
@@ -2588,13 +2596,14 @@ label_settings = SubResource("LabelSettings_fguqy")
 horizontal_alignment = 1
 
 [node name="SleepLabel" type="Label" parent="Info"]
-modulate = Color(1, 1, 1, 0.52549)
+visible = false
 use_parent_material = true
-offset_left = 4.0
-offset_top = -5.0
-offset_right = 44.0
-offset_bottom = 23.0
+offset_left = -4.0
+offset_top = 5.0
+offset_right = 36.0
+offset_bottom = 33.0
 scale = Vector2(0.19, 0.19)
+text = "12"
 label_settings = SubResource("LabelSettings_jw4r3")
 horizontal_alignment = 1
 

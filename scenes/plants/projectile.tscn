@@ -23,18 +23,26 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u1v7a"]
 shader = ExtResource("1_cetc4")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3hlgb"]
 shader = ExtResource("1_cetc4")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ov1wp"]
 atlas = ExtResource("6_2std0")

@@ -29,7 +29,11 @@ func _add_initial_icons():
 
 func update_minimap():
 	for parent in icons.keys():
-		icons[parent].position = parent.position
+		if not (parent and is_instance_valid(parent)):
+			icons[parent].queue_free()
+			icons.erase(parent)
+		else:
+			icons[parent].position = parent.position
 
 func _process(delta):
 	update_minimap()
@@ -80,8 +84,9 @@ func add_indicator(pos):
 func remove_icon(parent):
 	if parent is Plant:
 		add_indicator(parent.position)
-	icons[parent].queue_free()
-	icons.erase(parent)
+	if icons.has(parent):
+		icons[parent].queue_free()
+		icons.erase(parent)
 
 func _on_update_timer_timeout():
 	update_minimap()

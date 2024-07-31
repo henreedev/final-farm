@@ -234,7 +234,8 @@ func _on_mouse_zone_mouse_exited():
 	blurb_tween = create_tween()
 	blurb_tween.tween_property(blurb, "modulate", Color(1,1,1,0), 0.1).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
 	blurb_tween.tween_callback(blurb.hide)
-	blurb_tween.tween_callback(play_backwards.bind(animation))
+	#blurb_tween.tween_callback(play_backwards.bind(animation))
+	play_backwards(animation)
 
 func _on_animation_finished():
 	if frame != 0 and discovered_first_time: 
@@ -253,6 +254,7 @@ func _on_buy_button_pressed():
 
 
 func _on_upgrade_button_pressed():
+	_undo_upgrade()
 	var cost = Utils.get_next_upgrade_cost(type)
 	if cost > 0 and player.bug_kills - cost >= 0:
 		player.adjust_bug_kills(-cost)
@@ -303,3 +305,18 @@ func _on_upgrade_3_area_mouse_entered():
 func _on_upgrade_3_area_mouse_exited():
 	upgrade_3_label.hide()
 	_undo_upgrade()
+
+
+func _on_frame_changed():
+	if frame == 0 and is_selected:
+		play()
+
+
+func _on_upgrade_button_mouse_entered():
+	if not upgrade_button.disabled:
+		_show_upgrade(Utils.get_plant_level(type) + 1 as Plant.Level)
+
+
+func _on_upgrade_button_mouse_exited():
+	if not upgrade_button.disabled:
+		_undo_upgrade()

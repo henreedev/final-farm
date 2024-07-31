@@ -17,10 +17,14 @@ height = 4.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_njkrv"]
 shader = ExtResource("2_bep4r")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2fus1"]
 atlas = ExtResource("2_v527p")
@@ -113,10 +117,14 @@ animations = [{
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_l00se"]
 shader = ExtResource("2_bep4r")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c6gb1"]
 atlas = ExtResource("3_rm0ig")
@@ -327,10 +335,14 @@ animations = [{
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8y8dn"]
 shader = ExtResource("2_bep4r")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_active = false
-shader_parameter/ignore_modulate = false
-shader_parameter/use_gradient = false
+shader_parameter/outline_active = null
+shader_parameter/ignore_modulate = null
+shader_parameter/use_gradient = null
 shader_parameter/scroll_speed = null
+shader_parameter/scroll_offset = 0.0
+shader_parameter/scroll_dir = null
+shader_parameter/sheet_columns = 1
+shader_parameter/sheet_rows = 1
 
 [sub_resource type="GDScript" id="GDScript_vy72f"]
 script/source = "extends Sprite2D
@@ -507,7 +519,14 @@ one_shot = true
 [node name="AutothrowTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="AutobuyTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AutobuyIntervalTimer" type="Timer" parent="."]
+
 [connection signal="frame_changed" from="S/Bot" to="." method="_on_bot_frame_changed"]
 [connection signal="animation_finished" from="S/Top" to="." method="_on_top_animation_finished"]
 [connection signal="timeout" from="IgnoreSwingTimer" to="." method="_on_ignore_swing_timer_timeout"]
 [connection signal="timeout" from="AutothrowTimer" to="." method="_on_autothrow_timer_timeout"]
+[connection signal="timeout" from="AutobuyTimer" to="." method="_on_autobuy_timer_timeout"]
+[connection signal="timeout" from="AutobuyIntervalTimer" to="." method="_on_autobuy_interval_timer_timeout"]

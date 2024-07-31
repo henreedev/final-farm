@@ -279,7 +279,6 @@ func take_damage(amount : int):
 	health -= amount
 	update_health_bar()
 	if health <= 0:
-		print("took ", amount, " damage")
 		die()
 
 func die():

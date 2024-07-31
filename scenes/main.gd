@@ -101,7 +101,7 @@ func _ready() -> void:
 
 func _initial_setup():
 	player.adjust_bug_kills(0) 
-	player_ui.food_bar.create_tween().tween_property(player_ui.food_bar, "position", Vector2(0, -3), 1.5).from(Vector2(0,-100)).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	player_ui.food_bar.create_tween().tween_property(player_ui.food_bar, "position", Vector2(576, -3), 1.5).from(Vector2(576,-100)).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	player_ui.food_bar.max_value = WINNING_FOOD_AMOUNT
 	player_ui.minimap.modulate.a = 0
 	player_ui.toggle_minimap(true)
