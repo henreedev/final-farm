@@ -149,7 +149,7 @@ static func get_insect_range(type : Insect.Type):
 		Insect.Type.LOCUST:
 			return 0
 		Insect.Type.BEETLE:
-			return 8
+			return 2
 		Insect.Type.CRICKET:
 			return 6
 		Insect.Type.FIREFLY:
@@ -236,7 +236,7 @@ static func get_insect_speed(type : Insect.Type):
 		Insect.Type.LOCUST:
 			return very_fast
 		Insect.Type.BEETLE:
-			return very_fast # FIXME
+			return very_slow
 		Insect.Type.CRICKET:
 			return normal
 		Insect.Type.FIREFLY:
@@ -247,7 +247,7 @@ static func get_insect_detection_range(type : Insect.Type):
 		Insect.Type.FLY, Insect.Type.GRUB, Insect.Type.MOTH, Insect.Type.BEE, Insect.Type.FUNGI, \
 		Insect.Type.ANT, Insect.Type.LOCUST, Insect.Type.BEETLE, \
 		Insect.Type.CRICKET:
-			return 800
+			return 8
 		Insect.Type.SPORESPAWN, Insect.Type.FIREFLY:
 			return 12
 		Insect.Type.SNAIL, Insect.Type.CATERPILLAR:
