@@ -98,7 +98,7 @@ script = ExtResource("2_5xjis")
 [node name="Hitbox" type="Area2D" parent="."]
 show_behind_parent = true
 collision_layer = 0
-collision_mask = 32
+collision_mask = 33
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 

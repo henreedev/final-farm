@@ -137,20 +137,20 @@ func pick_stats():
 			sleep_bar.visible = false
 			sleep_bar_label.visible = false
 			projectile_lifespan = 1.0
-			projectile_radius = 5
-			projectile_speed = 72.0
+			projectile_radius = 10
+			projectile_speed = 130.0
 		Type.EGGPLANT:
 			flip_h = facing_right
 			anims_bidir = false
 			can_attack = false
 		Type.BROCCOLI:
 			projectile_lifespan = 0.7
-			projectile_radius = 3
+			projectile_radius = 6
 			projectile_speed = 120.0
 		Type.CORN:
 			anims_bidir = false
 			projectile_lifespan = 0.65
-			projectile_radius = 3
+			projectile_radius = 6
 			projectile_speed = 200.0
 		Type.LEMONLIME:
 			projectile_lifespan = 1.5
@@ -288,6 +288,11 @@ func _attack(bypass : bool):
 	else:
 		if target and ((not attacking) or bypass):
 			attacking = true
+			if not attack_timer.is_stopped():
+				await attack_timer.timeout
+				if not (target and is_instance_valid(target)):
+					attacking = false
+					return
 			if not can_cancel_atk_anim:
 					if (animation == anim_str + "shoot_front" or \
 						animation == anim_str + "shoot_back" or \
@@ -312,17 +317,22 @@ func _attack(bypass : bool):
 			if can_sleep:
 				sleep_timer.start(sleep_time)
 			await _do_attack_cooldown()
-			if attacking and target:
+			if attacking and target and is_instance_valid(target):
 				_attack(true)
 
 func retarget():
 	var target_dists := {}
+	var found_targeted := false
 	if len(target_options) > 0:
-		for target_option in target_options:
+		for target_option : Insect in target_options:
 			if target_option and not target_option.is_dead: 
+				if target_option.targeted:
+					target = target_option
+					found_targeted = true
+					break
 				var dist = position.distance_squared_to(target_option.position)
 				target_dists[dist] = target_option
-		if len(target_dists) > 0:
+		if len(target_dists) > 0 and not found_targeted:
 			var distances := target_dists.keys()
 			distances.sort()
 			target = target_dists[distances[0]]
@@ -564,7 +574,7 @@ func _on_attack_area_area_entered(area):
 		var parent = area.get_parent()
 		if parent is Insect:
 			target_options.append(parent)
-			if not (attacking or growing or not attack_timer.is_stopped()):
+			if not (growing or attacking):
 				retarget()
 				_attack(false)
 

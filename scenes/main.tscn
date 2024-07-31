@@ -13,11 +13,11 @@
 
 [sub_resource type="Resource" id="Resource_y6x5u"]
 script = ExtResource("3_nwf1e")
-type = 1
-count = 33
+type = 10
+count = 2
 spawn_time = 0.0
-streams = false
-stream_duration = 0.0
+streams = true
+stream_duration = 1.0
 
 [sub_resource type="Resource" id="Resource_b0u56"]
 script = ExtResource("2_1hows")

@@ -5,9 +5,10 @@ class_name Insect
 enum Type {FLY, GRUB, MOTH, SNAIL, BEE, FUNGI, ANT, CATERPILLAR, SPORESPAWN,\
 		 LOCUST, BEETLE, CRICKET, FIREFLY}
 
-signal died 
+signal died
 
-
+static var count := 0
+var id := 0
 const FIREFLY_BOT_PROJ_OFFSET = Vector2(-7, 11)
 const FIREFLY_TOP_PROJ_OFFSET = Vector2(-7, 5)
 const MOVEMENT_REFRESH_DUR_MIN = 0.5
@@ -21,6 +22,7 @@ var damage : int
 var attack_cooldown : float # aka fire rate
 var attack_range : int
 var detection_range : int
+var hurtbox_radius : float
 var base_speed : float
 
 var target_dir : Vector2
@@ -34,6 +36,7 @@ var going_right = false
 var going_down = false
 var marked_by_player = false # TODO add red outline and target reticle when true
 var is_dead = false
+var targeted = false
 var speed_scale := 1.0
 var paused := false
 var moves_straight := false
@@ -51,6 +54,7 @@ var label_setting : LabelSettings = preload("res://scenes/UI/bag_icon.tres")
 @onready var attack_timer : ScalableTimer = $AttackTimer
 @onready var detection_area : Area2D = $DetectionArea
 @onready var detection_shape : CollisionShape2D = $DetectionArea/CollisionShape2D
+@onready var hurtbox_shape : CollisionShape2D = $Hitbox/CollisionShape2D
 @onready var attack_area : Area2D = $AttackArea
 @onready var attack_shape : CollisionShape2D = $AttackArea/CollisionShape2D
 @onready var asprite : AnimatedSprite2D = $AnimatedSprite2D
@@ -61,6 +65,8 @@ var label_setting : LabelSettings = preload("res://scenes/UI/bag_icon.tres")
 @onready var info = $Info
 @onready var bug_hit_sound : AudioStreamPlayer2D = $BugHit
 @onready var flying_sound : AudioStreamPlayer2D = $FlyingSound
+@onready var target_reticle = $TargetReticle
+
 #endregion: Globals
 
 #region: Universal functions
@@ -73,6 +79,8 @@ func _ready():
 	movement_timer.start(1.0)
 	setup_health_bar()
 	main.add_minimap_icon(self)
+	id = count
+	count = count + 1
 
 func setup_health_bar():
 	health_bar.max_value = health
@@ -87,6 +95,7 @@ func pick_values_on_type():
 	anim_str = Utils.get_insect_string(type) + "_"
 	asprite.animation = anim_str + "front"
 	detection_range = Utils.get_insect_detection_range(type)
+	hurtbox_radius = Utils.get_insect_hurtbox_radius(type)
 	match type:
 		Type.FLY:
 			flying_sound.play()
@@ -117,15 +126,29 @@ func pick_values_on_type():
 		Type.BEETLE:
 			asprite.offset = Vector2(0, 0)
 			moves_straight = true
-
+	target_reticle.offset = asprite.offset
 	_set_range_area_radii()
 	asprite.play()
 
 func _set_range_area_radii():
+	hurtbox_shape.shape = CircleShape2D.new()
+	hurtbox_shape.shape.radius = hurtbox_radius
 	Utils.set_range_area_radii(detection_shape, detection_range)
 	Utils.set_range_area_radii(attack_shape, attack_range)
 
+
+func update_health_bar():
+	health_bar_label.text = str(health)
+	health_bar.value = health
+
+func toggle_info():
+	if main.show_info:
+		info.show()
+	else:
+		info.hide()
+
 func retarget():
+	print(id, " retargeting!")
 	var food_supply := {}
 	var production_plants := {}
 	var other_plants := {}
@@ -160,10 +183,15 @@ func retarget():
 				target = food_supply.values()[0]
 
 	if target and is_instance_valid(target):
-		if not _target_in_range():
+		print(id, " retargeted to ", target)
+		if _target_in_range():
+			create_tween().tween_callback(_attack.bind(false))
+		else:
 			attacking = false
 		recalc_movement_vars()
-		await target.died
+		if target and is_instance_valid(target):
+			await target.died
+		print(id, " target died: ", target)
 		target = null
 		get_new_target_options()
 		retarget()
@@ -176,26 +204,15 @@ func retarget():
 func _target_in_range():
 	for area in attack_area.get_overlapping_areas():
 		var parent = area.get_parent()
-		if parent == target:
+		if parent == target and is_instance_valid(parent) and is_instance_valid(target):
 			return true
 	return false
-
-func update_health_bar():
-	health_bar_label.text = str(health)
-	health_bar.value = health
-
-func toggle_info():
-	if main.show_info:
-		info.show()
-	else:
-		info.hide()
-
 
 func get_new_target_options():
 	target_options.clear()
 	for area in detection_area.get_overlapping_areas():
 		var parent = area.get_parent()
-		if parent is Plant:
+		if parent is Plant and is_instance_valid(parent):
 			if not parent.is_dead: 
 				target_options.append(area.get_parent())
 
@@ -217,6 +234,7 @@ func pick_animation():
 		asprite.play()
 
 func recalc_movement_vars():
+	print(id, " target = ", target, ", target_options = ", target_options)
 	if attacking: movement_speed = 0.0
 	else:
 		if target and is_instance_valid(target):
@@ -238,6 +256,10 @@ func _attack(bypass : bool):
 	if (not attacking) or bypass:
 		attacking = true
 		recalc_movement_vars()
+		if not attack_timer.is_stopped():
+			await attack_timer.timeout
+			if not (target and is_instance_valid(target) and _target_in_range()):
+				return
 		var current_target = target
 		if fires_projectile:
 			_fire_projectile()
@@ -248,8 +270,10 @@ func _attack(bypass : bool):
 		asprite.frame = 0
 		asprite.play()
 		await _do_attack_cooldown()
-		if attacking and target and is_instance_valid(target):
+		if attacking and target and is_instance_valid(target) and _target_in_range():
 			_attack(true)
+		else:
+			attacking = false
 
 func _fire_projectile():
 	var projectile : Projectile = projectile_scene.instantiate()
@@ -266,6 +290,11 @@ func _fire_projectile():
 		var projectile_offset = Vector2(offset_base.x * -1 if going_right else 1.0 - 1,\
 				offset_base.y + asprite.offset.y) 
 		projectile.position += projectile_offset
+		if target and is_instance_valid(target):
+			projectile.dir = projectile.position.direction_to(target.position)
+		else:
+			projectile.dir = -projectile.position.normalized()
+		projectile.rotation = projectile.dir.angle()
 	projectile.should_fire = true
 	projectile.target = target
 	main.add_child.call_deferred(projectile)
@@ -288,6 +317,17 @@ func die():
 	died.emit()
 	main.remove_minimap_icon(self)
 	queue_free()
+
+func on_targeted():
+	targeted = true
+	target_reticle.show()
+	material.set_shader_parameter("outline_color", Color(1,0,0,1))
+	material.set_shader_parameter("outline_active", 1.0)
+
+func on_untargeted():
+	targeted = false
+	target_reticle.hide()
+	material.set_shader_parameter("outline_active", 0.0)
 
 #endregion: Universal functions
 
@@ -313,10 +353,7 @@ func _on_detection_area_area_exited(area):
 
 func _on_attack_area_area_entered(area):
 	if area.get_parent() == target:
-		if not attack_timer.is_stopped():
-			await attack_timer.timeout
-		if target and is_instance_valid(target):
-			_attack(false)
+		_attack(false)
 
 
 func _on_animated_sprite_2d_animation_finished():
@@ -325,7 +362,5 @@ func _on_animated_sprite_2d_animation_finished():
 	match asprite.animation:
 		attack_str_front:
 			asprite.animation = anim_str + "front" 
-			asprite.play()
 		attack_str_back:
 			asprite.animation = anim_str + "back"
-			asprite.play()

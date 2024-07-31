@@ -5,10 +5,10 @@ static var num_points = 50
 static var arc_height = 50
 static var better_zoom_shader = preload("res://scenes/map/better-zoom.gdshader")
 static var plant_outline_gradient : GradientTexture1D = preload("res://scenes/plants/plant-outline-gradient.tres")
-static var very_slow = 6.0
-static var slow = 10.0
-static var normal = 16.0
-static var fast = 30.0
+static var very_slow = 10.0
+static var slow = 16.0
+static var normal = 24.0
+static var fast = 35.0
 static var very_fast = 48.0
 
 static var fly_mutated := false
@@ -149,7 +149,7 @@ static func get_insect_range(type : Insect.Type):
 		Insect.Type.LOCUST:
 			return 0
 		Insect.Type.BEETLE:
-			return 300
+			return 8
 		Insect.Type.CRICKET:
 			return 6
 		Insect.Type.FIREFLY:
@@ -236,7 +236,7 @@ static func get_insect_speed(type : Insect.Type):
 		Insect.Type.LOCUST:
 			return very_fast
 		Insect.Type.BEETLE:
-			return very_slow
+			return very_fast # FIXME
 		Insect.Type.CRICKET:
 			return normal
 		Insect.Type.FIREFLY:
@@ -247,11 +247,22 @@ static func get_insect_detection_range(type : Insect.Type):
 		Insect.Type.FLY, Insect.Type.GRUB, Insect.Type.MOTH, Insect.Type.BEE, Insect.Type.FUNGI, \
 		Insect.Type.ANT, Insect.Type.LOCUST, Insect.Type.BEETLE, \
 		Insect.Type.CRICKET:
-			return 8
+			return 800
 		Insect.Type.SPORESPAWN, Insect.Type.FIREFLY:
 			return 12
 		Insect.Type.SNAIL, Insect.Type.CATERPILLAR:
 			return 80
+
+static func get_insect_hurtbox_radius(type):
+	match type:
+		Insect.Type.FIREFLY, Insect.Type.ANT, Insect.Type.CRICKET:
+			return 4.0
+		Insect.Type.SNAIL, Insect.Type.CATERPILLAR:
+			return 6.5
+		Insect.Type.BEETLE:
+			return 10.0
+		_:
+			return 2.5
 
 #endregion: Insect functions
 
@@ -1272,6 +1283,8 @@ static func give_zoom_shader(node_with_mat : Node2D):
 static func set_range_area_radii(shape : CollisionShape2D, tile_radius : int):
 	shape.shape = CircleShape2D.new()
 	shape.shape.radius = 8 + 16 * tile_radius
+
+
 
 static func calc_arc_between(p1 : Vector2, p2 : Vector2):
 	var points = []

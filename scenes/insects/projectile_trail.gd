@@ -12,9 +12,6 @@ func _ready():
 	clear_points()
 	create_tween().tween_property(self, "deleting", true, 0).set_delay(duration)
 
-
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if deleting:

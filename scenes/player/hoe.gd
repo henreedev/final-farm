@@ -1,6 +1,10 @@
 extends AnimatedSprite2D
 class_name Hoe
 
+# mouse-based targeting occurs within this (squared) dist
+const MOUSE_MIN_DIST_SQRD = 35.0 * 35.0
+
+
 var hoe_line_scene : PackedScene = preload("res://scenes/player/hoe_line.tscn")
 
 var ccw = true
@@ -15,6 +19,10 @@ var final_scale : float
 @onready var delete_timer : Timer = $DeleteTimer
 @onready var player : Player = get_tree().get_first_node_in_group("player")
 @onready var line_root = $LineRoot
+
+static var targeted_insect : Insect
+static var targeted_insect_dist_to_mouse_sqrd : float
+static var targeted_insect_health : int
 
 const SPAWN_DURATION_RATIO = 0.5 # what ratio of the total duration is taken up by spawning and despawning? 
 # Called when the node enters the scene tree for the first time.
@@ -57,6 +65,28 @@ func _on_hitbox_area_entered(area) -> void:
 	var parent = area.get_parent()
 	if parent is Plant: 
 		parent.on_hit_by_hoe(buff_duration, buff_start_strength, buff_end_strength)
+	if parent is Insect:
+		target_if_better(parent)
+
+func target_if_better(insect : Insect):
+	if not (targeted_insect and is_instance_valid(targeted_insect)):
+		insect.on_targeted()
+		targeted_insect = insect
+	elif _mouse_dist_sqrd(self) < MOUSE_MIN_DIST_SQRD:
+		# target by distance to mouse
+		if _mouse_dist_sqrd(targeted_insect) > _mouse_dist_sqrd(insect):
+			insect.on_targeted()
+			targeted_insect.on_untargeted()
+			targeted_insect = insect
+	else:
+		# target by health
+		if targeted_insect.health < insect.health:
+			insect.on_targeted()
+			targeted_insect.on_untargeted()
+			targeted_insect = insect
+
+func _mouse_dist_sqrd(node_2d : Node2D):
+	return node_2d.get_local_mouse_position().length_squared()
 
 func delete():
 	delete_timer.start(0.5)
