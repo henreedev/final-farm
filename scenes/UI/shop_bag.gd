@@ -92,7 +92,8 @@ func set_rainbow(sprite_list : Array[Sprite2D], rainbow_on := true):
 
 func update():
 	buy_label.text = str(cost)
-	var upgrade_cost = Utils.get_next_upgrade_cost(type)
+	var upgrade_cost = Utils.get_next_upgrade_cost(type) if not showing_upgrade else \
+						Utils.get_current_upgrade_cost(type)
 	if upgrade_cost > 0:
 		upgrade_label.text = str(upgrade_cost)
 	else:
@@ -107,7 +108,6 @@ func update():
 	else: 
 		hidden_label.text = str(cost)
 		buy_button.disabled = true
-	
 	if player.bug_kills >= upgrade_cost and upgrade_cost > 0:
 		upgrade_button.disabled = false
 	else:
@@ -182,6 +182,7 @@ func _update_bag_values(is_first_time := false):
 			upgrade_1_icon.animation = "active"
 			upgrade_2_icon.animation = "active"
 			upgrade_3_icon.animation = "active"
+	update()
 	return changed_icons
 
 func _undo_upgrade():
@@ -284,27 +285,33 @@ func _on_area_2d_mouse_exited():
 
 func _on_upgrade_1_area_mouse_entered():
 	upgrade_1_label.show()
-	_show_upgrade(Plant.Level.Level1)
+	if not Utils.get_plant_level(type) >= Plant.Level.Level1 or showing_upgrade:
+		_show_upgrade(Plant.Level.Level1)
 
 func _on_upgrade_1_area_mouse_exited():
 	upgrade_1_label.hide()
-	_undo_upgrade()
+	if not Utils.get_plant_level(type) >= Plant.Level.Level1 or showing_upgrade:
+		_undo_upgrade()
 
 func _on_upgrade_2_area_mouse_entered():
 	upgrade_2_label.show()
-	_show_upgrade(Plant.Level.Level2)
+	if not Utils.get_plant_level(type) >= Plant.Level.Level2 or showing_upgrade:
+		_show_upgrade(Plant.Level.Level2)
 
 func _on_upgrade_2_area_mouse_exited():
 	upgrade_2_label.hide()
-	_undo_upgrade()
+	if not Utils.get_plant_level(type) >= Plant.Level.Level2 or showing_upgrade:
+		_undo_upgrade()
 
 func _on_upgrade_3_area_mouse_entered():
 	upgrade_3_label.show()
-	_show_upgrade(Plant.Level.Level3)
+	if not Utils.get_plant_level(type) >= Plant.Level.Level3 or showing_upgrade:
+		_show_upgrade(Plant.Level.Level3)
 
 func _on_upgrade_3_area_mouse_exited():
 	upgrade_3_label.hide()
-	_undo_upgrade()
+	if not Utils.get_plant_level(type) >= Plant.Level.Level3 or showing_upgrade:
+		_undo_upgrade()
 
 
 func _on_frame_changed():

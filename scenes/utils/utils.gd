@@ -1060,6 +1060,99 @@ static func get_next_upgrade_cost(type : Plant.Type):
 					return 10000
 	return -1
 
+static func get_current_upgrade_cost(type : Plant.Type):
+	match type:
+		Plant.Type.EGGPLANT:
+			match eggplant_level:
+				Plant.Level.Level1:
+					return 100
+				Plant.Level.Level2:
+					return 200
+				Plant.Level.Level3: 
+					return 300
+		Plant.Type.BROCCOLI:
+			match broccoli_level: 
+				Plant.Level.Level1:
+					return 20
+				Plant.Level.Level2:
+					return 40
+				Plant.Level.Level3: 
+					return 80
+		Plant.Type.TOMATO:
+			match tomato_level: 
+				Plant.Level.Level1:
+					return 30
+				Plant.Level.Level2:
+					return 60
+				Plant.Level.Level3: 
+					return 120
+		Plant.Type.POTATO:
+			match potato_level: 
+				Plant.Level.Level1:
+					return 50
+				Plant.Level.Level2:
+					return 100
+				Plant.Level.Level3: 
+					return 200
+		Plant.Type.CELERY:
+			match celery_level: 
+				Plant.Level.Level1:
+					return 60
+				Plant.Level.Level2:
+					return 120
+				Plant.Level.Level3: 
+					return 240
+		Plant.Type.CORN:
+			match corn_level:
+				Plant.Level.Level1:
+					return 100
+				Plant.Level.Level2:
+					return 200
+				Plant.Level.Level3: 
+					return 400
+		Plant.Type.WATERMELON:
+			match watermelon_level: 
+				Plant.Level.Level1:
+					return 200
+				Plant.Level.Level2:
+					return 350
+				Plant.Level.Level3: 
+					return 650
+		Plant.Type.PEPPER:
+			match pepper_level: 
+				Plant.Level.Level1:
+					return 400
+				Plant.Level.Level2:
+					return 600
+				Plant.Level.Level3: 
+					return 900
+		Plant.Type.BANANA:
+			match banana_level:
+				Plant.Level.Level1:
+					return 600
+				Plant.Level.Level2:
+					return 800
+				Plant.Level.Level3: 
+					return 1200
+		Plant.Type.LEMONLIME:
+			match lemonlime_level: 
+				Plant.Level.Level1:
+					return 3000
+				Plant.Level.Level2:
+					return 5500
+				Plant.Level.Level3: 
+					return 8000
+		Plant.Type.WILLOW:
+			match willow_level:
+				Plant.Level.Level1:
+					return 4000
+				Plant.Level.Level2:
+					return 7000
+				Plant.Level.Level3: 
+					return 10000
+	return -1
+
+
 static func get_plant_cost(type : Plant.Type):
 	match type:
 		Plant.Type.EGGPLANT:
